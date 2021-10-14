@@ -1,7 +1,7 @@
 {
   "dependencies": {
     "choo": "^7.1.0",
-    "georender-style2png": "^2.0.2",
+    "georender-style2png": "^3.0.0",
     "mixmap": "^1.5.2",
     "mixmap-peermaps": "^1.0.0",
     "regl": "^2.1.0",
