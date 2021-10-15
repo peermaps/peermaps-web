@@ -54,27 +54,21 @@ var mixmap = require('mixmap')
 var resl = require('resl')
  
 app.use(function (state, emitter) {
-  resl({
-    manifest: {
-      style: { type: 'image', src: state.params.style.url },
-      wasmSource: { type: 'binary', src: 'eyros2d.wasm' },
-    },
-    onDone: function({ style, wasmSource }) {
-      var pm = mixmapPeermaps({
-        map: state.map,
-        eyros,
-        storage: state.storage,
-        wasmSource,
-        style
-      })
-      window.addEventListener('click', function (ev) {
-        /*
-        pm.pick({ x: ev.offsetX, y: ev.offsetY }, function (err, data) {
-          console.log('pick', err, data)
-        })
-        */
-      })
-    }
+  var style = new Image
+  style.src = state.params.style.url
+  var pm = mixmapPeermaps({
+    map: state.map,
+    eyros,
+    storage: state.storage,
+    wasmSource: fetch('eyros2d.wasm'),
+    style
+  })
+  window.addEventListener('click', function (ev) {
+    /*
+    pm.pick({ x: ev.offsetX, y: ev.offsetY }, function (err, data) {
+      console.log('pick', err, data)
+    })
+    */
   })
 })
 
@@ -108,9 +102,39 @@ app.route('*', function (state, emit) {
         margin: 0px;
         overflow: hidden;
       }
+      .buttons {
+        z-index: 2000;
+      }
+      .left-buttons {
+        position: absolute;
+        top: 0px;
+        left: 0px;
+        bottom: 0px;
+        padding: 1em;
+      }
+      .buttons button {
+        min-width: 4ex;
+        height: 2em;
+        font-family: monospace;
+        margin-bottom: 2em;
+        opacity: 30%;
+        background-color: black;
+        color: white;
+        border: 0px;
+        border-radius: 5px;
+      }
+      .buttons button:hover {
+        opacity: 100%;
+      }
     </style>
+    <div class="buttons left-buttons">
+      <div><button onclick=${zoomIn}>+</button></div>
+      <div><button onclick=${zoomOut}>-</button></div>
+    </div>
     ${state.mix.render()}
     ${state.map.render({ width: state.width, height: state.height })}
   </body>`
+  function zoomIn() { emit('map:zoom:add',+1) }
+  function zoomOut() { emit('map:zoom:add',-1) }
 })
 app.mount(document.body)
