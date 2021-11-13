@@ -4,8 +4,7 @@ var nextTick = process.nextTick
 
 app.use(function (state, emitter) {
   state.params = {
-    //data: fixURL('/ipfs/QmVCYUK51Miz4jEjJxCq3bA6dfq5FXD6s2EYp6LjHQhGmh'),
-    data: '',
+    data: fixURL('/ipfs/QmVCYUK51Miz4jEjJxCq3bA6dfq5FXD6s2EYp6LjHQhGmh'),
     bbox: [7.56,47.55,7.58,47.56],
     style: { url: 'style.png' }
   }
@@ -56,14 +55,16 @@ var resl = require('resl')
  
 app.use(function (state, emitter) {
   var style = new Image
+  style.onload = function () {
+    var pm = mixmapPeermaps({
+      map: state.map,
+      eyros,
+      storage: state.storage,
+      wasmSource: fetch('eyros2d.wasm'),
+      style
+    })
+  }
   style.src = state.params.style.url
-  var pm = mixmapPeermaps({
-    map: state.map,
-    eyros,
-    storage: state.storage,
-    wasmSource: fetch('eyros2d.wasm'),
-    style
-  })
   window.addEventListener('click', function (ev) {
     /*
     pm.pick({ x: ev.offsetX, y: ev.offsetY }, function (err, data) {
