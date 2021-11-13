@@ -4,7 +4,8 @@ var nextTick = process.nextTick
 
 app.use(function (state, emitter) {
   state.params = {
-    data: fixURL('/ipfs/QmVCYUK51Miz4jEjJxCq3bA6dfq5FXD6s2EYp6LjHQhGmh'),
+    //data: fixURL('/ipfs/QmVCYUK51Miz4jEjJxCq3bA6dfq5FXD6s2EYp6LjHQhGmh'),
+    data: '',
     bbox: [7.56,47.55,7.58,47.56],
     style: { url: 'style.png' }
   }

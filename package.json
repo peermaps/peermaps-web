@@ -1,11 +1,15 @@
 {
   "dependencies": {
     "choo": "^7.1.0",
+    "eyros": "^4.7.0",
     "georender-style2png": "^3.0.0",
     "mixmap": "^1.5.2",
     "mixmap-peermaps": "^1.0.0",
     "regl": "^2.1.0",
     "resl": "^1.0.3"
+  },
+  "devDependencies": {
+    "budo": "^11.6.4"
   },
   "scripts": {
     "start": "npm run prepare && npm run style && npm run web",
