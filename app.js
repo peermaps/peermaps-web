@@ -10,7 +10,7 @@ app.use(function (state, emitter) {
   }
   var qparams = new URLSearchParams(location.hash.replace(/^#/,''))
   if (qparams.has('data')) {
-    state.params.hash = fixURL(qparams.get('data'))
+    state.params.data = fixURL(qparams.get('data'))
   }
   if (qparams.has('bbox')) {
     state.params.bbox = qparams.get('bbox').split(/\s*,\s*/).map(parseFloat)
