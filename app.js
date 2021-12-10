@@ -47,6 +47,22 @@ app.use(function (state, emitter) {
     state.map.setZoom(x)
     state.map.draw()
   })
+  emitter.on('map:pan:lat', function (x) {
+    var viewbox = state.map.viewbox.slice()
+    var diff = viewbox[3] - viewbox[1]
+    viewbox[1] += x * diff
+    viewbox[3] += x * diff
+    state.map.setViewbox(viewbox)
+    state.map.draw()
+  })
+  emitter.on('map:pan:lon', function (x) {
+    var viewbox = state.map.viewbox.slice()
+    var diff = viewbox[2] - viewbox[0]
+    viewbox[0] += x * diff
+    viewbox[2] += x * diff
+    state.map.setViewbox(viewbox)
+    state.map.draw()
+  })
 })
 
 var eyros = require('eyros/2d')
@@ -115,6 +131,7 @@ app.route('*', function (state, emit) {
         padding: 1em;
       }
       .buttons button {
+        position: absolute;
         min-width: 4ex;
         height: 2em;
         font-family: monospace;
@@ -130,13 +147,21 @@ app.route('*', function (state, emit) {
       }
     </style>
     <div class="buttons left-buttons">
-      <div><button onclick=${zoomIn}>+</button></div>
-      <div><button onclick=${zoomOut}>-</button></div>
+      <div><button style="left: 5em;" onclick=${panNorth}>N</button></div>
+      <div><button style="top: 4.5em;" onclick=${panWest}>W</button></div>
+      <div><button style="top: 4.5em; left: 4em;" onclick=${zoomOut}>-</button></div>
+      <div><button style="top: 4.5em; left: 6em;" onclick=${zoomIn}>+</button></div>
+      <div><button style="top: 4.5em; left: 9em;" onclick=${panEast}>E</button></div>
+      <div><button style="top: 8em; left: 5em;" onclick=${panSouth}>S</button></div>
     </div>
     ${state.mix.render()}
     ${state.map.render({ width: state.width, height: state.height })}
   </body>`
   function zoomIn() { emit('map:zoom:add',+1) }
   function zoomOut() { emit('map:zoom:add',-1) }
+  function panNorth() { emit('map:pan:lat',+1) }
+  function panSouth() { emit('map:pan:lat',-1) }
+  function panEast() { emit('map:pan:lon',+1) }
+  function panWest() { emit('map:pan:lon',-1) }
 })
 app.mount(document.body)
