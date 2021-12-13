@@ -132,27 +132,53 @@ app.route('*', function (state, emit) {
       }
       .buttons button {
         position: absolute;
-        min-width: 4ex;
         height: 2em;
+        width: 2em;
         font-family: monospace;
-        margin-bottom: 2em;
         opacity: 30%;
         background-color: black;
         color: white;
         border: 0px;
-        border-radius: 5px;
+        border-radius: 20px;
+        padding: 0px;
+      }
+      .buttons .arrow {
+        height: 3em;
+        width: 3em;
+        background: transparent;
+        border-top: 5px solid black;
+        border-right: 5px solid black;
+        border-radius: 0px;
+      }
+      .buttons .north {
+        transform: rotate(315deg);
+        left: 4em;
+      }
+      .buttons .west {
+        transform: rotate(225deg);
+        top: 4em;
+      }
+      .buttons .east {
+        transform: rotate(45deg);
+        top: 4em;
+        left: 6.5em;
+      }
+      .buttons .south {
+        transform: rotate(135deg);
+        top: 6.5em;
+        left: 4em;
       }
       .buttons button:hover {
         opacity: 100%;
       }
     </style>
     <div class="buttons left-buttons">
-      <div><button style="left: 5em;" onclick=${panNorth}>N</button></div>
-      <div><button style="top: 4.5em;" onclick=${panWest}>W</button></div>
-      <div><button style="top: 4.5em; left: 4em;" onclick=${zoomOut}>-</button></div>
-      <div><button style="top: 4.5em; left: 6em;" onclick=${zoomIn}>+</button></div>
-      <div><button style="top: 4.5em; left: 9em;" onclick=${panEast}>E</button></div>
-      <div><button style="top: 8em; left: 5em;" onclick=${panSouth}>S</button></div>
+      <div><button class="arrow north" onclick=${panNorth}></button></div>
+      <div><button class="arrow west" onclick=${panWest}></button></div>
+      <div><button class="arrow east" onclick=${panEast}></button></div>
+      <div><button class="arrow south" onclick=${panSouth}></button></div>
+      <div><button style="top: 3em; left: 4.5em;" onclick=${zoomIn}>+</button></div>
+      <div><button style="top: 6em; left: 4.5em;" onclick=${zoomOut}>-</button></div>
     </div>
     ${state.mix.render()}
     ${state.map.render({ width: state.width, height: state.height })}
