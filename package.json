@@ -15,7 +15,7 @@
   "scripts": {
     "start": "npm run prepare && npm run style && npm run web",
     "prepare": "mkdir -p public && cp node_modules/eyros/2d.wasm public/eyros2d.wasm",
-    "web": "budo app.js -d public",
+    "web": "budo app.js -l -d public",
     "style": "georender-style2png node_modules/georender-style2png/example/style.json -o public/style.png"
   }
 }
