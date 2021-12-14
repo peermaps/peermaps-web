@@ -2,6 +2,8 @@
 
 > Map web application for peermaps
 
+![image](image.png)
+
 # usage
 
 Get the code, install and run:
