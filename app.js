@@ -49,17 +49,17 @@ app.use(function (state, emitter) {
   })
   emitter.on('map:pan:lat', function (dir) {
     var viewbox = state.map.viewbox.slice()
-    var dx = viewbox[3] - viewbox[1]
-    viewbox[1] += dir*dx
-    viewbox[3] += dir*dx
+    var dy = viewbox[3] - viewbox[1]
+    viewbox[1] += dir*dy
+    viewbox[3] += dir*dy
     state.map.setViewbox(viewbox)
     state.map.draw()
   })
   emitter.on('map:pan:lon', function (dir) {
     var viewbox = state.map.viewbox.slice()
-    var dy = viewbox[2] - viewbox[0]
-    viewbox[0] += dir*dy
-    viewbox[2] += dir*dy
+    var dx = viewbox[2] - viewbox[0]
+    viewbox[0] += dir*dx
+    viewbox[2] += dir*dx
     state.map.setViewbox(viewbox)
     state.map.draw()
   })
