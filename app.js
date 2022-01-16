@@ -1,6 +1,23 @@
 var app = require('choo')()
 var mixmapPeermaps = require('mixmap-peermaps')
+var html = require('choo/html')
+var eyros = require('eyros/2d')
+var mixmap = require('mixmap')
+var resl = require('resl')
+var regl = require('regl')
+var httpStorage = require('mixmap-peermaps/storage/http')
+
+var Settings = require('./components/settings.js')
 var nextTick = process.nextTick
+
+app.use(function (state, emitter) {
+  state.showSettings = false
+  state.settings = Settings()
+  emitter.on('settings:toggle', function () {
+    state.showSettings = !state.showSettings
+    emitter.emit('render')
+  })
+})
 
 app.use(function (state, emitter) {
   state.params = {
@@ -27,13 +44,11 @@ function fixURL(u) {
   return u
 }
 
-var regl = require('regl')
-var httpStorage = require('mixmap-peermaps/storage/http')
 app.use(function (state, emitter) {
   state.mix = mixmap(regl, {
     extensions: [ 'oes_element_index_uint', 'oes_texture_float', 'ext_float_blend' ]
   })
-  state.map = state.mix.create({ 
+  state.map = state.mix.create({
     viewbox: state.params.bbox,
     backgroundColor: [0.82, 0.85, 0.99, 1.0],
     pickfb: { colorFormat: 'rgba', colorType: 'float32' }
@@ -65,10 +80,6 @@ app.use(function (state, emitter) {
   })
 })
 
-var eyros = require('eyros/2d')
-var mixmap = require('mixmap')
-var resl = require('resl')
- 
 app.use(function (state, emitter) {
   var style = new Image
   style.onload = function () {
@@ -109,7 +120,6 @@ app.use(function (state, emitter) {
   })
 })
 
-var html = require('choo/html')
 app.route('*', function (state, emit) {
   nextTick(function () {
     state.map.draw()
@@ -120,13 +130,25 @@ app.route('*', function (state, emit) {
         margin: 0px;
         overflow: hidden;
       }
-      .buttons {
+      .ui-overlay {
         z-index: 2000;
+      }
+      .settings {
+        z-index: inherit;
+        position: absolute;
+        opacity: 30%;
+        background-color: black;
+        color: white;
+        height: 100%;
+        width: ${state.settings.width};
+      }
+      .buttons {
+        z-index: inherit;
       }
       .left-buttons {
         position: absolute;
         top: 0px;
-        left: 0px;
+        left: ${state.showSettings ? state.settings.width : '0px'};
         bottom: 0px;
         padding: 1em;
       }
@@ -171,23 +193,32 @@ app.route('*', function (state, emit) {
       .buttons button:hover {
         opacity: 100%;
       }
+      .buttons .toggle-settings {
+        bottom: 1em;
+      }
     </style>
-    <div class="buttons left-buttons">
-      <div><button class="arrow north" onclick=${panNorth}></button></div>
-      <div><button class="arrow west" onclick=${panWest}></button></div>
-      <div><button class="arrow east" onclick=${panEast}></button></div>
-      <div><button class="arrow south" onclick=${panSouth}></button></div>
-      <div><button style="top: 3em; left: 4.5em;" onclick=${zoomIn}>+</button></div>
-      <div><button style="top: 6em; left: 4.5em;" onclick=${zoomOut}>-</button></div>
+    <div class="ui-overlay">
+      ${state.showSettings ? state.settings.render() : ''}
+      <div class="buttons left-buttons">
+        <div><button class="arrow north" onclick=${panNorth}></button></div>
+        <div><button class="arrow west" onclick=${panWest}></button></div>
+        <div><button class="arrow east" onclick=${panEast}></button></div>
+        <div><button class="arrow south" onclick=${panSouth}></button></div>
+        <div><button style="top: 3em; left: 4.5em;" onclick=${zoomIn}>+</button></div>
+        <div><button style="top: 6em; left: 4.5em;" onclick=${zoomOut}>-</button></div>
+        <div><button class="toggle-settings" onclick=${toggleSettings}>${state.showSettings ? '<' : '>'}</button></div>
+      </div>
     </div>
     ${state.mix.render()}
     ${state.map.render({ width: state.width, height: state.height })}
   </body>`
+
   function zoomIn() { emit('map:zoom:add',+1) }
   function zoomOut() { emit('map:zoom:add',-1) }
   function panNorth() { emit('map:pan:lat',+1) }
   function panSouth() { emit('map:pan:lat',-1) }
   function panEast() { emit('map:pan:lon',+1) }
   function panWest() { emit('map:pan:lon',-1) }
+  function toggleSettings() { emit('settings:toggle') }
 })
 app.mount(document.body)
