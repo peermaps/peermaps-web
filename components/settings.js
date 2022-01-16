@@ -3,18 +3,34 @@ var html = require('choo/html')
 /**
  * Settings dialog.
  */
-function Settings (opts) {
-  if (!(this instanceof Settings)) return new Settings(opts)
-  opts = opts || {}
-  this.width = opts.width || '450px'
+function Settings () {
+  if (!(this instanceof Settings)) return new Settings()
+  this._groups = [
+    DataUrlGroup(),
+    DataUrlGroup(),
+    DataUrlGroup(),
+    DataUrlGroup()
+  ]
 }
 
 Settings.prototype.render = function () {
-  // TODO use settings group data array with .map()
   return html`<div id="settings">
-    <div>settings group 1</div>
-    <div>settings group 2</div>
-    <div>settings group 3</div>
+    ${this._groups.map(g => g.render())}
+  </div>`
+}
+
+/**
+ * Groups.
+ */
+function DataUrlGroup () {
+  if (!(this instanceof DataUrlGroup)) return new DataUrlGroup()
+  this.expanded = true
+}
+
+DataUrlGroup.prototype.render = function () {
+  return html`<div class="settings-group">
+    <div>a group title</div>
+    <div>some group content here....</div>
   </div>`
 }
 
