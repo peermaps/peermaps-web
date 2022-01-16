@@ -124,8 +124,8 @@ app.route('*', function (state, emit) {
   nextTick(function () {
     state.map.draw()
   })
-  var settingsWidth = 450
-  var settingsPadding = 10
+  var settingsWidth = 470
+  var settingsPadding = 15
   var buttonsLeft = state.showSettings ? settingsWidth + 2 * settingsPadding : 0
   return html`<body>
     <style>
@@ -139,7 +139,7 @@ app.route('*', function (state, emit) {
       #settings {
         z-index: inherit;
         position: absolute;
-        background: rgba(0, 0, 0, 0.7);
+        background: rgba(0, 0, 0, 0.5);
         height: 100%;
         width: ${settingsWidth}px;
         overflow-y: auto;
@@ -149,6 +149,7 @@ app.route('*', function (state, emit) {
         background-color: black;
         color: white;
         margin-bottom: 10px;
+        background: rgba(0, 0, 0, 0.5);
       }
       .buttons {
         z-index: inherit;
