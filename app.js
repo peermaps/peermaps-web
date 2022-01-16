@@ -11,10 +11,9 @@ var Settings = require('./components/settings.js')
 var nextTick = process.nextTick
 
 app.use(function (state, emitter) {
-  state.showSettings = true
   state.settings = Settings()
   emitter.on('settings:toggle', function () {
-    state.showSettings = !state.showSettings
+    state.settings.toggle()
     emitter.emit('render')
   })
 })
@@ -126,7 +125,7 @@ app.route('*', function (state, emit) {
   })
   var settingsWidth = 470
   var settingsPadding = 15
-  var buttonsLeft = state.showSettings ? settingsWidth + 2 * settingsPadding : 0
+  var buttonsLeft = state.settings.show ? settingsWidth + 2 * settingsPadding : 0
   return html`<body>
     <style>
       body {
@@ -207,7 +206,7 @@ app.route('*', function (state, emit) {
       }
     </style>
     <div class="ui-overlay">
-      ${state.showSettings ? state.settings.render({ width: settingsWidth }) : ''}
+      ${state.settings.render()}
       <div class="buttons left-buttons">
         <div><button class="arrow north" onclick=${panNorth}></button></div>
         <div><button class="arrow west" onclick=${panWest}></button></div>
@@ -215,13 +214,12 @@ app.route('*', function (state, emit) {
         <div><button class="arrow south" onclick=${panSouth}></button></div>
         <div><button style="top: 3em; left: 4.5em;" onclick=${zoomIn}>+</button></div>
         <div><button style="top: 6em; left: 4.5em;" onclick=${zoomOut}>-</button></div>
-        <div><button class="toggle-settings" onclick=${toggleSettings}>${state.showSettings ? '<' : '>'}</button></div>
+        <div><button class="toggle-settings" onclick=${toggleSettings}>${state.settings.show ? '<' : '>'}</button></div>
       </div>
     </div>
+    ${state.mix.render()}
+    ${state.map.render({ width: state.width, height: state.height })}
   </body>`
-
-    //${state.mix.render()}
-    //${state.map.render({ width: state.width, height: state.height })}
 
   function zoomIn() { emit('map:zoom:add',+1) }
   function zoomOut() { emit('map:zoom:add',-1) }

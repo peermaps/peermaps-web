@@ -5,29 +5,39 @@ var html = require('choo/html')
  */
 function Settings () {
   if (!(this instanceof Settings)) return new Settings()
+  this.show = false
   this._groups = [
-    DataUrlGroup(),
-    DataUrlGroup(),
-    DataUrlGroup(),
-    DataUrlGroup()
+    SettingsGroup(),
+    SettingsGroup(),
+    SettingsGroup(),
+    SettingsGroup()
   ]
 }
 
+Settings.prototype.toggle = function () {
+  this.show = !this.show
+}
+
 Settings.prototype.render = function () {
+  if (!this.show) return
   return html`<div id="settings">
     ${this._groups.map(g => g.render())}
   </div>`
 }
 
+// TODO how can I make this as clean as possible? basically need to wrap some content
+// with a div that has a title and that can expand/collapse, but the content of the
+// group should be handled by a separate function, which can be render like
+
 /**
  * Groups.
  */
-function DataUrlGroup () {
-  if (!(this instanceof DataUrlGroup)) return new DataUrlGroup()
+function SettingsGroup () {
+  if (!(this instanceof SettingsGroup)) return new SettingsGroup()
   this.expanded = true
 }
 
-DataUrlGroup.prototype.render = function () {
+SettingsGroup.prototype.render = function () {
   return html`<div class="settings-group">
     <div>a group title</div>
     <div>some group content here....</div>
