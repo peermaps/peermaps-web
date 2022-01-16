@@ -6,7 +6,7 @@ var html = require('choo/html')
 function Settings (opts) {
   if (!(this instanceof Settings)) return new Settings(opts)
   opts = opts || {}
-  this.width = opts.width || '500px'
+  this.width = opts.width || '450px'
 }
 
 Settings.prototype.render = function () {

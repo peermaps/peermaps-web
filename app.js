@@ -141,6 +141,7 @@ app.route('*', function (state, emit) {
         color: white;
         height: 100%;
         width: ${state.settings.width};
+        overflow-y: scroll;
       }
       .buttons {
         z-index: inherit;
