@@ -133,7 +133,7 @@ app.route('*', function (state, emit) {
       .ui-overlay {
         z-index: 2000;
       }
-      .settings {
+      #settings {
         z-index: inherit;
         position: absolute;
         opacity: 30%;

@@ -11,7 +11,7 @@ function Settings (opts) {
 
 Settings.prototype.render = function () {
   // TODO use settings group data array with .map()
-  return html`<div class="settings">
+  return html`<div id="settings">
     <div>settings group 1</div>
     <div>settings group 2</div>
     <div>settings group 3</div>
