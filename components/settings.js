@@ -1,4 +1,5 @@
 var html = require('choo/html')
+var css = require('sheetify')
 
 /**
  * Settings dialog.
@@ -9,6 +10,16 @@ function Settings () {
   this.show = false
   this.width = 470
   this.padding = 15
+
+  this.style = css`
+    :host {
+      z-index: inherit;
+      position: absolute;
+      background: rgba(0, 0, 0, 0.5);
+      height: 100%;
+      overflow-y: auto;
+    }
+  `
 
   this.groups = [
     SettingsGroup({ title: 'Storage', renderContent: renderStorageContent }),
@@ -31,13 +42,13 @@ Settings.prototype.totalWidth = function () {
   return this.show ? this.width + 2 * this.padding : 0
 }
 
-Settings.prototype.render = function (emit) {
+Settings.prototype.render = function (state, emit) {
   if (!this.show) return
 
-  return html`<div id="settings">
-    <div class="settings-group">
-      ${this.groups.map(function (group) { return group.render(emit) })}
-    </div>
+  var cstyle = `width: ${this.width}px; padding: ${this.padding}px;`
+
+  return html`<div class=${this.style} style=${cstyle}>
+    ${this.groups.map(function (group) { return group.render(state, emit) })}
   </div>`
 }
 
@@ -48,14 +59,31 @@ function SettingsGroup (opts) {
   if (!(this instanceof SettingsGroup)) return new SettingsGroup(opts)
   this.expanded = true
   this.title = opts.title || 'Missing group title'
+
+  this.style = css`
+    :host {
+      color: white;
+      margin-bottom: 10px;
+      background: rgba(0, 0, 0, 0.5);
+    }
+  `
+
   this.renderContent = opts.renderContent
 }
 
-SettingsGroup.prototype.render = function (emit) {
+SettingsGroup.prototype.render = function (state, emit) {
   // TODO render expand/collapse buttons to the right of the title
-  return html`<div class="settings-group">
-    <div class="settings-group-title">${this.title}</div>
-    <div class="settings-group-content">
+  var padding = state.settings.padding
+  var titleStyle = `
+    padding-left: ${padding}px;
+    padding-top: ${padding}px;
+    padding-right: ${padding}px;
+  `
+  var contentStyle = `padding: ${padding}px;`
+
+  return html`<div class=${this.style}>
+    <div style=${titleStyle}>${this.title}</div>
+    <div style=${contentStyle}>
       ${this.renderContent(emit)}
     </div>
   </div>`
