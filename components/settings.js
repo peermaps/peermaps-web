@@ -7,7 +7,7 @@ var css = require('sheetify')
 function Settings () {
   if (!(this instanceof Settings)) return new Settings()
 
-  this.show = false
+  this.show = true
   this.width = 470
   this.padding = 15
 
