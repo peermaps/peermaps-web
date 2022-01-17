@@ -11,10 +11,7 @@ function Settings () {
   this.padding = 15
 
   this.groups = [
-    SettingsGroup(),
-    SettingsGroup(),
-    SettingsGroup(),
-    SettingsGroup()
+    SettingsGroup({ title: 'Storage', renderContent: renderStorageContent }),
   ]
 }
 
@@ -34,30 +31,38 @@ Settings.prototype.totalWidth = function () {
   return this.show ? this.width + 2 * this.padding : 0
 }
 
-Settings.prototype.render = function () {
+Settings.prototype.render = function (emit) {
   if (!this.show) return
+
   return html`<div id="settings">
-    ${this.groups.map(g => g.render())}
+    <div class="settings-group">
+      ${this.groups.map(function (group) { return group.render(emit) })}
+    </div>
   </div>`
 }
-
-// TODO how can I make this as clean as possible? basically need to wrap some content
-// with a div that has a title and that can expand/collapse, but the content of the
-// group should be handled by a separate function, which can be render like
 
 /**
  * Groups.
  */
-function SettingsGroup () {
-  if (!(this instanceof SettingsGroup)) return new SettingsGroup()
+function SettingsGroup (opts) {
+  if (!(this instanceof SettingsGroup)) return new SettingsGroup(opts)
   this.expanded = true
+  this.title = opts.title || 'Missing group title'
+  this.renderContent = opts.renderContent
 }
 
-SettingsGroup.prototype.render = function () {
+SettingsGroup.prototype.render = function (emit) {
+  // TODO render expand/collapse buttons to the right of the title
   return html`<div class="settings-group">
-    <div>a group title</div>
-    <div>some group content here....</div>
+    <div class="settings-group-title">${this.title}</div>
+    <div class="settings-group-content">
+      ${this.renderContent(emit)}
+    </div>
   </div>`
+}
+
+function renderStorageContent (emit) {
+  return html`<div>url content here</div>`
 }
 
 module.exports = Settings

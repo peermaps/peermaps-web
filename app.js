@@ -133,6 +133,7 @@ app.route('*', function (state, emit) {
       .ui-overlay {
         z-index: 2000;
       }
+
       #settings {
         z-index: inherit;
         position: absolute;
@@ -148,6 +149,15 @@ app.route('*', function (state, emit) {
         margin-bottom: 10px;
         background: rgba(0, 0, 0, 0.5);
       }
+      #settings .settings-group .settings-group-title {
+        padding-left: ${settings.padding}px;
+        padding-top: ${settings.padding}px;
+        padding-right: ${settings.padding}px;
+      }
+      #settings .settings-group .settings-group-content {
+        padding: ${settings.padding}px;
+      }
+
       .buttons {
         z-index: inherit;
       }
@@ -204,7 +214,7 @@ app.route('*', function (state, emit) {
       }
     </style>
     <div class="ui-overlay">
-      ${settings.render()}
+      ${settings.render(emit)}
       <div class="buttons left-buttons">
         <div><button class="arrow north" onclick=${panNorth}></button></div>
         <div><button class="arrow west" onclick=${panWest}></button></div>
