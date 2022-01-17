@@ -7,6 +7,9 @@ function Settings () {
   if (!(this instanceof Settings)) return new Settings()
 
   this.show = false
+  this.width = 470
+  this.padding = 15
+
   this.groups = [
     SettingsGroup(),
     SettingsGroup(),
@@ -25,6 +28,10 @@ Settings.prototype.use = function (emitter) {
 
 Settings.prototype.toggle = function () {
   this.show = !this.show
+}
+
+Settings.prototype.totalWidth = function () {
+  return this.show ? this.width + 2 * this.padding : 0
 }
 
 Settings.prototype.render = function () {
