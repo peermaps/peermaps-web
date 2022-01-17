@@ -11,11 +11,11 @@ var Settings = require('./components/settings.js')
 var nextTick = process.nextTick
 
 app.use(function (state, emitter) {
-  state.settings = Settings()
-  emitter.on('settings:toggle', function () {
-    state.settings.toggle()
-    emitter.emit('render')
-  })
+  var settings = Settings({ emitter: emitter })
+  settings.use(emitter)
+  // TODO load settings here
+  // settings.load(cb)
+  state.settings = settings
 })
 
 app.use(function (state, emitter) {

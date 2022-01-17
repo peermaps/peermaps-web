@@ -5,13 +5,22 @@ var html = require('choo/html')
  */
 function Settings () {
   if (!(this instanceof Settings)) return new Settings()
+
   this.show = false
-  this._groups = [
+  this.groups = [
     SettingsGroup(),
     SettingsGroup(),
     SettingsGroup(),
     SettingsGroup()
   ]
+}
+
+Settings.prototype.use = function (emitter) {
+  var self = this
+  emitter.on('settings:toggle', function () {
+    self.toggle()
+    emitter.emit('render')
+  })
 }
 
 Settings.prototype.toggle = function () {
@@ -21,7 +30,7 @@ Settings.prototype.toggle = function () {
 Settings.prototype.render = function () {
   if (!this.show) return
   return html`<div id="settings">
-    ${this._groups.map(g => g.render())}
+    ${this.groups.map(g => g.render())}
   </div>`
 }
 
