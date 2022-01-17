@@ -63,10 +63,11 @@ function Settings () {
       width: 50px;
       text-align: center;
       margin-right: 15px;
-      margin-top: 7px;
-      margin-bottom: 7px;
+      margin-top: 8px;
+      margin-bottom: 8px;
       padding: 5px;
       cursor: pointer;
+      border: 1px solid #999;
     }
   `
 
@@ -76,40 +77,6 @@ function Settings () {
       description: 'Define data urls for map storage',
       render: function (emit) {
         return html`<div>
-          <div>In the storage tab</div>
-          <div>In the storage tab</div>
-          <div>In the storage tab</div>
-          <div>In the storage tab</div>
-          <div>In the storage tab</div>
-          <div>In the storage tab</div>
-          <div>In the storage tab</div>
-          <div>In the storage tab</div>
-          <div>In the storage tab</div>
-          <div>In the storage tab</div>
-          <div>In the storage tab</div>
-          <div>In the storage tab</div>
-          <div>In the storage tab</div>
-          <div>In the storage tab</div>
-          <div>In the storage tab</div>
-          <div>In the storage tab</div>
-          <div>In the storage tab</div>
-          <div>In the storage tab</div>
-          <div>In the storage tab</div>
-          <div>In the storage tab</div>
-          <div>In the storage tab</div>
-          <div>In the storage tab</div>
-          <div>In the storage tab</div>
-          <div>In the storage tab</div>
-          <div>In the storage tab</div>
-          <div>In the storage tab</div>
-          <div>In the storage tab</div>
-          <div>In the storage tab</div>
-          <div>In the storage tab</div>
-          <div>In the storage tab</div>
-          <div>In the storage tab</div>
-          <div>In the storage tab</div>
-          <div>In the storage tab</div>
-          <div>In the storage tab</div>
           <div>In the storage tab</div>
           <div>In the storage tab</div>
           <div>In the storage tab</div>
@@ -187,6 +154,12 @@ Settings.prototype.use = function (emitter) {
       emitter.emit('render')
     }
   })
+  emitter.on('settings:apply', function () {
+    console.log('TODO act on settings:apply event')
+  })
+  emitter.on('settings:reset', function () {
+    console.log('TODO act on settings:reset event')
+  })
 }
 
 Settings.prototype.toggle = function () {
@@ -234,9 +207,19 @@ Settings.prototype.renderTabContent = function (emit) {
 }
 
 Settings.prototype.renderButtons = function (emit) {
+  var tab = this.getSelectedTab()
+  var cstyle = `
+    color: #${tab.dirty ? 'FFF' : '999'};
+    cursor: ${tab.dirty ? 'pointer' : 'default'};
+  `
+  function onApply () {
+    if (tab.dirty) {
+      emit('settings:apply')
+    }
+  }
   return html`<div class=${this.buttonContainerStyle}>
-    <div class=${this.buttonStyle}>apply</div>
-    <div class=${this.buttonStyle}>reset</div>
+    <div class=${this.buttonStyle} onclick=${() => emit('settings:reset')}>reset</div>
+    <div class=${this.buttonStyle} style=${cstyle} onclick=${() => onApply()}>apply</div>
   </div>`
 }
 
