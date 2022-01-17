@@ -18,7 +18,6 @@ function Settings () {
       position: absolute;
       background: rgba(0, 0, 0, 0.8);
       height: 100%;
-      overflow-y: auto;
     }
   `
   this.tabContainerStyle = css`
@@ -32,11 +31,39 @@ function Settings () {
       text-align: center;
       width: 100%;
       cursor: pointer;
+      padding: 5px;
     }
   `
   this.tabContentStyle = css`
     :host {
       background: rgba(0, 0, 0, 0.3);
+      height: 100%;
+      padding: 10px;
+      overflow-y: auto;
+    }
+  `
+  this.buttonContainerStyle = css`
+    :host {
+      position: absolute;
+      bottom: 0px;
+      width: 100%;
+      background: #444;
+      display: flex;
+      justify-content: end;
+      align-items: center;
+    }
+  `
+  this.buttonStyle = css`
+    :host {
+      background: rgba(0, 0, 0, 1.0);
+      height: 20px;
+      width: 50px;
+      text-align: center;
+      margin-right: 15px;
+      margin-top: 7px;
+      margin-bottom: 7px;
+      padding: 5px;
+      cursor: pointer;
     }
   `
 
@@ -45,9 +72,82 @@ function Settings () {
       name: 'storage',
       description: 'Define data urls for map storage',
       render: function (emit) {
-        return html`<div>In the storage tab</div>`
+        return html`<div>
+          <div>In the storage tab</div>
+          <div>In the storage tab</div>
+          <div>In the storage tab</div>
+          <div>In the storage tab</div>
+          <div>In the storage tab</div>
+          <div>In the storage tab</div>
+          <div>In the storage tab</div>
+          <div>In the storage tab</div>
+          <div>In the storage tab</div>
+          <div>In the storage tab</div>
+          <div>In the storage tab</div>
+          <div>In the storage tab</div>
+          <div>In the storage tab</div>
+          <div>In the storage tab</div>
+          <div>In the storage tab</div>
+          <div>In the storage tab</div>
+          <div>In the storage tab</div>
+          <div>In the storage tab</div>
+          <div>In the storage tab</div>
+          <div>In the storage tab</div>
+          <div>In the storage tab</div>
+          <div>In the storage tab</div>
+          <div>In the storage tab</div>
+          <div>In the storage tab</div>
+          <div>In the storage tab</div>
+          <div>In the storage tab</div>
+          <div>In the storage tab</div>
+          <div>In the storage tab</div>
+          <div>In the storage tab</div>
+          <div>In the storage tab</div>
+          <div>In the storage tab</div>
+          <div>In the storage tab</div>
+          <div>In the storage tab</div>
+          <div>In the storage tab</div>
+          <div>In the storage tab</div>
+          <div>In the storage tab</div>
+          <div>In the storage tab</div>
+          <div>In the storage tab</div>
+          <div>In the storage tab</div>
+          <div>In the storage tab</div>
+          <div>In the storage tab</div>
+          <div>In the storage tab</div>
+          <div>In the storage tab</div>
+          <div>In the storage tab</div>
+          <div>In the storage tab</div>
+          <div>In the storage tab</div>
+          <div>In the storage tab</div>
+          <div>In the storage tab</div>
+          <div>In the storage tab</div>
+          <div>In the storage tab</div>
+          <div>In the storage tab</div>
+          <div>In the storage tab</div>
+          <div>In the storage tab</div>
+          <div>In the storage tab</div>
+          <div>In the storage tab</div>
+          <div>In the storage tab</div>
+          <div>In the storage tab</div>
+          <div>In the storage tab</div>
+          <div>In the storage tab</div>
+          <div>In the storage tab</div>
+          <div>In the storage tab</div>
+          <div>In the storage tab</div>
+          <div>In the storage tab</div>
+          <div>In the storage tab</div>
+          <div>In the storage tab</div>
+          <div>In the storage tab</div>
+          <div>In the storage tab</div>
+          <div>In the storage tab</div>
+          <div>In the storage tab</div>
+          <div>In the storage tab</div>
+          <div>In the storage tab</div>
+        </div>`
       },
-      dirty: false
+      dirty: false,
+      data: {}
     },
     {
       name: 'misc',
@@ -55,7 +155,8 @@ function Settings () {
       render: function (emit) {
         return html`<div>In the misc tab</div>`
       },
-      dirty: false
+      dirty: false,
+      data: {}
     },
     {
       name: 'junk',
@@ -63,7 +164,8 @@ function Settings () {
       render: function (emit) {
         return html`<div>In the junk tab</div>`
       },
-      dirty: false
+      dirty: false,
+      data: {}
     }
   ]
   this.selected = this.tabs[0].name
@@ -100,6 +202,7 @@ Settings.prototype.render = function (emit) {
   return html`<div class=${self.containerStyle} style=${cstyle}>
     ${self.renderTabs(emit)}
     ${self.renderTabContent(emit)}
+    ${self.renderButtons(emit)}
   </div>`
 }
 
@@ -127,46 +230,11 @@ Settings.prototype.renderTabContent = function (emit) {
   return html`<div class=${this.tabContentStyle}>${tab.render(emit)}</div>`
 }
 
-/**
- * Groups
- */
-/*
-function SettingsGroup (opts) {
-  if (!(this instanceof SettingsGroup)) return new SettingsGroup(opts)
-
-  this.title = opts.title || 'Missing group title'
-  this.renderContent = opts.renderContent
-  this.padding = 6
-
-  this.expanded = true
-  this.style = css`
-    :host {
-      margin-bottom: 10px;
-      background: rgba(0, 0, 0, 0.5);
-      border: 1px solid #999;
-    }
-  `
-}
-
-SettingsGroup.prototype.render = function (emit) {
-  // TODO render expand/collapse buttons to the right of the title
-  var titleStyle = `
-    padding: ${this.padding}px;
-    border-bottom: 1px solid #999;
-  `
-  var contentStyle = `padding: ${this.padding}px;`
-
-  return html`<div class=${this.style}>
-    <div style=${titleStyle}>${this.title}</div>
-    <div style=${contentStyle}>
-      ${this.renderContent(emit)}
-    </div>
+Settings.prototype.renderButtons = function (emit) {
+  return html`<div class=${this.buttonContainerStyle}>
+    <div class=${this.buttonStyle}>apply</div>
+    <div class=${this.buttonStyle}>reset</div>
   </div>`
 }
-
-function renderStorageContent (emit) {
-  return html`<div>url content here</div>`
-}
-*/
 
 module.exports = Settings
