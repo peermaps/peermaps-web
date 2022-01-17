@@ -203,10 +203,10 @@ app.route('*', function (state, emit) {
         <div><button class="toggle-settings" onclick=${toggleSettings}>${settings.show ? '<' : '>'}</button></div>
       </div>
     </div>
+    ${state.mix.render()}
+    ${state.map.render({ width: state.width, height: state.height })}
   </body>`
 
-    //${state.mix.render()}
-    //${state.map.render({ width: state.width, height: state.height })}
 
   function zoomIn() { emit('map:zoom:add',+1) }
   function zoomOut() { emit('map:zoom:add',-1) }
