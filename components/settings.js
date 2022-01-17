@@ -24,6 +24,7 @@ function Settings () {
     :host {
       display: flex;
       justify-content: space-around;
+      height: 30px;
     }
   `
   this.tabStyle = css`
@@ -36,8 +37,12 @@ function Settings () {
   `
   this.tabContentStyle = css`
     :host {
+      position: absolute;
+      top: 30px;
+      bottom: 35px;
+      left: 0px;
+      right: 0px;
       background: rgba(0, 0, 0, 0.2);
-      height: 100%;
       padding: 10px;
       overflow-y: auto;
       border-left: 1px solid #999;
@@ -48,6 +53,7 @@ function Settings () {
     :host {
       position: absolute;
       bottom: 0px;
+      height: 35px;
       width: 100%;
       background: #444;
       display: flex;
@@ -59,13 +65,12 @@ function Settings () {
   this.buttonStyle = css`
     :host {
       background: rgba(0, 0, 0, 1.0);
-      height: 20px;
       width: 50px;
       text-align: center;
       margin-right: 15px;
-      margin-top: 8px;
-      margin-bottom: 8px;
-      padding: 5px;
+      margin-top: 0px;
+      margin-bottom: 0px;
+      padding: 2px;
       cursor: pointer;
       border: 1px solid #999;
     }
@@ -77,6 +82,51 @@ function Settings () {
       description: 'Define data urls for map storage',
       render: function (emit) {
         return html`<div>
+          <div>In the storage tab</div>
+          <div>In the storage tab</div>
+          <div>In the storage tab</div>
+          <div>In the storage tab</div>
+          <div>In the storage tab</div>
+          <div>In the storage tab</div>
+          <div>In the storage tab</div>
+          <div>In the storage tab</div>
+          <div>In the storage tab</div>
+          <div>In the storage tab</div>
+          <div>In the storage tab</div>
+          <div>In the storage tab</div>
+          <div>In the storage tab</div>
+          <div>In the storage tab</div>
+          <div>In the storage tab</div>
+          <div>In the storage tab</div>
+          <div>In the storage tab</div>
+          <div>In the storage tab</div>
+          <div>In the storage tab</div>
+          <div>In the storage tab</div>
+          <div>In the storage tab</div>
+          <div>In the storage tab</div>
+          <div>In the storage tab</div>
+          <div>In the storage tab</div>
+          <div>In the storage tab</div>
+          <div>In the storage tab</div>
+          <div>In the storage tab</div>
+          <div>In the storage tab</div>
+          <div>In the storage tab</div>
+          <div>In the storage tab</div>
+          <div>In the storage tab</div>
+          <div>In the storage tab</div>
+          <div>In the storage tab</div>
+          <div>In the storage tab</div>
+          <div>In the storage tab</div>
+          <div>In the storage tab</div>
+          <div>In the storage tab</div>
+          <div>In the storage tab</div>
+          <div>In the storage tab</div>
+          <div>In the storage tab</div>
+          <div>In the storage tab</div>
+          <div>In the storage tab</div>
+          <div>In the storage tab</div>
+          <div>In the storage tab</div>
+          <div>In the storage tab</div>
           <div>In the storage tab</div>
           <div>In the storage tab</div>
           <div>In the storage tab</div>
