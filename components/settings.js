@@ -10,22 +10,49 @@ function Settings () {
   this.show = true
   this.width = 470
 
-  this.style = css`
+  // TODO configure transparency level used in the settings dialog?
+
+  this.containerStyle = css`
     :host {
       z-index: inherit;
       position: absolute;
-      background: rgba(0, 0, 0, 0.5);
+      background: rgba(0, 0, 0, 0.8);
       height: 100%;
       overflow-y: auto;
     }
   `
+  this.tabContainerStyle = css`
+    :host {
+      display: flex;
+      justify-content: space-around;
+    }
+  `
+  this.tabStyle = css`
+    :host {
+      text-align: center;
+      width: 100%;
+      cursor: pointer;
+    }
+  `
 
-  this.groups = [
-    SettingsGroup({
-      title: 'storage',
-      renderContent: renderStorageContent
-    })
+  this.tabs = [
+    {
+      name: 'storage',
+      description: 'Define data urls for map storage',
+      dirty: false
+    },
+    {
+      name: 'misc',
+      description: 'Miscelleanous settings',
+      dirty: false
+    },
+    {
+      name: 'junk',
+      description: 'Not used for anything',
+      dirty: false
+    }
   ]
+  this.selected = this.tabs[0].name
 }
 
 Settings.prototype.use = function (emitter) {
@@ -33,6 +60,13 @@ Settings.prototype.use = function (emitter) {
   emitter.on('settings:toggle', function () {
     self.toggle()
     emitter.emit('render')
+  })
+  emitter.on('settings:ontabclick', function (name) {
+    if (self.selected !== name) {
+      console.info('switching to tab (leave for debug purpose)', name)
+      self.selected = name
+      emitter.emit('render')
+    }
   })
 }
 
@@ -42,19 +76,27 @@ Settings.prototype.toggle = function () {
 
 Settings.prototype.render = function (emit) {
   if (!this.show) return
-
   var cstyle = `width: ${this.width}px;`
-
-  //return html`<div class=${this.style} style=${cstyle}>
-    //${this.groups.map(function (group) { return group.render(emit) })}
-  //</div>`
-  return html`<div class=${this.style} style=${cstyle}>
+  return html`<div class=${this.containerStyle} style=${cstyle}>
+    ${this.renderTabs(emit)}
   </div>`
 }
 
+Settings.prototype.renderTabs = function (emit) {
+  var self = this
+  var content = this.tabs.map(function (tab, i) {
+    var selected = self.selected === tab.name
+    var cstyle = selected ? `border: 1px solid #FFF` : ''
+    var name = tab.name
+    return html`<div class=${self.tabStyle} style=${cstyle} onclick=${() => emit('settings:ontabclick', name)}>${name}</div>`
+  })
+  return html`<div class=${this.tabContainerStyle}>${content}</div>`
+}
+
 /**
- * Groups.
+ * Groups
  */
+/*
 function SettingsGroup (opts) {
   if (!(this instanceof SettingsGroup)) return new SettingsGroup(opts)
 
@@ -91,5 +133,6 @@ SettingsGroup.prototype.render = function (emit) {
 function renderStorageContent (emit) {
   return html`<div>url content here</div>`
 }
+*/
 
 module.exports = Settings
