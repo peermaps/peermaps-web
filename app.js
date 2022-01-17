@@ -142,7 +142,7 @@ app.route('*', function (state, emit) {
       .left-buttons {
         position: absolute;
         top: 0px;
-        left: ${settings.width}px;
+        left: ${settings.show ? settings.width : 0}px;
         bottom: 0px;
         padding: 1em;
       }
