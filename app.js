@@ -129,6 +129,8 @@ app.route('*', function (state, emit) {
       body {
         margin: 0px;
         overflow: hidden;
+        font-family: ubuntu, sans-serif;
+        color: white;
       }
       .ui-overlay {
         z-index: 2000;
@@ -190,7 +192,7 @@ app.route('*', function (state, emit) {
       }
     </style>
     <div class="ui-overlay">
-      ${settings.render(state, emit)}
+      ${settings.render(emit)}
       <div class="buttons left-buttons">
         <div><button class="arrow north" onclick=${panNorth}></button></div>
         <div><button class="arrow west" onclick=${panWest}></button></div>

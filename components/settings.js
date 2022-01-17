@@ -22,7 +22,10 @@ function Settings () {
   `
 
   this.groups = [
-    SettingsGroup({ title: 'Storage', renderContent: renderStorageContent }),
+    SettingsGroup({
+      title: 'storage',
+      renderContent: renderStorageContent
+    })
   ]
 }
 
@@ -42,13 +45,13 @@ Settings.prototype.totalWidth = function () {
   return this.show ? this.width + 2 * this.padding : 0
 }
 
-Settings.prototype.render = function (state, emit) {
+Settings.prototype.render = function (emit) {
   if (!this.show) return
 
   var cstyle = `width: ${this.width}px; padding: ${this.padding}px;`
 
   return html`<div class=${this.style} style=${cstyle}>
-    ${this.groups.map(function (group) { return group.render(state, emit) })}
+    ${this.groups.map(function (group) { return group.render(emit) })}
   </div>`
 }
 
@@ -57,29 +60,28 @@ Settings.prototype.render = function (state, emit) {
  */
 function SettingsGroup (opts) {
   if (!(this instanceof SettingsGroup)) return new SettingsGroup(opts)
-  this.expanded = true
-  this.title = opts.title || 'Missing group title'
 
+  this.title = opts.title || 'Missing group title'
+  this.renderContent = opts.renderContent
+  this.padding = 6
+
+  this.expanded = true
   this.style = css`
     :host {
-      color: white;
       margin-bottom: 10px;
       background: rgba(0, 0, 0, 0.5);
+      border: 1px solid #999;
     }
   `
-
-  this.renderContent = opts.renderContent
 }
 
-SettingsGroup.prototype.render = function (state, emit) {
+SettingsGroup.prototype.render = function (emit) {
   // TODO render expand/collapse buttons to the right of the title
-  var padding = state.settings.padding
   var titleStyle = `
-    padding-left: ${padding}px;
-    padding-top: ${padding}px;
-    padding-right: ${padding}px;
+    padding: ${this.padding}px;
+    border-bottom: 1px solid #999;
   `
-  var contentStyle = `padding: ${padding}px;`
+  var contentStyle = `padding: ${this.padding}px;`
 
   return html`<div class=${this.style}>
     <div style=${titleStyle}>${this.title}</div>
