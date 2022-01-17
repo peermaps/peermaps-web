@@ -39,7 +39,7 @@ function Settings () {
     :host {
       position: absolute;
       top: 30px;
-      bottom: 35px;
+      bottom: 40px;
       left: 0px;
       right: 0px;
       background: rgba(0, 0, 0, 0.2);
@@ -51,11 +51,11 @@ function Settings () {
   `
   this.buttonContainerStyle = css`
     :host {
+      background: rgba(0, 0, 0, 0.2);
       position: absolute;
       bottom: 0px;
-      height: 35px;
+      height: 40px;
       width: 100%;
-      background: #444;
       display: flex;
       justify-content: end;
       align-items: center;
