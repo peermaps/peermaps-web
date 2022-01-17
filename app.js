@@ -204,7 +204,7 @@ app.route('*', function (state, emit) {
       }
     </style>
     <div class="ui-overlay">
-      ${state.settings.render()}
+      ${settings.render()}
       <div class="buttons left-buttons">
         <div><button class="arrow north" onclick=${panNorth}></button></div>
         <div><button class="arrow west" onclick=${panWest}></button></div>
@@ -212,7 +212,7 @@ app.route('*', function (state, emit) {
         <div><button class="arrow south" onclick=${panSouth}></button></div>
         <div><button style="top: 3em; left: 4.5em;" onclick=${zoomIn}>+</button></div>
         <div><button style="top: 6em; left: 4.5em;" onclick=${zoomOut}>-</button></div>
-        <div><button class="toggle-settings" onclick=${toggleSettings}>${state.settings.show ? '<' : '>'}</button></div>
+        <div><button class="toggle-settings" onclick=${toggleSettings}>${settings.show ? '<' : '>'}</button></div>
       </div>
     </div>
     ${state.mix.render()}
