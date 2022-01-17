@@ -36,10 +36,12 @@ function Settings () {
   `
   this.tabContentStyle = css`
     :host {
-      background: rgba(0, 0, 0, 0.3);
+      background: rgba(0, 0, 0, 0.2);
       height: 100%;
       padding: 10px;
       overflow-y: auto;
+      border-left: 1px solid #999;
+      border-right: 1px solid #999;
     }
   `
   this.buttonContainerStyle = css`
@@ -51,6 +53,7 @@ function Settings () {
       display: flex;
       justify-content: end;
       align-items: center;
+      border-top: 1px solid #999;
     }
   `
   this.buttonStyle = css`
@@ -211,12 +214,12 @@ Settings.prototype.renderTabs = function (emit) {
   var content = this.tabs.map(function (tab, i) {
     var selected = self.selected === tab.name
     var cstyle = selected ? `
-      border-top: 1px solid #FFF;
-      border-right: 1px solid #FFF;
-      border-left: 1px solid #FFF;
+      border-top: 1px solid #999;
+      border-right: 1px solid #999;
+      border-left: 1px solid #999;
       background: rgba(0, 0, 0, 0.3);
     ` : `
-      border-bottom: 1px solid #FFF;
+      border-bottom: 1px solid #999;
       color: #999;
     `
     var name = tab.name
