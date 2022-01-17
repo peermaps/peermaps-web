@@ -34,6 +34,11 @@ function Settings () {
       cursor: pointer;
     }
   `
+  this.tabContentStyle = css`
+    :host {
+      background: rgba(0, 0, 0, 0.3);
+    }
+  `
 
   this.tabs = [
     {
@@ -74,11 +79,18 @@ Settings.prototype.toggle = function () {
   this.show = !this.show
 }
 
+Settings.prototype.getSelectedTab = function () {
+  var self = this
+  return this.tabs.find(function (tab) { return tab.name === self.selected })
+}
+
 Settings.prototype.render = function (emit) {
-  if (!this.show) return
-  var cstyle = `width: ${this.width}px;`
-  return html`<div class=${this.containerStyle} style=${cstyle}>
-    ${this.renderTabs(emit)}
+  var self = this
+  if (!self.show) return
+  var cstyle = `width: ${self.width}px;`
+  return html`<div class=${self.containerStyle} style=${cstyle}>
+    ${self.renderTabs(emit)}
+    ${self.renderTabContent(emit)}
   </div>`
 }
 
@@ -86,11 +98,24 @@ Settings.prototype.renderTabs = function (emit) {
   var self = this
   var content = this.tabs.map(function (tab, i) {
     var selected = self.selected === tab.name
-    var cstyle = selected ? `border: 1px solid #FFF` : ''
+    var cstyle = selected ? `
+      border-top: 1px solid #FFF;
+      border-right: 1px solid #FFF;
+      border-left: 1px solid #FFF;
+      background: rgba(0, 0, 0, 0.3);
+    ` : `
+      border-bottom: 1px solid #FFF;
+      color: #999;
+    `
     var name = tab.name
     return html`<div class=${self.tabStyle} style=${cstyle} onclick=${() => emit('settings:ontabclick', name)}>${name}</div>`
   })
   return html`<div class=${this.tabContainerStyle}>${content}</div>`
+}
+
+Settings.prototype.renderTabContent = function (emit) {
+  var tab = this.getSelectedTab()
+  return html`<div class=${this.tabContentStyle}>hi ${tab.name}!</div>`
 }
 
 /**
