@@ -44,16 +44,25 @@ function Settings () {
     {
       name: 'storage',
       description: 'Define data urls for map storage',
+      render: function (emit) {
+        return html`<div>In the storage tab</div>`
+      },
       dirty: false
     },
     {
       name: 'misc',
       description: 'Miscelleanous settings',
+      render: function (emit) {
+        return html`<div>In the misc tab</div>`
+      },
       dirty: false
     },
     {
       name: 'junk',
       description: 'Not used for anything',
+      render: function (emit) {
+        return html`<div>In the junk tab</div>`
+      },
       dirty: false
     }
   ]
@@ -115,7 +124,7 @@ Settings.prototype.renderTabs = function (emit) {
 
 Settings.prototype.renderTabContent = function (emit) {
   var tab = this.getSelectedTab()
-  return html`<div class=${this.tabContentStyle}>hi ${tab.name}!</div>`
+  return html`<div class=${this.tabContentStyle}>${tab.render(emit)}</div>`
 }
 
 /**
