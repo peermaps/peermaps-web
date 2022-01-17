@@ -9,7 +9,6 @@ function Settings () {
 
   this.show = true
   this.width = 470
-  this.padding = 15
 
   this.style = css`
     :host {
@@ -41,17 +40,15 @@ Settings.prototype.toggle = function () {
   this.show = !this.show
 }
 
-Settings.prototype.totalWidth = function () {
-  return this.show ? this.width + 2 * this.padding : 0
-}
-
 Settings.prototype.render = function (emit) {
   if (!this.show) return
 
-  var cstyle = `width: ${this.width}px; padding: ${this.padding}px;`
+  var cstyle = `width: ${this.width}px;`
 
+  //return html`<div class=${this.style} style=${cstyle}>
+    //${this.groups.map(function (group) { return group.render(emit) })}
+  //</div>`
   return html`<div class=${this.style} style=${cstyle}>
-    ${this.groups.map(function (group) { return group.render(emit) })}
   </div>`
 }
 
