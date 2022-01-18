@@ -24,7 +24,7 @@ app.use(function (state, emitter) {
 
 app.use(function (state, emitter) {
   state.params = {
-    data: fixURL('/ipfs/QmVCYUK51Miz4jEjJxCq3bA6dfq5FXD6s2EYp6LjHQhGmh'),
+    data: '',
     bbox: [7.56,47.55,7.58,47.56],
     style: { url: 'style.png' }
   }
@@ -56,7 +56,7 @@ app.use(function (state, emitter) {
     backgroundColor: [0.82, 0.85, 0.99, 1.0],
     pickfb: { colorFormat: 'rgba', colorType: 'float32' }
   })
-  state.storage = httpStorage(state.params.data)
+
   emitter.on('map:zoom:add', function (x) {
     state.map.setZoom(state.map.getZoom()+x)
     state.map.draw()
@@ -84,24 +84,40 @@ app.use(function (state, emitter) {
 })
 
 app.use(function (state, emitter) {
-  var style = new Image
-  style.onload = function () {
-    var pm = mixmapPeermaps({
-      map: state.map,
-      eyros,
-      storage: state.storage,
-      wasmSource: fetch('eyros2d.wasm'),
-      style
+  if (state.params.data) {
+    console.log('state.params.data is set from data parameter in url')
+    setup(state.params.data)
+  } else {
+    console.log('waiting for settings to load...')
+    emitter.on('settings:loaded', function () {
+      var dataUrl = state.settings.getDataUrl()
+      if (dataUrl) setup(dataUrl)
     })
   }
-  style.src = state.params.style.url
-  window.addEventListener('click', function (ev) {
-    /*
-    pm.pick({ x: ev.offsetX, y: ev.offsetY }, function (err, data) {
-      console.log('pick', err, data)
+
+  function setup (url) {
+    console.log('starting mixmap peermaps with url', url)
+    state.storage = httpStorage(url)
+
+    var style = new Image
+    style.onload = function () {
+      var pm = mixmapPeermaps({
+        map: state.map,
+        eyros,
+        storage: state.storage,
+        wasmSource: fetch('eyros2d.wasm'),
+        style
+      })
+    }
+    style.src = state.params.style.url
+    window.addEventListener('click', function (ev) {
+      /*
+        pm.pick({ x: ev.offsetX, y: ev.offsetY }, function (err, data) {
+        console.log('pick', err, data)
+        })
+      */
     })
-    */
-  })
+  }
 })
 
 app.use(function (state, emitter) {

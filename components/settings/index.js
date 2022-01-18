@@ -151,6 +151,20 @@ function Settings (opts) {
 }
 
 /**
+ *
+ */
+Settings.prototype.getDataUrl = function () {
+  // TODO pass in zoom level
+  var backends = this.tabData.storage.backends
+  for (var i = 0; i < backends.length; ++i) {
+    var data = backends[i]
+    if (typeof data.url === 'string' && data.active) {
+      return data.url
+    }
+  }
+}
+
+/**
  * Loads json data for all tabs and use default data if nothing was stored.
  */
 Settings.prototype.load = function (cb) {
