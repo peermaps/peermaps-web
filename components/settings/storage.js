@@ -76,13 +76,14 @@ function StorageTab () {
     defaultData: function () {
       return {
         backends: [
+          // TODO use array range for zoom: [1, 21]
           {
-            url: 'https://ipfs.io/ipfs/QmVCYUK51Miz4jEjJxCq3bA6dfq5FXD6s2EYp6LjHQhGmh',
+            url: 'https://peermaps.linkping.org',
             zoom: { min: 1, max: 21 },
             active: true
           },
           {
-            url: 'https://peermaps.linkping.io',
+            url: 'https://ipfs.io/ipfs/QmVCYUK51Miz4jEjJxCq3bA6dfq5FXD6s2EYp6LjHQhGmh',
             zoom: { min: 1, max: 21 },
             active: false
           },
