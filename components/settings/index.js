@@ -5,9 +5,10 @@ var StorageTab = require('./storage')
 /**
  * Settings dialog.
  */
-function Settings () {
-  if (!(this instanceof Settings)) return new Settings()
+function Settings (opts) {
+  if (!(this instanceof Settings)) return new Settings(opts)
 
+  this.db = opts.db
   this.show = true
   this.width = 550
 
@@ -131,6 +132,19 @@ Settings.prototype.use = function (emitter) {
     console.log('TODO act on settings:apply event')
   })
   self.tabs.forEach(function (tab) { tab.use(emitter) })
+}
+
+/**
+ * Loads json data for all tabs.
+ */
+Settings.prototype.load = function (cb) {
+  var self = this
+  self.db.createReadStream({ gt: 'tabs', lt: 'tabs~' }).on('data', function (data) {
+    var key = data.key
+    var name = data.key.split(':')[1]
+    var tab = self.tabs.find(function (tab) { return tab.name === name })
+    if (tab) tab.data = data.value
+  }).on('error', cb).on('end', function () { cb() })
 }
 
 Settings.prototype.toggle = function () {

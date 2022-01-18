@@ -4,11 +4,13 @@
     "choo": "^7.1.0",
     "eyros": "^4.7.0",
     "georender-style2png": "^3.0.0",
+    "level": "^7.0.1",
     "mixmap": "^1.5.2",
     "mixmap-peermaps": "^1.0.0",
     "regl": "^2.1.0",
     "resl": "^1.0.3",
-    "sheetify": "^7.4.0"
+    "sheetify": "^7.4.0",
+    "subleveldown": "^6.0.1"
   },
   "devDependencies": {
     "budo": "^11.6.4"

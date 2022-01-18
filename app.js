@@ -7,14 +7,23 @@ var resl = require('resl')
 var regl = require('regl')
 var httpStorage = require('mixmap-peermaps/storage/http')
 
+var level = require('level')
+var sub = require('subleveldown')
+var db = level('peermaps-web')
+
 var Settings = require('./components/settings')
 var nextTick = process.nextTick
 
 app.use(function (state, emitter) {
-  var settings = Settings({ emitter: emitter })
+  var settings = Settings({ db: sub(db, 'settings', { valueEncoding: 'json' }) })
   settings.use(emitter)
-  // TODO load settings here
-  // settings.load(cb)
+  settings.load(function (err) {
+    if (err) {
+      console.error('failed to load settings', err)
+    } else {
+      emitter.emit('render')
+    }
+  })
   state.settings = settings
 })
 
