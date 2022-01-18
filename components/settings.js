@@ -105,6 +105,11 @@ function Settings () {
           backend.zoom.max = Math.max(Number(max), backend.zoom.min)
           emitter.emit('settings:dirty')
         })
+        emitter.on('settings:storage:active:update', function (index) {
+          var backend = self.data.backends[index]
+          backend.active = !backend.active
+          emitter.emit('settings:dirty')
+        })
       },
       render: function (emit) {
         var backends = this.data.backends
@@ -117,6 +122,8 @@ function Settings () {
             <input type='range' name='minzoom' min='1' max='21' step='1' value=${zoom.min} style='width: 100%;' onchange=${(e) => emit('settings:storage:minzoom:update', index, e.target.value)}>
             <label for='maxzoom'>max zoom level (${zoom.max})</label>
             <input type='range' name='maxzoom' min='1' max='21' step='1' value=${zoom.max} style='width: 100%;' onchange=${(e) => emit('settings:storage:maxzoom:update', index, e.target.value)}>
+            <label for='active'>active</label>
+            <input type='checkbox' name='active' style='margin-left: 10px;' onchange=${(e) => emit('settings:storage:active:update', index)} ${item.active ? 'checked' : ''} value=${item.active ? true : false}>
           </div>`
         })
         return html`<div>${content}</div>`
@@ -127,7 +134,7 @@ function Settings () {
           {
             url: 'https://ipfs.io/ipfs/QmVCYUK51Miz4jEjJxCq3bA6dfq5FXD6s2EYp6LjHQhGmh',
             zoom: { min: 1, max: 21 },
-            active: false
+            active: true
           },
           {
             url: 'https://peermaps.linkping.io',
