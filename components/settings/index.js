@@ -133,6 +133,7 @@ function Settings (opts) {
   })
 
   self.tabs.forEach(function (tab) { tab.use(emitter) })
+  self.load()
 }
 
 /**
