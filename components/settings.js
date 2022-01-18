@@ -75,22 +75,76 @@ function Settings () {
     }
   `
 
+  // TODO Move to function together with the first storage object below
+  var backendStyle = css`
+    :host {
+      padding: 10px;
+      padding-right: 15px;
+      border-bottom: 1px solid #999;
+    }
+  `
+
   this.tabs = [
+    // TODO move out to separate function with css styles
     {
       name: 'storage',
       description: 'Define data urls for map storage',
+      use: function (emitter) {
+        var self = this
+        emitter.on('settings:storage:url:update', function (index, url) {
+          self.data.backends[index].url = url
+          emitter.emit('settings:dirty')
+        })
+        emitter.on('settings:storage:minzoom:update', function (index, min) {
+          var backend = self.data.backends[index]
+          backend.zoom.min = Math.min(Number(min), backend.zoom.max)
+          emitter.emit('settings:dirty')
+        })
+        emitter.on('settings:storage:maxzoom:update', function (index, max) {
+          var backend = self.data.backends[index]
+          backend.zoom.max = Math.max(Number(max), backend.zoom.min)
+          emitter.emit('settings:dirty')
+        })
+      },
       render: function (emit) {
-        return html`<div>
-          <div>In the storage tab</div>
-          <div>In the storage tab</div>
-        </div>`
+        var backends = this.data.backends
+        var content = backends.map(function (backend, index) {
+          return html`<div class=${backendStyle}>
+            <label for='url'>data url</label>
+            <input type='url' name='url' value=${backend.url || ''} placeholder='https://example.com' required style='margin-top: 3px; margin-bottom: 10px; width: 100%;' onchange=${(e) => emit('settings:storage:url:update', index, e.target.value)}>
+            <label for='minzoom'>min zoom level</label>
+            <input type='range' name='minzoom' min='1' max='21' step='1' value=${backend.zoom.min} style='width: 100%;' onchange=${(e) => emit('settings:storage:minzoom:update', index, e.target.value)}>
+            <label for='maxzoom'>max zoom level</label>
+            <input type='range' name='maxzoom' min='1' max='21' step='1' value=${backend.zoom.max} style='width: 100%;' onchange=${(e) => emit('settings:storage:maxzoom:update', index, e.target.value)}>
+          </div>`
+        })
+        return html`<div>${content}</div>`
       },
       dirty: false,
-      data: {}
+      data: {
+        backends: [
+          {
+            url: 'https://ipfs.io/ipfs/QmVCYUK51Miz4jEjJxCq3bA6dfq5FXD6s2EYp6LjHQhGmh',
+            zoom: { min: 1, max: 21 },
+            active: false
+          },
+          {
+            url: 'https://peermaps.linkping.io',
+            zoom: { min: 5, max: 21 },
+            active: false
+          },
+          {
+            url: 'http://localhost:8000',
+            zoom: { min: 11, max: 18 },
+            active: true
+          }
+        ]
+      }
     },
     {
       name: 'misc',
       description: 'Miscelleanous settings',
+      use: function (emitter) {},
       render: function (emit) {
         return html`<div>In the misc tab</div>`
       },
@@ -100,6 +154,7 @@ function Settings () {
     {
       name: 'junk',
       description: 'Not used for anything',
+      use: function (emitter) {},
       render: function (emit) {
         return html`<div>In the junk tab</div>`
       },
@@ -116,6 +171,10 @@ Settings.prototype.use = function (emitter) {
     self.toggle()
     emitter.emit('render')
   })
+  emitter.on('settings:dirty', function () {
+    self.getSelectedTab().dirty = true
+    emitter.emit('render')
+  })
   emitter.on('settings:ontabclick', function (name) {
     if (self.selected !== name) {
       console.info('switching to tab (leave for debug purpose)', name)
@@ -129,6 +188,7 @@ Settings.prototype.use = function (emitter) {
   emitter.on('settings:reset', function () {
     console.log('TODO act on settings:reset event')
   })
+  self.tabs.forEach(function (tab) { tab.use(emitter) })
 }
 
 Settings.prototype.toggle = function () {
