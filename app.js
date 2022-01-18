@@ -129,7 +129,7 @@ app.route('*', function (state, emit) {
       body {
         margin: 0px;
         overflow: hidden;
-        font-family: ubuntu, sans-serif;
+        font-family: monospace;
         color: white;
       }
       .ui-overlay {
