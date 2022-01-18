@@ -16,7 +16,8 @@ function StorageTab () {
     use: function (emitter) {
       var self = this
       emitter.on('settings:storage:url:update', function (index, url) {
-        self.data.backends[index].url = url
+        var backend = self.data.backends[index]
+        backend.url = url
         emitter.emit('settings:dirty')
       })
       emitter.on('settings:storage:minzoom:update', function (index, min) {
