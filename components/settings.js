@@ -43,7 +43,7 @@ function Settings () {
       bottom: 40px;
       left: 0px;
       right: 0px;
-      padding: 10px;
+      overflow-x: hidden;
       overflow-y: auto;
       border-left: 1px solid #999;
       border-right: 1px solid #999;
