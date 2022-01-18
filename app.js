@@ -7,7 +7,7 @@ var resl = require('resl')
 var regl = require('regl')
 var httpStorage = require('mixmap-peermaps/storage/http')
 
-var Settings = require('./components/settings.js')
+var Settings = require('./components/settings')
 var nextTick = process.nextTick
 
 app.use(function (state, emitter) {
