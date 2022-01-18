@@ -8,7 +8,7 @@ function Settings () {
   if (!(this instanceof Settings)) return new Settings()
 
   this.show = true
-  this.width = 470
+  this.width = 550
 
   // TODO configure transparency level used in the settings dialog?
 
