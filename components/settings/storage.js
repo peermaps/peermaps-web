@@ -14,44 +14,47 @@ function StorageTab () {
   return {
     name: 'storage',
     description: 'Define data urls and zoom levels for map storage',
-    use: function (emitter) {
+    use: function (settings, emitter) {
       var self = this
       emitter.on('settings:storage:url:update', function (index, url) {
-        var backend = self.data.backends[index]
+        var data = settings.getTabData('storage')
+        var backend = data.backends[index]
         backend.url = url
         emitter.emit('settings:dirty')
       })
       emitter.on('settings:storage:minzoom:update', function (index, min) {
-        var backend = self.data.backends[index]
+        var data = settings.getTabData('storage')
+        var backend = data.backends[index]
         backend.zoom.min = Math.min(Number(min), backend.zoom.max)
         emitter.emit('settings:dirty')
       })
       emitter.on('settings:storage:maxzoom:update', function (index, max) {
-        var backend = self.data.backends[index]
+        var data = settings.getTabData('storage')
+        var backend = data.backends[index]
         backend.zoom.max = Math.max(Number(max), backend.zoom.min)
         emitter.emit('settings:dirty')
       })
       emitter.on('settings:storage:active:update', function (index) {
-        var backend = self.data.backends[index]
+        var data = settings.getTabData('storage')
+        var backend = data.backends[index]
         backend.active = !backend.active
         emitter.emit('settings:dirty')
       })
       emitter.on('settings:storage:delete', function (index) {
-        self.data.backends.splice(index, 1)
+        var data = settings.getTabData('storage')
+        data.backends.splice(index, 1)
         emitter.emit('settings:dirty')
       })
       emitter.on('settings:storage:add', function () {
-        self.data.backends.push({ zoom: { min: 1, max: 21 }, active: false })
+        var data = settings.getTabData('storage')
+        data.backends.push({ zoom: { min: 1, max: 21 }, active: false })
         emitter.emit('settings:dirty')
       })
     },
-    render: function (emit) {
-      if (!this.data) return
+    render: function (data, emit) {
+      if (!Array.isArray(data.backends)) return
 
-      var backends = this.data.backends
-      if (!Array.isArray(backends)) return
-
-      var content = backends.map(function (item, index) {
+      var content = data.backends.map(function (item, index) {
         var zoom = item.zoom
         return html`<div class=${backendStyle}>
           <div style='position: absolute; right: 10px; cursor: pointer; padding-left: 4px; padding-right: 4px; border: 1px solid #999' onclick=${() => emit('settings:storage:delete', index)}>X</div>

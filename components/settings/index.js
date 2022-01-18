@@ -9,9 +9,8 @@ function Settings (opts) {
   var self = this
   if (!(self instanceof Settings)) return new Settings(opts)
 
-  self.db = opts.db
   var emitter = self.emitter = opts.emitter
-
+  self.db = opts.db
   self.show = true
   self.dirty = false
   self.width = 550
@@ -88,20 +87,21 @@ function Settings (opts) {
     {
       name: 'misc',
       description: 'Miscelleanous settings',
-      use: function (emitter) {},
-      render: function (emit) {
+      use: function (settings, emitter) {},
+      render: function (data, emit) {
         return html`<div>In the misc tab</div>`
       }
     },
     {
       name: 'junk',
       description: 'Not used for anything',
-      use: function (emitter) {},
-      render: function (emit) {
+      use: function (settings, emitter) {},
+      render: function (data, emit) {
         return html`<div>In the junk tab</div>`
       }
     }
   ]
+  self.tabData = {}
 
   self.selected = self.tabs[0].name
 
@@ -130,8 +130,8 @@ function Settings (opts) {
     console.log('TODO act on settings:apply event')
   })
 
-  self.tabs.forEach(function (tab) { tab.use(emitter) })
   self.load()
+  self.tabs.forEach(function (tab) { tab.use(self, emitter) })
 }
 
 /**
@@ -139,25 +139,33 @@ function Settings (opts) {
  */
 Settings.prototype.load = function () {
   var self = this
-  var storageTab = self.tabs.find(tab => tab.name === 'storage')
-  self.db.get('tabs:storage', function (err, value) {
-    if (err && err.name === 'NotFoundError') {
-      console.info('tabs:storage data not found, storing default data')
-      self.db.put('tabs:storage', storageTab.DEFAULT_DATA, function (err) {
-        if (err) console.error('failed to put data')
-        else self.load()
+  self.db.createReadStream()
+    .on('data', function (data) {
+      var key = data.key
+      var value = data.value
+      var tab = self.tabs.find(tab => tab.name === key)
+      if (tab) self.tabData[tab.name] = value
+    })
+    .on('error', function (err) {
+      console.error('error reading settings from level', err)
+    })
+    .on('end', function () {
+      self.tabs.forEach(tab => {
+        if (!self.tabData[tab.name]) {
+          console.log(`no data stored for tab ${tab.name}, using default`)
+          self.tabData[tab.name] = tab.DEFAULT_DATA || {}
+        }
       })
-    } else if (err) {
-      console.error('failed to get data', err)
-    } else {
-      storageTab.data = value
       self.emitter.emit('render')
-    }
-  })
+    })
 }
 
 Settings.prototype.toggle = function () {
   this.show = !this.show
+}
+
+Settings.prototype.getTabData = function (name) {
+  return this.tabData[name]
 }
 
 Settings.prototype.getSelectedTab = function () {
@@ -197,7 +205,10 @@ Settings.prototype.renderTabs = function (emit) {
 
 Settings.prototype.renderTabContent = function (emit) {
   var tab = this.getSelectedTab()
-  return html`<div class=${this.tabContentStyle}>${tab.render(emit)}</div>`
+  var data = this.getTabData(tab.name)
+  if (data) {
+    return html`<div class=${this.tabContentStyle}>${tab.render(data, emit)}</div>`
+  }
 }
 
 Settings.prototype.renderButtons = function (emit) {
