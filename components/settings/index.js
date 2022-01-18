@@ -177,6 +177,7 @@ Settings.prototype.load = function (cb) {
           self.setTabDefaults(tab)
         }
       })
+      self.emitter.emit('settings:loaded')
       cb()
     })
 }
