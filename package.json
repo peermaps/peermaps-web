@@ -8,7 +8,7 @@
     "mixmap-peermaps": "^1.0.0",
     "regl": "^2.1.0",
     "resl": "^1.0.3",
-    "sheetify": "^8.0.0"
+    "sheetify": "^7.4.0"
   },
   "devDependencies": {
     "budo": "^11.6.4"
