@@ -140,12 +140,18 @@ function Settings (opts) {
  */
 Settings.prototype.load = function (cb) {
   var self = this
-  self.db.createReadStream({ gt: 'tabs', lt: 'tabs~' }).on('data', function (data) {
-    var key = data.key
-    var name = data.key.split(':')[1]
-    var tab = self.tabs.find(function (tab) { return tab.name === name })
-    if (tab) tab.data = data.value
-  }).on('error', cb).on('end', function () { cb() })
+  self.db.createReadStream({ gt: 'tabs', lt: 'tabs~' })
+    .on('data', function (data) {
+      var key = data.key
+      var name = data.key.split(':')[1]
+      var tab = self.tabs.find(function (tab) { return tab.name === name })
+      if (tab) tab.data = data.value
+    })
+    .on('error', cb)
+    .on('end', function () {
+      self.emitter.emit('render')
+      cb()
+    })
 }
 
 Settings.prototype.toggle = function () {

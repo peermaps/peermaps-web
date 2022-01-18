@@ -20,11 +20,7 @@ app.use(function (state, emitter) {
     db: sub(db, 'settings', { valueEncoding: 'json' })
   })
   settings.load(function (err) {
-    if (err) {
-      console.error('failed to load settings', err)
-    } else {
-      emitter.emit('render')
-    }
+    if (err) console.error('failed to load settings', err)
   })
   state.settings = settings
 })
