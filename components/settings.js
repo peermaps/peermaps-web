@@ -24,7 +24,7 @@ function Settings () {
     :host {
       display: flex;
       justify-content: space-around;
-      height: 30px;
+      height: 25px;
     }
   `
   this.tabStyle = css`
@@ -39,7 +39,7 @@ function Settings () {
     :host {
       background: rgba(0, 0, 0, 0.3);
       position: absolute;
-      top: 30px;
+      top: 25px;
       bottom: 40px;
       left: 0px;
       right: 0px;
@@ -69,7 +69,7 @@ function Settings () {
       margin-right: 15px;
       margin-top: 0px;
       margin-bottom: 0px;
-      padding: 2px;
+      padding: 5px;
       cursor: pointer;
       border: 1px solid #999;
     }
