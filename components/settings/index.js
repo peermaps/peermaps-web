@@ -127,7 +127,12 @@ function Settings (opts) {
     console.log('TODO act on settings:reload event')
   })
   emitter.on('settings:apply', function () {
-    console.log('TODO act on settings:apply event')
+    self.save()
+  })
+  emitter.on('settings:saved', function () {
+    console.info('settings saved')
+    self.dirty = false
+    emitter.emit('render')
   })
 
   self.load()
@@ -135,7 +140,7 @@ function Settings (opts) {
 }
 
 /**
- * Loads json data for all tabs.
+ * Loads json data for all tabs and use default data if nothing was stored.
  */
 Settings.prototype.load = function () {
   var self = this
@@ -158,6 +163,21 @@ Settings.prototype.load = function () {
       })
       self.emitter.emit('render')
     })
+}
+
+/**
+ * Save json data for all tabs
+ */
+Settings.prototype.save = function () {
+  var self = this
+  var batch = self.tabs.map(function (tab) {
+    var data = self.getTabData(tab.name)
+    return { type: 'put', key: tab.name, value: data }
+  })
+  self.db.batch(batch, function (err) {
+    if (err) console.error('failed to save settings data', err)
+    else self.emitter.emit('settings:saved')
+  })
 }
 
 Settings.prototype.toggle = function () {
