@@ -108,14 +108,15 @@ function Settings () {
       },
       render: function (emit) {
         var backends = this.data.backends
-        var content = backends.map(function (backend, index) {
+        var content = backends.map(function (item, index) {
+          var zoom = item.zoom
           return html`<div class=${backendStyle}>
             <label for='url'>data url</label>
-            <input type='url' name='url' value=${backend.url || ''} placeholder='https://example.com' required style='margin-top: 3px; margin-bottom: 10px; width: 100%;' onchange=${(e) => emit('settings:storage:url:update', index, e.target.value)}>
-            <label for='minzoom'>min zoom level</label>
-            <input type='range' name='minzoom' min='1' max='21' step='1' value=${backend.zoom.min} style='width: 100%;' onchange=${(e) => emit('settings:storage:minzoom:update', index, e.target.value)}>
-            <label for='maxzoom'>max zoom level</label>
-            <input type='range' name='maxzoom' min='1' max='21' step='1' value=${backend.zoom.max} style='width: 100%;' onchange=${(e) => emit('settings:storage:maxzoom:update', index, e.target.value)}>
+            <input type='url' name='url' value=${item.url || ''} placeholder='https://example.com' required style='margin-top: 3px; margin-bottom: 10px; width: 100%;' onchange=${(e) => emit('settings:storage:url:update', index, e.target.value)}>
+            <label for='minzoom'>min zoom level (${zoom.min})</label>
+            <input type='range' name='minzoom' min='1' max='21' step='1' value=${zoom.min} style='width: 100%;' onchange=${(e) => emit('settings:storage:minzoom:update', index, e.target.value)}>
+            <label for='maxzoom'>max zoom level (${zoom.max})</label>
+            <input type='range' name='maxzoom' min='1' max='21' step='1' value=${zoom.max} style='width: 100%;' onchange=${(e) => emit('settings:storage:maxzoom:update', index, e.target.value)}>
           </div>`
         })
         return html`<div>${content}</div>`
