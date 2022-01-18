@@ -13,6 +13,7 @@ function Settings (opts) {
   self.db = opts.db
   self.show = true
   self.dirty = false
+  self.canReload = false
   self.width = 550
 
   // TODO configure transparency level used in the settings dialog?
@@ -91,14 +92,6 @@ function Settings (opts) {
       render: function (data, emit) {
         return html`<div>In the misc tab</div>`
       }
-    },
-    {
-      name: 'junk',
-      description: 'Not used for anything',
-      use: function (settings, emitter) {},
-      render: function (data, emit) {
-        return html`<div>In the junk tab</div>`
-      }
     }
   ]
   self.tabData = {}
@@ -126,6 +119,7 @@ function Settings (opts) {
       if (err) {
         console.log('failed to reset settings data', err)
       } else {
+        self.canReload = false
         self.dirty = false
         emitter.emit('render')
       }
@@ -146,6 +140,7 @@ function Settings (opts) {
         console.log('failed to save settings data', err)
       } else {
         self.dirty = false
+        self.canReload = true
         emitter.emit('render')
       }
     })
@@ -166,7 +161,10 @@ Settings.prototype.load = function (cb) {
       var key = data.key
       var value = data.value
       var tab = self.tabs.find(tab => tab.name === key)
-      if (tab) self.tabData[tab.name] = value
+      if (tab) {
+        self.tabData[tab.name] = value
+        self.canReload = true
+      }
     })
     .on('error', function (err) {
       console.error('error reading settings from level', err)
@@ -271,10 +269,19 @@ Settings.prototype.renderTabContent = function (emit) {
 
 Settings.prototype.renderButtons = function (emit) {
   var self =  this
-  var cstyle = `
-    color: #${self.dirty ? 'FFF' : '999'};
-    cursor: ${self.dirty ? 'pointer' : 'default'};
-  `
+  var cstyle = function (active) {
+    return `
+      color: #${active ? 'FFF' : '999'};
+      cursor: ${active ? 'pointer' : 'default'};
+    `
+  }
+
+  function onReload () {
+    if (self.canReload) {
+      emit('settings:reload')
+    }
+  }
+
   function onApply () {
     if (self.dirty) {
       emit('settings:apply')
@@ -283,8 +290,8 @@ Settings.prototype.renderButtons = function (emit) {
 
   return html`<div class=${this.buttonContainerStyle}>
     <div class=${this.buttonStyle} onclick=${() => emit('settings:reset')}>reset</div>
-    <div class=${this.buttonStyle} onclick=${() => emit('settings:reload')}>reload</div>
-    <div class=${this.buttonStyle} style=${cstyle} onclick=${() => onApply()}>apply</div>
+    <div class=${this.buttonStyle} style=${cstyle(self.canReload)} onclick=${() => onReload()}>reload</div>
+    <div class=${this.buttonStyle} style=${cstyle(self.dirty)} onclick=${() => onApply()}>apply</div>
   </div>`
 }
 
