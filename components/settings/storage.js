@@ -73,24 +73,26 @@ function StorageTab () {
         <div style='position: absolute; left: 10px; cursor: pointer; padding-left: 4px; padding-right: 4px; border: 1px solid #999' onclick=${() => emit('settings:storage:add')}>+</div>
       </div>`
     },
-    DEFAULT_DATA: {
-      backends: [
-        {
-          url: 'https://ipfs.io/ipfs/QmVCYUK51Miz4jEjJxCq3bA6dfq5FXD6s2EYp6LjHQhGmh',
-          zoom: { min: 1, max: 21 },
-          active: true
-        },
-        {
-          url: 'https://peermaps.linkping.io',
-          zoom: { min: 1, max: 21 },
-          active: false
-        },
-        {
-          url: 'http://localhost:8000',
-          zoom: { min: 1, max: 21 },
-          active: false
-        }
-      ]
+    defaultData: function () {
+      return {
+        backends: [
+          {
+            url: 'https://ipfs.io/ipfs/QmVCYUK51Miz4jEjJxCq3bA6dfq5FXD6s2EYp6LjHQhGmh',
+            zoom: { min: 1, max: 21 },
+            active: true
+          },
+          {
+            url: 'https://peermaps.linkping.io',
+            zoom: { min: 1, max: 21 },
+            active: false
+          },
+          {
+            url: 'http://localhost:8000',
+            zoom: { min: 1, max: 21 },
+            active: false
+          }
+        ]
+      }
     }
   }
 }

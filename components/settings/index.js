@@ -120,30 +120,42 @@ function Settings (opts) {
       emitter.emit('render')
     }
   })
+
   emitter.on('settings:reset', function () {
-    console.log('TODO act on settings:reset event')
+    self.reset(function (err) {
+      if (err) {
+        console.log('failed to reset settings data', err)
+      } else {
+        self.dirty = false
+        emitter.emit('render')
+      }
+    })
   })
   emitter.on('settings:reload', function () {
     console.log('TODO act on settings:reload event')
   })
+
   emitter.on('settings:apply', function () {
-    self.save()
-  })
-  emitter.on('settings:saved', function () {
-    console.info('settings saved')
-    self.dirty = false
-    emitter.emit('render')
+    self.save(function (err) {
+      if (err) {
+        console.log('failed to save settings data', err)
+      } else {
+        self.dirty = false
+        emitter.emit('render')
+      }
+    })
   })
 
-  self.load()
+  self.load(function (err) { self.emitter.emit('render') })
   self.tabs.forEach(function (tab) { tab.use(self, emitter) })
 }
 
 /**
  * Loads json data for all tabs and use default data if nothing was stored.
  */
-Settings.prototype.load = function () {
+Settings.prototype.load = function (cb) {
   var self = this
+  self.tabData = {}
   self.db.createReadStream()
     .on('data', function (data) {
       var key = data.key
@@ -153,31 +165,52 @@ Settings.prototype.load = function () {
     })
     .on('error', function (err) {
       console.error('error reading settings from level', err)
+      cb(err)
     })
     .on('end', function () {
       self.tabs.forEach(tab => {
         if (!self.tabData[tab.name]) {
-          console.log(`no data stored for tab ${tab.name}, using default`)
-          self.tabData[tab.name] = tab.DEFAULT_DATA || {}
+          console.info(`setting default values for tab ${tab.name}`)
+          self.setTabDefaults(tab)
         }
       })
-      self.emitter.emit('render')
+      cb()
     })
 }
 
 /**
  * Save json data for all tabs
  */
-Settings.prototype.save = function () {
+Settings.prototype.save = function (cb) {
   var self = this
   var batch = self.tabs.map(function (tab) {
     var data = self.getTabData(tab.name)
     return { type: 'put', key: tab.name, value: data }
   })
-  self.db.batch(batch, function (err) {
-    if (err) console.error('failed to save settings data', err)
-    else self.emitter.emit('settings:saved')
+  self.db.batch(batch, cb)
+}
+
+/**
+ * Resets data to default
+ */
+Settings.prototype.reset = function (cb) {
+  var self = this
+  var batch = self.tabs.map(function (tab) {
+    return { type: 'del', key: tab.name }
   })
+  self.tabData = {}
+  self.db.batch(batch, function () {
+    self.tabs.forEach(tab => self.setTabDefaults(tab))
+    cb()
+  })
+}
+
+Settings.prototype.setTabDefaults = function (tab) {
+  if (typeof tab.defaultData === 'function') {
+    this.tabData[tab.name] = tab.defaultData()
+  } else {
+    this.tabData[tab.name] = {}
+  }
 }
 
 Settings.prototype.toggle = function () {
@@ -242,6 +275,7 @@ Settings.prototype.renderButtons = function (emit) {
       emit('settings:apply')
     }
   }
+
   return html`<div class=${this.buttonContainerStyle}>
     <div class=${this.buttonStyle} onclick=${() => emit('settings:reset')}>reset</div>
     <div class=${this.buttonStyle} onclick=${() => emit('settings:reload')}>reload</div>
