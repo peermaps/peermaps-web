@@ -16,7 +16,7 @@ function Settings () {
     :host {
       z-index: inherit;
       position: absolute;
-      background: rgba(0, 0, 0, 0.8);
+      background: rgba(0, 0, 0, 0.7);
       height: 100%;
     }
   `
@@ -37,12 +37,12 @@ function Settings () {
   `
   this.tabContentStyle = css`
     :host {
+      background: rgba(0, 0, 0, 0.3);
       position: absolute;
       top: 30px;
       bottom: 40px;
       left: 0px;
       right: 0px;
-      background: rgba(0, 0, 0, 0.2);
       padding: 10px;
       overflow-y: auto;
       border-left: 1px solid #999;
@@ -51,7 +51,6 @@ function Settings () {
   `
   this.buttonContainerStyle = css`
     :host {
-      background: rgba(0, 0, 0, 0.2);
       position: absolute;
       bottom: 0px;
       height: 40px;
@@ -64,7 +63,7 @@ function Settings () {
   `
   this.buttonStyle = css`
     :host {
-      background: rgba(0, 0, 0, 1.0);
+      background: black;
       width: 50px;
       text-align: center;
       margin-right: 15px;
@@ -82,86 +81,6 @@ function Settings () {
       description: 'Define data urls for map storage',
       render: function (emit) {
         return html`<div>
-          <div>In the storage tab</div>
-          <div>In the storage tab</div>
-          <div>In the storage tab</div>
-          <div>In the storage tab</div>
-          <div>In the storage tab</div>
-          <div>In the storage tab</div>
-          <div>In the storage tab</div>
-          <div>In the storage tab</div>
-          <div>In the storage tab</div>
-          <div>In the storage tab</div>
-          <div>In the storage tab</div>
-          <div>In the storage tab</div>
-          <div>In the storage tab</div>
-          <div>In the storage tab</div>
-          <div>In the storage tab</div>
-          <div>In the storage tab</div>
-          <div>In the storage tab</div>
-          <div>In the storage tab</div>
-          <div>In the storage tab</div>
-          <div>In the storage tab</div>
-          <div>In the storage tab</div>
-          <div>In the storage tab</div>
-          <div>In the storage tab</div>
-          <div>In the storage tab</div>
-          <div>In the storage tab</div>
-          <div>In the storage tab</div>
-          <div>In the storage tab</div>
-          <div>In the storage tab</div>
-          <div>In the storage tab</div>
-          <div>In the storage tab</div>
-          <div>In the storage tab</div>
-          <div>In the storage tab</div>
-          <div>In the storage tab</div>
-          <div>In the storage tab</div>
-          <div>In the storage tab</div>
-          <div>In the storage tab</div>
-          <div>In the storage tab</div>
-          <div>In the storage tab</div>
-          <div>In the storage tab</div>
-          <div>In the storage tab</div>
-          <div>In the storage tab</div>
-          <div>In the storage tab</div>
-          <div>In the storage tab</div>
-          <div>In the storage tab</div>
-          <div>In the storage tab</div>
-          <div>In the storage tab</div>
-          <div>In the storage tab</div>
-          <div>In the storage tab</div>
-          <div>In the storage tab</div>
-          <div>In the storage tab</div>
-          <div>In the storage tab</div>
-          <div>In the storage tab</div>
-          <div>In the storage tab</div>
-          <div>In the storage tab</div>
-          <div>In the storage tab</div>
-          <div>In the storage tab</div>
-          <div>In the storage tab</div>
-          <div>In the storage tab</div>
-          <div>In the storage tab</div>
-          <div>In the storage tab</div>
-          <div>In the storage tab</div>
-          <div>In the storage tab</div>
-          <div>In the storage tab</div>
-          <div>In the storage tab</div>
-          <div>In the storage tab</div>
-          <div>In the storage tab</div>
-          <div>In the storage tab</div>
-          <div>In the storage tab</div>
-          <div>In the storage tab</div>
-          <div>In the storage tab</div>
-          <div>In the storage tab</div>
-          <div>In the storage tab</div>
-          <div>In the storage tab</div>
-          <div>In the storage tab</div>
-          <div>In the storage tab</div>
-          <div>In the storage tab</div>
-          <div>In the storage tab</div>
-          <div>In the storage tab</div>
-          <div>In the storage tab</div>
-          <div>In the storage tab</div>
           <div>In the storage tab</div>
           <div>In the storage tab</div>
         </div>`
