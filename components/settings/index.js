@@ -55,11 +55,13 @@ function Settings () {
       position: absolute;
       bottom: 0px;
       height: 40px;
-      width: 100%;
+      left: 0px;
+      right: 0px;
       display: flex;
       justify-content: end;
       align-items: center;
       border-top: 1px solid #999;
+      padding-right: 10px;
     }
   `
   this.buttonStyle = css`
@@ -67,7 +69,7 @@ function Settings () {
       background: black;
       width: 50px;
       text-align: center;
-      margin-right: 15px;
+      margin-left: 10px;
       margin-top: 0px;
       margin-bottom: 0px;
       padding: 5px;
@@ -119,11 +121,14 @@ Settings.prototype.use = function (emitter) {
       emitter.emit('render')
     }
   })
-  emitter.on('settings:apply', function () {
-    console.log('TODO act on settings:apply event')
-  })
   emitter.on('settings:reset', function () {
     console.log('TODO act on settings:reset event')
+  })
+  emitter.on('settings:reload', function () {
+    console.log('TODO act on settings:reload event')
+  })
+  emitter.on('settings:apply', function () {
+    console.log('TODO act on settings:apply event')
   })
   self.tabs.forEach(function (tab) { tab.use(emitter) })
 }
@@ -185,6 +190,7 @@ Settings.prototype.renderButtons = function (emit) {
   }
   return html`<div class=${this.buttonContainerStyle}>
     <div class=${this.buttonStyle} onclick=${() => emit('settings:reset')}>reset</div>
+    <div class=${this.buttonStyle} onclick=${() => emit('settings:reload')}>reload</div>
     <div class=${this.buttonStyle} style=${cstyle} onclick=${() => onApply()}>apply</div>
   </div>`
 }
