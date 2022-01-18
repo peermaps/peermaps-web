@@ -147,10 +147,12 @@ Settings.prototype.load = function (cb) {
       var tab = self.tabs.find(function (tab) { return tab.name === name })
       if (tab) tab.data = data.value
     })
-    .on('error', cb)
+    .on('error', function (err) {
+      cb && cb(err)
+    })
     .on('end', function () {
       self.emitter.emit('render')
-      cb()
+      cb && cb()
     })
 }
 
