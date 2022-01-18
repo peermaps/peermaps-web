@@ -15,8 +15,10 @@ var Settings = require('./components/settings')
 var nextTick = process.nextTick
 
 app.use(function (state, emitter) {
-  var settings = Settings({ db: sub(db, 'settings', { valueEncoding: 'json' }) })
-  settings.use(emitter)
+  var settings = Settings({
+    emitter: emitter,
+    db: sub(db, 'settings', { valueEncoding: 'json' })
+  })
   settings.load(function (err) {
     if (err) {
       console.error('failed to load settings', err)

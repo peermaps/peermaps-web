@@ -6,16 +6,19 @@ var StorageTab = require('./storage')
  * Settings dialog.
  */
 function Settings (opts) {
-  if (!(this instanceof Settings)) return new Settings(opts)
+  var self = this
+  if (!(self instanceof Settings)) return new Settings(opts)
 
-  this.db = opts.db
-  this.show = true
-  this.dirty = false
-  this.width = 550
+  self.db = opts.db
+  var emitter = self.emitter = opts.emitter
+
+  self.show = true
+  self.dirty = false
+  self.width = 550
 
   // TODO configure transparency level used in the settings dialog?
 
-  this.containerStyle = css`
+  self.containerStyle = css`
     :host {
       z-index: inherit;
       position: absolute;
@@ -23,14 +26,14 @@ function Settings (opts) {
       height: 100%;
     }
   `
-  this.tabContainerStyle = css`
+  self.tabContainerStyle = css`
     :host {
       display: flex;
       justify-content: space-around;
       height: 25px;
     }
   `
-  this.tabStyle = css`
+  self.tabStyle = css`
     :host {
       text-align: center;
       width: 100%;
@@ -38,7 +41,7 @@ function Settings (opts) {
       padding: 5px;
     }
   `
-  this.tabContentStyle = css`
+  self.tabContentStyle = css`
     :host {
       background: rgba(0, 0, 0, 0.3);
       position: absolute;
@@ -52,7 +55,7 @@ function Settings (opts) {
       border-right: 1px solid #999;
     }
   `
-  this.buttonContainerStyle = css`
+  self.buttonContainerStyle = css`
     :host {
       position: absolute;
       bottom: 0px;
@@ -66,7 +69,7 @@ function Settings (opts) {
       padding-right: 10px;
     }
   `
-  this.buttonStyle = css`
+  self.buttonStyle = css`
     :host {
       background: black;
       width: 50px;
@@ -80,7 +83,7 @@ function Settings (opts) {
     }
   `
 
-  this.tabs = [
+  self.tabs = [
     StorageTab(),
     {
       name: 'misc',
@@ -101,11 +104,9 @@ function Settings (opts) {
       data: {}
     }
   ]
-  this.selected = this.tabs[0].name
-}
 
-Settings.prototype.use = function (emitter) {
-  var self = this
+  self.selected = self.tabs[0].name
+
   emitter.on('settings:toggle', function () {
     self.toggle()
     emitter.emit('render')
@@ -130,6 +131,7 @@ Settings.prototype.use = function (emitter) {
   emitter.on('settings:apply', function () {
     console.log('TODO act on settings:apply event')
   })
+
   self.tabs.forEach(function (tab) { tab.use(emitter) })
 }
 
