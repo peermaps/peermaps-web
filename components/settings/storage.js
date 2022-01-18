@@ -6,6 +6,7 @@ var backendStyle = css`
     padding: 10px;
     padding-right: 15px;
     border-bottom: 1px solid #999;
+    margin-bottom: 10px;
   }
 `
 
@@ -39,6 +40,10 @@ function StorageTab () {
         self.data.backends.splice(index, 1)
         emitter.emit('settings:dirty')
       })
+      emitter.on('settings:storage:add', function () {
+        self.data.backends.push({ zoom: { min: 1, max: 21 }, active: false })
+        emitter.emit('settings:dirty')
+      })
     },
     render: function (emit) {
       var backends = this.data.backends
@@ -56,7 +61,10 @@ function StorageTab () {
           <input type='checkbox' name='active' style='margin-left: 10px;' onchange=${(e) => emit('settings:storage:active:update', index)} ${item.active ? 'checked' : ''} value=${item.active ? true : false}>
         </div>`
       })
-      return html`<div>${content}</div>`
+      return html`<div>
+        ${content}
+        <div style='position: absolute; left: 10px; cursor: pointer; padding-left: 4px; padding-right: 4px; border: 1px solid #999' onclick=${() => emit('settings:storage:add')}>+</div>
+      </div>`
     },
     dirty: false,
     data: {
