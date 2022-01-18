@@ -99,6 +99,15 @@ app.use(function (state, emitter) {
     console.log('starting mixmap peermaps with url', url)
     state.storage = httpStorage(url)
 
+    emitter.on('settings:updated', function () {
+      var dataUrl = state.settings.getDataUrl()
+      var currentUrl = state.storage.getRootUrl()
+      if (dataUrl && dataUrl !== currentUrl) {
+        console.info(`changing data source url from ${currentUrl} to ${dataUrl}`)
+        state.storage.setRootUrl(dataUrl)
+      }
+    })
+
     var style = new Image
     style.onload = function () {
       var pm = mixmapPeermaps({
