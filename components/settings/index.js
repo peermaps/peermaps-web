@@ -121,6 +121,7 @@ function Settings (opts) {
       } else {
         self.canReload = false
         self.dirty = false
+        emitter.emit('settings:updated')
         emitter.emit('render')
       }
     })
@@ -129,6 +130,7 @@ function Settings (opts) {
     self.load(function (err) {
       if (!err) {
         self.dirty = false
+        emitter.emit('settings:updated')
         emitter.emit('render')
       }
     })
@@ -141,6 +143,7 @@ function Settings (opts) {
       } else {
         self.dirty = false
         self.canReload = true
+        emitter.emit('settings:updated')
         emitter.emit('render')
       }
     })
