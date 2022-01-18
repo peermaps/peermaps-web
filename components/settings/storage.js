@@ -68,7 +68,6 @@ function StorageTab () {
         <div style='position: absolute; left: 10px; cursor: pointer; padding-left: 4px; padding-right: 4px; border: 1px solid #999' onclick=${() => emit('settings:storage:add')}>+</div>
       </div>`
     },
-    dirty: false,
     data: {
       backends: [
         {

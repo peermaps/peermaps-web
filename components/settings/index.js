@@ -10,6 +10,7 @@ function Settings (opts) {
 
   this.db = opts.db
   this.show = true
+  this.dirty = false
   this.width = 550
 
   // TODO configure transparency level used in the settings dialog?
@@ -88,7 +89,6 @@ function Settings (opts) {
       render: function (emit) {
         return html`<div>In the misc tab</div>`
       },
-      dirty: false,
       data: {}
     },
     {
@@ -98,7 +98,6 @@ function Settings (opts) {
       render: function (emit) {
         return html`<div>In the junk tab</div>`
       },
-      dirty: false,
       data: {}
     }
   ]
@@ -112,7 +111,7 @@ Settings.prototype.use = function (emitter) {
     emitter.emit('render')
   })
   emitter.on('settings:dirty', function () {
-    self.getSelectedTab().dirty = true
+    self.dirty = true
     emitter.emit('render')
   })
   emitter.on('settings:ontabclick', function (name) {
@@ -192,13 +191,13 @@ Settings.prototype.renderTabContent = function (emit) {
 }
 
 Settings.prototype.renderButtons = function (emit) {
-  var tab = this.getSelectedTab()
+  var self =  this
   var cstyle = `
-    color: #${tab.dirty ? 'FFF' : '999'};
-    cursor: ${tab.dirty ? 'pointer' : 'default'};
+    color: #${self.dirty ? 'FFF' : '999'};
+    cursor: ${self.dirty ? 'pointer' : 'default'};
   `
   function onApply () {
-    if (tab.dirty) {
+    if (self.dirty) {
       emit('settings:apply')
     }
   }
