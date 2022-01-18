@@ -91,8 +91,7 @@ function Settings (opts) {
       use: function (emitter) {},
       render: function (emit) {
         return html`<div>In the misc tab</div>`
-      },
-      data: {}
+      }
     },
     {
       name: 'junk',
@@ -100,8 +99,7 @@ function Settings (opts) {
       use: function (emitter) {},
       render: function (emit) {
         return html`<div>In the junk tab</div>`
-      },
-      data: {}
+      }
     }
   ]
 
@@ -139,22 +137,23 @@ function Settings (opts) {
 /**
  * Loads json data for all tabs.
  */
-Settings.prototype.load = function (cb) {
+Settings.prototype.load = function () {
   var self = this
-  self.db.createReadStream({ gt: 'tabs', lt: 'tabs~' })
-    .on('data', function (data) {
-      var key = data.key
-      var name = data.key.split(':')[1]
-      var tab = self.tabs.find(function (tab) { return tab.name === name })
-      if (tab) tab.data = data.value
-    })
-    .on('error', function (err) {
-      cb && cb(err)
-    })
-    .on('end', function () {
+  var storageTab = self.tabs.find(tab => tab.name === 'storage')
+  self.db.get('tabs:storage', function (err, value) {
+    if (err && err.name === 'NotFoundError') {
+      console.info('tabs:storage data not found, storing default data')
+      self.db.put('tabs:storage', storageTab.DEFAULT_DATA, function (err) {
+        if (err) console.error('failed to put data')
+        else self.load()
+      })
+    } else if (err) {
+      console.error('failed to get data', err)
+    } else {
+      storageTab.data = value
       self.emitter.emit('render')
-      cb && cb()
-    })
+    }
+  })
 }
 
 Settings.prototype.toggle = function () {

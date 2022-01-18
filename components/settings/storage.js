@@ -46,6 +46,8 @@ function StorageTab () {
       })
     },
     render: function (emit) {
+      if (!this.data) return
+
       var backends = this.data.backends
       if (!Array.isArray(backends)) return
 
@@ -68,7 +70,7 @@ function StorageTab () {
         <div style='position: absolute; left: 10px; cursor: pointer; padding-left: 4px; padding-right: 4px; border: 1px solid #999' onclick=${() => emit('settings:storage:add')}>+</div>
       </div>`
     },
-    data: {
+    DEFAULT_DATA: {
       backends: [
         {
           url: 'https://ipfs.io/ipfs/QmVCYUK51Miz4jEjJxCq3bA6dfq5FXD6s2EYp6LjHQhGmh',
@@ -77,13 +79,13 @@ function StorageTab () {
         },
         {
           url: 'https://peermaps.linkping.io',
-          zoom: { min: 5, max: 21 },
+          zoom: { min: 1, max: 21 },
           active: false
         },
         {
           url: 'http://localhost:8000',
-          zoom: { min: 11, max: 18 },
-          active: true
+          zoom: { min: 1, max: 21 },
+          active: false
         }
       ]
     }
