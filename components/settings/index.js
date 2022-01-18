@@ -132,7 +132,12 @@ function Settings (opts) {
     })
   })
   emitter.on('settings:reload', function () {
-    console.log('TODO act on settings:reload event')
+    self.load(function (err) {
+      if (!err) {
+        self.dirty = false
+        emitter.emit('render')
+      }
+    })
   })
 
   emitter.on('settings:apply', function () {
