@@ -47,6 +47,8 @@ function StorageTab () {
     },
     render: function (emit) {
       var backends = this.data.backends
+      if (!Array.isArray(backends)) return
+
       var content = backends.map(function (item, index) {
         var zoom = item.zoom
         return html`<div class=${backendStyle}>
