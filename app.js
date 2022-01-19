@@ -171,8 +171,14 @@ app.route('*', function (state, emit) {
       .left-buttons {
         position: absolute;
         top: 0px;
-        left: ${settings.show ? settings.width : 0}px;
         bottom: 0px;
+        padding: 1em;
+      }
+      .right-buttons {
+        position: absolute;
+        top: 0px;
+        bottom: 0px;
+        right: ${settings.show ? settings.width + 20 : 20}px;
         padding: 1em;
       }
       .buttons button {
@@ -216,12 +222,8 @@ app.route('*', function (state, emit) {
       .buttons button:hover {
         opacity: 100%;
       }
-      .buttons .toggle-settings {
-        bottom: 1em;
-      }
     </style>
     <div class="ui-overlay">
-      ${settings.render(emit)}
       <div class="buttons left-buttons">
         <div><button class="arrow north" onclick=${panNorth}></button></div>
         <div><button class="arrow west" onclick=${panWest}></button></div>
@@ -229,8 +231,11 @@ app.route('*', function (state, emit) {
         <div><button class="arrow south" onclick=${panSouth}></button></div>
         <div><button style="top: 3em; left: 4.5em;" onclick=${zoomIn}>+</button></div>
         <div><button style="top: 6em; left: 4.5em;" onclick=${zoomOut}>-</button></div>
-        <div><button class="toggle-settings" onclick=${toggleSettings}>${settings.show ? '<' : '>'}</button></div>
       </div>
+      <div class="buttons right-buttons">
+        <div><button class="toggle-settings" onclick=${toggleSettings}>${settings.show ? '>' : '<'}</button></div>
+      </div>
+      ${settings.render(emit)}
     </div>
     ${state.mix.render()}
     ${state.map.render({ width: state.width, height: state.height })}

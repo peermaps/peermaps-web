@@ -22,6 +22,7 @@ function Settings (opts) {
     :host {
       z-index: inherit;
       position: absolute;
+      right: 0px;
       background: rgba(0, 0, 0, 0.7);
       height: 100%;
     }
