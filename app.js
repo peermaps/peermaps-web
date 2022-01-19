@@ -1,10 +1,30 @@
 var app = require('choo')()
 var mixmapPeermaps = require('mixmap-peermaps')
+var html = require('choo/html')
+var eyros = require('eyros/2d')
+var mixmap = require('mixmap')
+var resl = require('resl')
+var regl = require('regl')
+var httpStorage = require('mixmap-peermaps/storage/http')
+
+var level = require('level')
+var sub = require('subleveldown')
+var db = level('peermaps-web')
+
+var Settings = require('./components/settings')
 var nextTick = process.nextTick
 
 app.use(function (state, emitter) {
+  var settings = Settings({
+    emitter: emitter,
+    db: sub(db, 'settings', { valueEncoding: 'json' })
+  })
+  state.settings = settings
+})
+
+app.use(function (state, emitter) {
   state.params = {
-    data: fixURL('/ipfs/QmVCYUK51Miz4jEjJxCq3bA6dfq5FXD6s2EYp6LjHQhGmh'),
+    data: '',
     bbox: [7.56,47.55,7.58,47.56],
     style: { url: 'style.png' }
   }
@@ -27,18 +47,16 @@ function fixURL(u) {
   return u
 }
 
-var regl = require('regl')
-var httpStorage = require('mixmap-peermaps/storage/http')
 app.use(function (state, emitter) {
   state.mix = mixmap(regl, {
     extensions: [ 'oes_element_index_uint', 'oes_texture_float', 'ext_float_blend' ]
   })
-  state.map = state.mix.create({ 
+  state.map = state.mix.create({
     viewbox: state.params.bbox,
     backgroundColor: [0.82, 0.85, 0.99, 1.0],
     pickfb: { colorFormat: 'rgba', colorType: 'float32' }
   })
-  state.storage = httpStorage(state.params.data)
+
   emitter.on('map:zoom:add', function (x) {
     state.map.setZoom(state.map.getZoom()+x)
     state.map.draw()
@@ -65,29 +83,50 @@ app.use(function (state, emitter) {
   })
 })
 
-var eyros = require('eyros/2d')
-var mixmap = require('mixmap')
-var resl = require('resl')
- 
 app.use(function (state, emitter) {
-  var style = new Image
-  style.onload = function () {
-    var pm = mixmapPeermaps({
-      map: state.map,
-      eyros,
-      storage: state.storage,
-      wasmSource: fetch('eyros2d.wasm'),
-      style
+  if (state.params.data) {
+    console.log('state.params.data is set from data parameter in url')
+    setup(state.params.data)
+  } else {
+    console.log('waiting for settings to load...')
+    emitter.on('settings:loaded', function () {
+      var dataUrl = state.settings.getDataUrl()
+      if (dataUrl) setup(dataUrl)
     })
   }
-  style.src = state.params.style.url
-  window.addEventListener('click', function (ev) {
-    /*
-    pm.pick({ x: ev.offsetX, y: ev.offsetY }, function (err, data) {
-      console.log('pick', err, data)
+
+  function setup (url) {
+    console.log('starting mixmap peermaps with url', url)
+    state.storage = httpStorage(url)
+
+    emitter.on('settings:updated', function () {
+      var dataUrl = state.settings.getDataUrl()
+      var currentUrl = state.storage.getRootUrl()
+      if (dataUrl && dataUrl !== currentUrl) {
+        console.info(`changing data source url from ${currentUrl} to ${dataUrl}`)
+        state.storage.setRootUrl(dataUrl)
+      }
     })
-    */
-  })
+
+    var style = new Image
+    style.onload = function () {
+      var pm = mixmapPeermaps({
+        map: state.map,
+        eyros,
+        storage: state.storage,
+        wasmSource: fetch('eyros2d.wasm'),
+        style
+      })
+    }
+    style.src = state.params.style.url
+    window.addEventListener('click', function (ev) {
+      /*
+        pm.pick({ x: ev.offsetX, y: ev.offsetY }, function (err, data) {
+        console.log('pick', err, data)
+        })
+      */
+    })
+  }
 })
 
 app.use(function (state, emitter) {
@@ -109,25 +148,37 @@ app.use(function (state, emitter) {
   })
 })
 
-var html = require('choo/html')
 app.route('*', function (state, emit) {
   nextTick(function () {
     state.map.draw()
   })
+  var settings = state.settings
   return html`<body>
     <style>
       body {
         margin: 0px;
         overflow: hidden;
+        font-family: monospace;
+        color: white;
       }
-      .buttons {
+      .ui-overlay {
         z-index: 2000;
+      }
+
+      .buttons {
+        z-index: inherit;
       }
       .left-buttons {
         position: absolute;
         top: 0px;
-        left: 0px;
         bottom: 0px;
+        padding: 1em;
+      }
+      .right-buttons {
+        position: absolute;
+        top: 0px;
+        bottom: 0px;
+        right: ${settings.show ? settings.width + 20 : 20}px;
         padding: 1em;
       }
       .buttons button {
@@ -172,22 +223,31 @@ app.route('*', function (state, emit) {
         opacity: 100%;
       }
     </style>
-    <div class="buttons left-buttons">
-      <div><button class="arrow north" onclick=${panNorth}></button></div>
-      <div><button class="arrow west" onclick=${panWest}></button></div>
-      <div><button class="arrow east" onclick=${panEast}></button></div>
-      <div><button class="arrow south" onclick=${panSouth}></button></div>
-      <div><button style="top: 3em; left: 4.5em;" onclick=${zoomIn}>+</button></div>
-      <div><button style="top: 6em; left: 4.5em;" onclick=${zoomOut}>-</button></div>
+    <div class="ui-overlay">
+      <div class="buttons left-buttons">
+        <div><button class="arrow north" onclick=${panNorth}></button></div>
+        <div><button class="arrow west" onclick=${panWest}></button></div>
+        <div><button class="arrow east" onclick=${panEast}></button></div>
+        <div><button class="arrow south" onclick=${panSouth}></button></div>
+        <div><button style="top: 3em; left: 4.5em;" onclick=${zoomIn}>+</button></div>
+        <div><button style="top: 6em; left: 4.5em;" onclick=${zoomOut}>-</button></div>
+      </div>
+      <div class="buttons right-buttons">
+        <div><button class="toggle-settings" onclick=${toggleSettings}>${settings.show ? '>' : '<'}</button></div>
+      </div>
+      ${settings.render(emit)}
     </div>
     ${state.mix.render()}
     ${state.map.render({ width: state.width, height: state.height })}
   </body>`
+
+
   function zoomIn() { emit('map:zoom:add',+1) }
   function zoomOut() { emit('map:zoom:add',-1) }
   function panNorth() { emit('map:pan:lat',+1) }
   function panSouth() { emit('map:pan:lat',-1) }
   function panEast() { emit('map:pan:lon',+1) }
   function panWest() { emit('map:pan:lon',-1) }
+  function toggleSettings() { emit('settings:toggle') }
 })
 app.mount(document.body)
