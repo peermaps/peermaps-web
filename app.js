@@ -97,16 +97,20 @@ app.use(function (state, emitter) {
     }
   }
 
+  function updateStorage () {
+    var url = getDataUrl()
+    if (url) {
+      console.info('using data url', url)
+      state.storage.setRootUrl(url)
+      state.map.draw()
+    }
+  }
+
   function onReady () {
     state.storage = httpStorage(getDataUrl())
 
-    emitter.on('settings:updated', function () {
-      var url = getDataUrl()
-      if (url) {
-        state.storage.setRootUrl(url)
-        state.map.draw()
-      }
-    })
+    emitter.on('settings:updated', updateStorage)
+    emitter.on('map:zoom:set', updateStorage)
 
     var style = new Image
     style.onload = function () {
