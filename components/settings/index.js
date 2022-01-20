@@ -158,17 +158,25 @@ function Settings (opts) {
  *
  */
 Settings.prototype.getDataUrl = function (zoom) {
+  console.info('getting data url for zoom level', zoom)
+  var fallback
   var backends = this.tabData.storage.backends
+
   for (var i = 0; i < backends.length; ++i) {
     var data = backends[i]
-    if (typeof data.url === 'string' &&
-        data.active &&
-        data.zoom[0] <= zoom &&
-        data.zoom[1] >= zoom) {
-      return data.url
+    if (typeof data.url === 'string' && data.active) {
+      if (!fallback) fallback = data
+      if (data.zoom[0] <= zoom && data.zoom[1] >= zoom) {
+        return data.url
+      }
     }
   }
-  console.warn('no matching data url for zoom level', zoom)
+
+  if (fallback) {
+    return fallback.url
+  } else {
+    console.warn('no matching data url for zoom level', zoom)
+  }
 }
 
 /**
