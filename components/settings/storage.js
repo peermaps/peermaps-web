@@ -84,7 +84,7 @@ function StorageTab () {
       return {
         backends: [
           {
-            url: 'https://peermaps.linkping.org',
+            url: 'https://peermaps.linkping.org/data',
             description: 'Peermaps data hosted by linkping.org',
             zoom: [1, 21],
             active: true
