@@ -58,8 +58,7 @@ app.use(function (state, emitter) {
   })
 
   emitter.on('map:zoom:add', function (x) {
-    state.map.setZoom(state.map.getZoom()+x)
-    state.map.draw()
+    emitter.emit('map:zoom:set', state.map.getZoom()+x)
   })
   emitter.on('map:zoom:set', function (x) {
     state.map.setZoom(x)
@@ -85,28 +84,33 @@ app.use(function (state, emitter) {
 
 app.use(function (state, emitter) {
   if (state.params.data) {
-    console.log('state.params.data is set from data parameter in url')
-    setup(state.params.data)
+    onReady()
   } else {
-    console.log('waiting for settings to load...')
-    emitter.on('settings:loaded', function () {
-      var dataUrl = state.settings.getDataUrl()
-      if (dataUrl) setup(dataUrl)
-    })
+    emitter.on('settings:ready', onReady)
   }
 
-  function setup (url) {
-    console.log('starting mixmap peermaps with url', url)
-    state.storage = httpStorage(url)
+  function getDataUrl () {
+    if (state.params.data) {
+      return state.params.data
+    } else {
+      return state.settings.getDataUrl(state.map.getZoom())
+    }
+  }
 
-    emitter.on('settings:updated', function () {
-      var dataUrl = state.settings.getDataUrl()
-      var currentUrl = state.storage.getRootUrl()
-      if (dataUrl && dataUrl !== currentUrl) {
-        console.info(`changing data source url from ${currentUrl} to ${dataUrl}`)
-        state.storage.setRootUrl(dataUrl)
-      }
-    })
+  function updateStorage () {
+    var url = getDataUrl()
+    if (url) {
+      console.info('using data url', url)
+      state.storage.setRootUrl(url)
+      state.map.draw()
+    }
+  }
+
+  function onReady () {
+    state.storage = httpStorage(getDataUrl())
+
+    emitter.on('settings:updated', updateStorage)
+    emitter.on('map:zoom:set', updateStorage)
 
     var style = new Image
     style.onload = function () {
