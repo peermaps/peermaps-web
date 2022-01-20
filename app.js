@@ -58,8 +58,7 @@ app.use(function (state, emitter) {
   })
 
   emitter.on('map:zoom:add', function (x) {
-    state.map.setZoom(state.map.getZoom()+x)
-    state.map.draw()
+    emitter.emit('map:zoom:set', state.map.getZoom()+x)
   })
   emitter.on('map:zoom:set', function (x) {
     state.map.setZoom(x)
