@@ -157,15 +157,18 @@ function Settings (opts) {
 /**
  *
  */
-Settings.prototype.getDataUrl = function () {
-  // TODO pass in zoom level
+Settings.prototype.getDataUrl = function (zoom) {
   var backends = this.tabData.storage.backends
   for (var i = 0; i < backends.length; ++i) {
     var data = backends[i]
-    if (typeof data.url === 'string' && data.active) {
+    if (typeof data.url === 'string' &&
+        data.active &&
+        data.zoom[0] <= zoom &&
+        data.zoom[1] >= zoom) {
       return data.url
     }
   }
+  console.warn('no matching data url for zoom level', zoom)
 }
 
 /**
@@ -195,7 +198,7 @@ Settings.prototype.load = function (cb) {
           self.setTabDefaults(tab)
         }
       })
-      self.emitter.emit('settings:loaded')
+      self.emitter.emit('settings:ready')
       cb()
     })
 }
