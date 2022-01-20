@@ -11,7 +11,7 @@ function Settings (opts) {
 
   var emitter = self.emitter = opts.emitter
   self.db = opts.db
-  self.show = true
+  self.show = false
   self.dirty = false
   self.canReload = false
   self.width = 550
