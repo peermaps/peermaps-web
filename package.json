@@ -13,7 +13,8 @@
     "subleveldown": "^6.0.1"
   },
   "devDependencies": {
-    "budo": "^11.6.4"
+    "budo": "^11.6.4",
+    "indexhtmlify": "^2.0.1"
   },
   "browserify": {
     "transform": [
@@ -22,7 +23,7 @@
   },
   "scripts": {
     "start": "npm run prepare && npm run style && npm run web",
-    "build": "npm run prepare && npm run style && ./build.sh",
+    "build": "npm run prepare && npm run style && browserify app.js | indexhtmlify --title 'peermaps' > public/index.html",
     "prepare": "mkdir -p public && cp node_modules/eyros/2d.wasm public/eyros2d.wasm",
     "web": "budo app.js -l -d public",
     "style": "georender-style2png node_modules/georender-style2png/example/style.json -o public/style.png"
