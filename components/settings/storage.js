@@ -1,7 +1,7 @@
 var html = require('choo/html')
 var css = require('sheetify')
 
-var backendStyle = css`
+var storageStyle = css`
   :host {
     padding: 10px;
     padding-right: 15px;
@@ -9,7 +9,7 @@ var backendStyle = css`
   }
 `
 
-function StorageTab () {
+function StorageTab (config) {
   return {
     name: 'storage',
     description: 'Define data urls and zoom levels for map storage',
@@ -17,51 +17,51 @@ function StorageTab () {
       var self = this
       emitter.on('settings:storage:url:update', function (index, url) {
         var data = settings.getTabData('storage')
-        var backend = data.backends[index]
-        backend.url = url
+        var storage = data.storages[index]
+        storage.url = url
         emitter.emit('settings:dirty')
       })
       emitter.on('settings:storage:minzoom:update', function (index, min) {
         var data = settings.getTabData('storage')
-        var backend = data.backends[index]
-        backend.zoom[0] = Math.min(Number(min), backend.zoom[1])
+        var storage = data.storages[index]
+        storage.zoom[0] = Math.min(Number(min), storage.zoom[1])
         emitter.emit('settings:dirty')
       })
       emitter.on('settings:storage:maxzoom:update', function (index, max) {
         var data = settings.getTabData('storage')
-        var backend = data.backends[index]
-        backend.zoom[1] = Math.max(Number(max), backend.zoom[0])
+        var storage = data.storages[index]
+        storage.zoom[1] = Math.max(Number(max), storage.zoom[0])
         emitter.emit('settings:dirty')
       })
       emitter.on('settings:storage:description:update', function (index, description) {
         var data = settings.getTabData('storage')
-        var backend = data.backends[index]
-        backend.description = description
+        var storage = data.storages[index]
+        storage.description = description
         emitter.emit('settings:dirty')
       })
       emitter.on('settings:storage:active:update', function (index) {
         var data = settings.getTabData('storage')
-        var backend = data.backends[index]
-        backend.active = !backend.active
+        var storage = data.storages[index]
+        storage.active = !storage.active
         emitter.emit('settings:dirty')
       })
       emitter.on('settings:storage:delete', function (index) {
         var data = settings.getTabData('storage')
-        data.backends.splice(index, 1)
+        data.storages.splice(index, 1)
         emitter.emit('settings:dirty')
       })
       emitter.on('settings:storage:add', function () {
         var data = settings.getTabData('storage')
-        data.backends.push({ zoom: [1, 21], active: false })
+        data.storages.push({ zoom: [1, 21], active: false })
         emitter.emit('settings:dirty')
       })
     },
     render: function (data, emit) {
-      if (!Array.isArray(data.backends)) return
+      if (!Array.isArray(data.storages)) return
 
-      var content = data.backends.map(function (item, index) {
+      var content = data.storages.map(function (item, index) {
         var zoom = item.zoom
-        return html`<div class=${backendStyle}>
+        return html`<div class=${storageStyle}>
           <div style='position: absolute; right: 10px; cursor: pointer; padding-left: 4px; padding-right: 4px; border: 1px solid #999' onclick=${() => emit('settings:storage:delete', index)}>X</div>
           <label for='url'>data url</label>
           <input type='url' name='url' value=${item.url || ''} placeholder='https://example.com' required style='margin-top: 10px; margin-bottom: 10px; width: 100%;' onchange=${(e) => emit('settings:storage:url:update', index, e.target.value)}>
@@ -81,28 +81,8 @@ function StorageTab () {
       </div>`
     },
     defaultData: function () {
-      return {
-        backends: [
-          {
-            url: 'https://peermaps.linkping.org/data',
-            description: 'Peermaps data hosted by linkping.org',
-            zoom: [1, 21],
-            active: true
-          },
-          {
-            url: 'https://ipfs.io/ipfs/QmVCYUK51Miz4jEjJxCq3bA6dfq5FXD6s2EYp6LjHQhGmh',
-            description: 'Dataset on ipfs',
-            zoom: [1, 21],
-            active: false
-          },
-          {
-            url: 'http://localhost:8000',
-            description: 'Data from local machine',
-            zoom: [1, 21],
-            active: false
-          }
-        ]
-      }
+      var storages = [ ...config.storages ]
+      return { storages }
     }
   }
 }

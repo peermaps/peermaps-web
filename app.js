@@ -18,7 +18,8 @@ var nextTick = process.nextTick
 app.use(function (state, emitter) {
   var settings = Settings({
     emitter: emitter,
-    db: sub(db, 'settings', { valueEncoding: 'json' })
+    db: sub(db, 'settings', { valueEncoding: 'json' }),
+    config: config.settings
   })
   state.settings = settings
 })
@@ -90,28 +91,28 @@ app.use(function (state, emitter) {
     emitter.on('settings:ready', onReady)
   }
 
-  function getDataUrl () {
+  function getStorageUrl () {
     if (state.params.data) {
       return state.params.data
     } else {
-      return state.settings.getDataUrl(state.map.getZoom())
+      return state.settings.getStorageUrl(state.map.getZoom())
     }
   }
 
-  function updateStorage () {
-    var url = getDataUrl()
+  function updateStorageUrl () {
+    var url = getStorageUrl()
     if (url) {
-      console.info('using data url', url)
+      console.info('using storage url', url)
       state.storage.setRootUrl(url)
       state.map.draw()
     }
   }
 
   function onReady () {
-    state.storage = httpStorage(getDataUrl())
+    state.storage = httpStorage(getStorageUrl())
 
-    emitter.on('settings:updated', updateStorage)
-    emitter.on('map:zoom:set', updateStorage)
+    emitter.on('settings:updated', updateStorageUrl)
+    emitter.on('map:zoom:set', updateStorageUrl)
 
     var style = new Image
     style.onload = function () {
