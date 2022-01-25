@@ -11,6 +11,7 @@ var level = require('level')
 var sub = require('subleveldown')
 var db = level('peermaps-web')
 
+var config = require('./config.json')
 var Settings = require('./components/settings')
 var nextTick = process.nextTick
 
@@ -25,8 +26,8 @@ app.use(function (state, emitter) {
 app.use(function (state, emitter) {
   state.params = {
     data: '',
-    bbox: [7.56,47.55,7.58,47.56],
-    style: { url: 'style.png' }
+    bbox: config.bbox,
+    style: config.style
   }
   var qparams = new URLSearchParams(location.hash.replace(/^#/,''))
   if (qparams.has('data')) {

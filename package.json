@@ -24,7 +24,7 @@
   "scripts": {
     "start": "npm run prepare && npm run style && npm run web",
     "build": "npm run prepare && npm run style && browserify app.js | indexhtmlify --title 'peermaps' > public/index.html",
-    "prepare": "rm -rf public && mkdir public && cp node_modules/eyros/2d.wasm public/eyros2d.wasm",
+    "prepare": "cp -n config.default.json config.json && rm -rf public && mkdir public && cp node_modules/eyros/2d.wasm public/eyros2d.wasm",
     "web": "budo app.js -l -d public",
     "style": "georender-style2png node_modules/georender-style2png/example/style.json -o public/style.png"
   }
