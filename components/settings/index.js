@@ -90,7 +90,7 @@ function Settings (opts) {
     StorageTab(self.config.storage),
     {
       name: 'misc',
-      description: 'Miscelleanous settings',
+      description: 'miscelleanous settings',
       use: function (settings, emitter) {},
       render: function (data, emit) {
         return html`<div>In the misc tab</div>`
@@ -286,7 +286,7 @@ Settings.prototype.renderTabs = function (emit) {
       color: #999;
     `
     var name = tab.name
-    return html`<div class=${self.tabStyle} style=${cstyle} onclick=${() => emit('settings:ontabclick', name)}>${name}</div>`
+    return html`<div class=${self.tabStyle} style=${cstyle} onclick=${() => emit('settings:ontabclick', name)}><a title=${tab.description}>${name}</a></div>`
   })
   return html`<div class=${this.tabContainerStyle}>${content}</div>`
 }

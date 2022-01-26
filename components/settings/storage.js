@@ -12,7 +12,7 @@ var storageStyle = css`
 function StorageTab (config) {
   return {
     name: 'storage',
-    description: 'Define data urls and zoom levels for map storage',
+    description: 'storage urls and zoom levels',
     use: function (settings, emitter) {
       var self = this
       emitter.on('settings:storage:url:update', function (index, url) {
