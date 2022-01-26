@@ -15,7 +15,6 @@ function Settings (opts) {
 
   self.show = false
   self.dirty = false
-  self.canReload = false
   self.width = 550
 
   // TODO configure transparency level used in the settings dialog?
@@ -122,7 +121,6 @@ function Settings (opts) {
       if (err) {
         console.log('failed to reset settings data', err)
       } else {
-        self.canReload = false
         self.dirty = false
         emitter.emit('settings:updated')
         emitter.emit('render')
@@ -145,7 +143,6 @@ function Settings (opts) {
         console.log('failed to save settings data', err)
       } else {
         self.dirty = false
-        self.canReload = true
         emitter.emit('settings:updated')
         emitter.emit('render')
       }
@@ -194,7 +191,6 @@ Settings.prototype.load = function (cb) {
       var tab = self.tabs.find(tab => tab.name === key)
       if (tab) {
         self.tabData[tab.name] = value
-        self.canReload = true
       }
     })
     .on('error', function (err) {
@@ -308,12 +304,6 @@ Settings.prototype.renderButtons = function (emit) {
     `
   }
 
-  function onReload () {
-    if (self.canReload) {
-      emit('settings:reload')
-    }
-  }
-
   function onApply () {
     if (self.dirty) {
       emit('settings:apply')
@@ -321,9 +311,9 @@ Settings.prototype.renderButtons = function (emit) {
   }
 
   return html`<div class=${this.buttonContainerStyle}>
-    <div class=${this.buttonStyle} onclick=${() => emit('settings:reset')}>reset</div>
-    <div class=${this.buttonStyle} style=${cstyle(self.canReload)} onclick=${() => onReload()}>reload</div>
-    <div class=${this.buttonStyle} style=${cstyle(self.dirty)} onclick=${() => onApply()}>apply</div>
+    <div class=${this.buttonStyle} onclick=${() => emit('settings:reset')}><a title="reset to default">reset</a<>></div>
+    <div class=${this.buttonStyle} onclick=${() => emit('settings:reload')}><a title="reload from database">reload</a></div>
+    <div class=${this.buttonStyle} style=${cstyle(self.dirty)} onclick=${() => onApply()}><a title="apply changes">apply</a></div>
   </div>`
 }
 
