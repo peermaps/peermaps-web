@@ -192,7 +192,7 @@ app.route('*', function (state, emit) {
         height: 2em;
         width: 2em;
         font-family: monospace;
-        opacity: 30%;
+        opacity: 40%;
         background-color: black;
         color: white;
         border: 0px;
