@@ -231,15 +231,15 @@ app.route('*', function (state, emit) {
     </style>
     <div class="ui-overlay">
       <div class="buttons left-buttons">
-        <div><button class="arrow north" onclick=${panNorth}></button></div>
-        <div><button class="arrow west" onclick=${panWest}></button></div>
-        <div><button class="arrow east" onclick=${panEast}></button></div>
-        <div><button class="arrow south" onclick=${panSouth}></button></div>
-        <div><button style="top: 3em; left: 4.5em;" onclick=${zoomIn}>+</button></div>
-        <div><button style="top: 6em; left: 4.5em;" onclick=${zoomOut}>-</button></div>
+        <div><button title="north" class="arrow north" onclick=${panNorth}></button></div>
+        <div><button title="west" class="arrow west" onclick=${panWest}></button></div>
+        <div><button title="east" class="arrow east" onclick=${panEast}></button></div>
+        <div><button title="south" class="arrow south" onclick=${panSouth}></button></div>
+        <div><button title="zoom in" style="top: 3em; left: 4.5em;" onclick=${zoomIn}>+</button></div>
+        <div><button title="zoom out" style="top: 6em; left: 4.5em;" onclick=${zoomOut}>-</button></div>
       </div>
       <div class="buttons right-buttons">
-        <div><button class="toggle-settings" onclick=${toggleSettings}>${settings.show ? '>' : '<'}</button></div>
+        <div><button title="${settings.show ? 'close settings' : 'open settings'}" class="toggle-settings" onclick=${toggleSettings}>${settings.show ? '>' : '<'}</button></div>
       </div>
       ${settings.render(emit)}
     </div>
