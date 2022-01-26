@@ -11,13 +11,15 @@ var level = require('level')
 var sub = require('subleveldown')
 var db = level('peermaps-web')
 
+var config = require('./config.json')
 var Settings = require('./components/settings')
 var nextTick = process.nextTick
 
 app.use(function (state, emitter) {
   var settings = Settings({
     emitter: emitter,
-    db: sub(db, 'settings', { valueEncoding: 'json' })
+    db: sub(db, 'settings', { valueEncoding: 'json' }),
+    config: config.settings
   })
   state.settings = settings
 })
@@ -25,8 +27,8 @@ app.use(function (state, emitter) {
 app.use(function (state, emitter) {
   state.params = {
     data: '',
-    bbox: [7.56,47.55,7.58,47.56],
-    style: { url: 'style.png' }
+    bbox: config.bbox,
+    style: config.style
   }
   var qparams = new URLSearchParams(location.hash.replace(/^#/,''))
   if (qparams.has('data')) {
@@ -89,28 +91,28 @@ app.use(function (state, emitter) {
     emitter.on('settings:ready', onReady)
   }
 
-  function getDataUrl () {
+  function getStorageUrl () {
     if (state.params.data) {
       return state.params.data
     } else {
-      return state.settings.getDataUrl(state.map.getZoom())
+      return state.settings.getStorageUrl(state.map.getZoom())
     }
   }
 
-  function updateStorage () {
-    var url = getDataUrl()
+  function updateStorageUrl () {
+    var url = getStorageUrl()
     if (url) {
-      console.info('using data url', url)
+      console.info('using storage url', url)
       state.storage.setRootUrl(url)
       state.map.draw()
     }
   }
 
   function onReady () {
-    state.storage = httpStorage(getDataUrl())
+    state.storage = httpStorage(getStorageUrl())
 
-    emitter.on('settings:updated', updateStorage)
-    emitter.on('map:zoom:set', updateStorage)
+    emitter.on('settings:updated', updateStorageUrl)
+    emitter.on('map:zoom:set', updateStorageUrl)
 
     var style = new Image
     style.onload = function () {

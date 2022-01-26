@@ -11,6 +11,8 @@ function Settings (opts) {
 
   var emitter = self.emitter = opts.emitter
   self.db = opts.db
+  self.config = opts.config
+
   self.show = false
   self.dirty = false
   self.canReload = false
@@ -85,7 +87,7 @@ function Settings (opts) {
   `
 
   self.tabs = [
-    StorageTab(),
+    StorageTab(self.config.storage),
     {
       name: 'misc',
       description: 'Miscelleanous settings',
@@ -157,17 +159,17 @@ function Settings (opts) {
 /**
  *
  */
-Settings.prototype.getDataUrl = function (zoom) {
-  console.info('getting data url for zoom level', zoom)
+Settings.prototype.getStorageUrl = function (zoom) {
+  console.info('getting storage url for zoom level', zoom)
   var fallback
-  var backends = this.tabData.storage.backends
+  var storages = this.tabData.storage.storages
 
-  for (var i = 0; i < backends.length; ++i) {
-    var data = backends[i]
-    if (typeof data.url === 'string' && data.active) {
-      if (!fallback) fallback = data
-      if (data.zoom[0] <= zoom && data.zoom[1] >= zoom) {
-        return data.url
+  for (var i = 0; i < storages.length; ++i) {
+    var storage = storages[i]
+    if (typeof storage.url === 'string' && storage.active) {
+      if (!fallback) fallback = storage
+      if (storage.zoom[0] <= zoom && storage.zoom[1] >= zoom) {
+        return storage.url
       }
     }
   }
