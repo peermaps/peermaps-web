@@ -62,7 +62,7 @@ function StorageTab (config) {
       var content = data.storages.map(function (item, index) {
         var zoom = item.zoom
         return html`<div class=${storageStyle}>
-          <div style='position: absolute; right: 10px; cursor: pointer; padding-left: 4px; padding-right: 4px; border: 1px solid #999' onclick=${() => emit('settings:storage:delete', index)}>X</div>
+          <div style='position: absolute; right: 10px; cursor: pointer; padding-left: 4px; padding-right: 4px; border: 1px solid #999' onclick=${() => emit('settings:storage:delete', index)}><a title="delete storage">X</a></div>
           <label for='url'>data url</label>
           <input type='url' name='url' value=${item.url || ''} placeholder='https://example.com' required style='margin-top: 10px; margin-bottom: 10px; width: 100%;' onchange=${(e) => emit('settings:storage:url:update', index, e.target.value)}>
           <label for='minzoom'>min zoom level (${zoom[0]})</label>
@@ -77,7 +77,7 @@ function StorageTab (config) {
       })
       return html`<div>
         ${content}
-        <div style='cursor: pointer; margin: 5px; padding: 2px; border: 1px solid #999; width: 14px; text-align: center;' onclick=${() => emit('settings:storage:add')}>+</div>
+        <div style='cursor: pointer; margin: 5px; padding: 2px; border: 1px solid #999; width: 14px; text-align: center;' onclick=${() => emit('settings:storage:add')}><a title="add storage">+</a></div>
       </div>`
     },
     defaultData: function () {
