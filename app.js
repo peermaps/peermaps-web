@@ -109,7 +109,7 @@ app.use(function (state, emitter) {
       return createHttpBackend(url)
     } else if (protocol.startsWith('hyper')) {
       console.info('creating hyperdrive storage for url', url)
-      return createHyperdriveBackend(url, { debug: true })
+      return createHyperdriveBackend(url, { swarmOpts: config.swarmOpts, debug: true })
     } else {
       console.warn('missing protocol handler for url', url)
     }

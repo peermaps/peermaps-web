@@ -3,6 +3,12 @@
   "style": {
     "url": "style.png"
   },
+  "swarmOpts": {
+    "bootstrap": [
+      "wss://hyperswarm.linkping.org",
+      "wss://swarm.cblgh.org"
+    ]
+  },
   "settings": {
     "storage": {
       "storages": [
