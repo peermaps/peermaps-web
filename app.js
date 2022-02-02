@@ -107,7 +107,7 @@ app.use(function (state, emitter) {
     if (protocol.startsWith('http')) {
       console.info('creating http backend for url', url)
       return createHttpBackend(url)
-    } else if (protocol.startsWith('hyper')) {
+    } else if (protocol === 'hyper') {
       console.info('creating hyperdrive storage for url', url)
       return createHyperdriveBackend(url, { swarmOpts: config.swarmOpts, debug: true })
     } else {
