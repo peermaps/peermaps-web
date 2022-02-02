@@ -5,7 +5,10 @@ var eyros = require('eyros/2d')
 var mixmap = require('mixmap')
 var resl = require('resl')
 var regl = require('regl')
-var httpStorage = require('mixmap-peermaps/storage/http')
+
+var createStorage = require('./storage')
+var createHttpBackend = require('./storage/http')
+var createHyperdriveBackend = require('./storage/hyperdrive')
 
 var level = require('level')
 var sub = require('subleveldown')
@@ -99,20 +102,35 @@ app.use(function (state, emitter) {
     }
   }
 
-  function updateStorageUrl () {
+  function createStorageBackend (url) {
+    var protocol = typeof url === 'string' ? url.split('://')[0] : ''
+    if (protocol.startsWith('http')) {
+      console.info('creating http backend for url', url)
+      return createHttpBackend(url)
+    } else if (protocol.startsWith('hyper')) {
+      console.info('creating hyperdrive storage for url', url)
+      return createHyperdriveBackend(url, { debug: true })
+    } else {
+      console.warn('missing protocol handler for url', url)
+    }
+  }
+
+  function updateStorageBackend () {
+    var currentUrl = state.storage.getBackend().getRootUrl()
     var url = getStorageUrl()
-    if (url) {
-      console.info('using storage url', url)
-      state.storage.setRootUrl(url)
+    if (url && url !== currentUrl) {
+      console.info('now using storage url', url)
+      state.storage.setBackend(createStorageBackend(url))
       state.map.draw()
     }
   }
 
   function onReady () {
-    state.storage = httpStorage(getStorageUrl())
+    var backend = createStorageBackend(getStorageUrl())
+    state.storage = createStorage(backend)
 
-    emitter.on('settings:updated', updateStorageUrl)
-    emitter.on('map:zoom:set', updateStorageUrl)
+    emitter.on('settings:updated', updateStorageBackend)
+    emitter.on('map:zoom:set', updateStorageBackend)
 
     var style = new Image
     style.onload = function () {
