@@ -111,7 +111,6 @@ function Settings (opts) {
   })
   emitter.on('settings:ontabclick', function (name) {
     if (self.selected !== name) {
-      console.info('switching to tab (leave for debug purpose)', name)
       self.selected = name
       emitter.emit('render')
     }
@@ -160,7 +159,6 @@ function Settings (opts) {
  *
  */
 Settings.prototype.getStorageUrl = function (zoom) {
-  console.info('getting storage url for zoom level', zoom)
   var fallback
   var storages = this.tabData.storage.storages
 
