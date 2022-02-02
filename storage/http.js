@@ -9,7 +9,7 @@ module.exports = function (root) {
   var pending = 0
   var cache = {}
 
-  var backend = {
+  return {
     length: function f (name, cb) {
       var data = cache[name]
       if (data === undefined) {
@@ -40,37 +40,28 @@ module.exports = function (root) {
       } else {
         cb(null, data.subarray(offset, offset+length))
       }
-    }
-  }
-
-  backend.getRootUrl = function () {
-    return root
-  }
-
-  backend.setRootUrl = function (url) {
-    root = url
-  }
-
-  backend.destroy = function (name, cb) {
-    console.log('destroy',name)
-    if (controllers[name]) {
-      controllers[name].abort()
-    }
-    controllers[name] = null
-    if (cache[name]) {
-      delete cache[name]
-    }
-    for (var i = 0; i < queue.length; i++) {
-      var q = queue[i]
-      if (q.name === name) {
-        leak(q.name, q.cb)
+    },
+    getRootUrl: function () { return root },
+    setRootUrl: function (url) { root = url},
+    destroy: function (name, cb) {
+      console.log('destroy',name)
+      if (controllers[name]) {
+        controllers[name].abort()
       }
+      controllers[name] = null
+      if (cache[name]) {
+        delete cache[name]
+      }
+      for (var i = 0; i < queue.length; i++) {
+        var q = queue[i]
+        if (q.name === name) {
+          leak(q.name, q.cb)
+        }
+      }
+      queue = queue.filter(q => q.name !== name)
+      if (cb) cb()
     }
-    queue = queue.filter(q => q.name !== name)
-    if (cb) cb()
   }
-
-  return backend
 
   async function getData(name, cb) {
     if (active[name] || pending >= connectionLimit) {

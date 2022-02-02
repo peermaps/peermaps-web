@@ -42,7 +42,8 @@ module.exports = function (url, opts) {
     })
     if (!isOpen) open()
   })
-  var backend = {
+
+  return {
     length: function f (name, cb) {
       if (!isOpen) {
         return openQueue.push(function () { f(name, cb) })
@@ -67,24 +68,16 @@ module.exports = function (url, opts) {
           cb(err, buf)
         })
       })
+    },
+
+    getRootUrl: function () { return url },
+    setRootUrl: function () {},
+    destroy: function (name, cb) {
+      console.log('destroy',name)
+      // todo
+      if (typeof cb === 'function') cb()
     }
   }
-
-  backend.getRootUrl = function () {
-    return url
-  }
-
-  backend.setRootUrl = function () {
-    // no op - changing url on a hyperdrive storage doesn't make sense
-  }
-
-  backend.destroy = function (name, cb) {
-    console.log('destroy',name)
-    // todo
-    if (typeof cb === 'function') cb()
-  }
-
-  return backend
 
   function retry(f) {
     setTimeout(f, 1000)
