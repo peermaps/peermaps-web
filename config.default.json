@@ -19,6 +19,12 @@
           "active": true
         },
         {
+          "url": "hyper://3dd1656d6408a718fae1117b5283fb18cb1f9139b892ce0f8cacbb6737ec1d67",
+          "description": "Peermaps data via hyperswarm-web",
+          "zoom": [15, 21],
+          "active": false
+        },
+        {
           "url": "https://ipfs.io/ipfs/QmVCYUK51Miz4jEjJxCq3bA6dfq5FXD6s2EYp6LjHQhGmh",
           "description": "Dataset on ipfs",
           "zoom": [1, 21],
