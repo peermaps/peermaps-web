@@ -3,7 +3,7 @@ path.posix = path // work-around for https://github.com/andrewosh/mountable-hype
 
 var Hyperdrive = require('hyperdrive')
 var hyperswarm = require('hyperswarm-web')
-var RAM = require('random-access-memory')
+var ram = require('random-access-memory')
 var pump = require('pump')
 
 var DEFAULT_SWARM_OPTS = {
@@ -14,7 +14,7 @@ module.exports = function (url, opts) {
   opts = opts || {}
   var debug = opts.debug || false
   var key = url.replace(/^hyper:[\/]*/,'')
-  var drive = new Hyperdrive(RAM, key)
+  var drive = new Hyperdrive(opts.ram || ram, key)
   var isOpen = false
   var openQueue = []
   function open() {
