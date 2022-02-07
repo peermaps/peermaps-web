@@ -6,6 +6,7 @@ var mixmap = require('mixmap')
 var resl = require('resl')
 var regl = require('regl')
 
+var idbStorage = require('random-access-idb')
 var createStorage = require('./storage')
 var createHttpBackend = require('./storage/http')
 var createHyperdriveBackend = require('./storage/hyperdrive')
@@ -109,9 +110,21 @@ app.use(function (state, emitter) {
       return createHttpBackend(url)
     } else if (protocol === 'hyper') {
       console.info('creating hyperdrive storage for url', url)
-      return createHyperdriveBackend(url, { swarmOpts: config.swarmOpts, debug: true })
+      return createHyperdriveBackend(url, {
+        swarmOpts: config.swarmOpts,
+        ram: createIdbStorage(url),
+        debug: true
+      })
     } else {
       console.warn('missing protocol handler for url', url)
+    }
+  }
+
+  function createIdbStorage (url) {
+    try {
+      return idbStorage(url)
+    } catch (e) {
+      console.error('random-access-idb failed', e)
     }
   }
 
