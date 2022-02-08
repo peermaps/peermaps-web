@@ -31,7 +31,7 @@ module.exports = function (url, opts) {
   })
   swarm.on('connection', function (socket, info) {
     var peer = info.peer
-    console.log('replicate starting with peer', peer.host)
+    if (debug) console.log('replicate starting with peer', peer.host)
     pump(socket, drive.replicate(info.client), socket, function (err) {
       if (err) console.log('hyperdrive: pump ERROR', err.message)
     })
