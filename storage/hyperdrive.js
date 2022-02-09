@@ -27,10 +27,11 @@ module.exports = function (url, opts) {
   var swarm = hyperswarm(opts.swarmOpts || DEFAULT_SWARM_OPTS)
   drive.once('ready', function () {
     swarm.join(drive.discoveryKey)
+    if (!isOpen) open()
   })
   swarm.on('connection', function (socket, info) {
     var peer = info.peer
-    console.log('replicate starting with peer', peer.host)
+    if (debug) console.log('replicate starting with peer', peer.host)
     pump(socket, drive.replicate(info.client), socket, function (err) {
       if (err) console.log('hyperdrive: pump ERROR', err.message)
     })
@@ -40,7 +41,6 @@ module.exports = function (url, opts) {
     socket.on('error', function (err) {
       console.log('hyperdrive: stream ERROR for peer', peer.host, err.message)
     })
-    if (!isOpen) open()
   })
 
   return {
