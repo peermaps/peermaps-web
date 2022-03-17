@@ -23,7 +23,7 @@
     ]
   },
   "scripts": {
-    "start": "npm run prepare && npm run web",
+    "start": "npm run prepare && cp index-dev.html public/index.html && npm run web",
     "build": "npm run prepare && npm run browserify",
     "prepare": "npm run prepare:config && npm run prepare:public && npm run prepare:style && npm run prepare:wasm",
     "prepare:config": "cp -n config.default.json config.json",
