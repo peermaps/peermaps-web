@@ -27,6 +27,7 @@ function Settings (opts) {
       right: 0px;
       background: rgba(0, 0, 0, 0.7);
       height: 100%;
+      max-width: 100%;
     }
   `
   self.tabContainerStyle = css`
