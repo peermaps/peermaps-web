@@ -77,7 +77,7 @@ function StorageTab (config) {
       })
       return html`<div>
         ${content}
-        <div style='cursor: pointer; margin: 5px; padding: 2px; border: 1px solid #999; width: 14px; text-align: center;' onclick=${() => emit('settings:storage:add')}>+</div>
+        <a title='add storage'><div style='cursor: pointer; margin: 5px; padding: 2px; border: 1px solid #999; width: 14px; text-align: center;' onclick=${() => emit('settings:storage:add')}>+</div></a>
       </div>`
     },
     defaultData: function () {
