@@ -198,6 +198,12 @@ app.route('*', function (state, emit) {
         font-family: monospace;
         color: white;
       }
+      svg {
+        fill: grey;
+      }
+      svg:hover {
+        fill: white;
+      }
       .ui-overlay {
         z-index: 2000;
       }
