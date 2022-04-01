@@ -27,6 +27,7 @@ function Settings (opts) {
       right: 0px;
       background: rgba(0, 0, 0, 0.7);
       height: 100%;
+      max-width: 100%;
     }
   `
   self.tabContainerStyle = css`
@@ -66,18 +67,20 @@ function Settings (opts) {
       left: 0px;
       right: 0px;
       display: flex;
-      justify-content: end;
+      justify-content: space-between;
       align-items: center;
       border-top: 1px solid #999;
       padding-right: 10px;
+      display: flex;
     }
   `
   self.buttonStyle = css`
     :host {
       background: black;
-      width: 50px;
       text-align: center;
-      margin-left: 10px;
+      min-width: 20px;
+      width: 50px;
+      margin-left: 5px;
       margin-top: 0px;
       margin-bottom: 0px;
       padding: 5px;
@@ -319,9 +322,12 @@ Settings.prototype.renderButtons = function (emit) {
   }
 
   return html`<div class=${this.buttonContainerStyle}>
-    <div class=${this.buttonStyle} onclick=${() => emit('settings:reset')}>reset</div>
-    <div class=${this.buttonStyle} style=${cstyle(self.canReload)} onclick=${() => onReload()}>reload</div>
-    <div class=${this.buttonStyle} style=${cstyle(self.dirty)} onclick=${() => onApply()}>apply</div>
+    <a title='hide'><div class=${this.buttonStyle} style='max-width: 20px;' onclick=${() => emit('settings:toggle')}>${'>'}</div></a>
+    <div style='display: flex;'>
+      <div class=${this.buttonStyle} onclick=${() => emit('settings:reset')}>reset</div>
+      <div class=${this.buttonStyle} style=${cstyle(self.canReload)} onclick=${() => onReload()}>reload</div>
+      <div class=${this.buttonStyle} style=${cstyle(self.dirty)} onclick=${() => onApply()}>apply</div>
+    </div>
   </div>`
 }
 
