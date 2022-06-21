@@ -44,6 +44,12 @@ app.use(function (state, emitter) {
   if (qparams.has('style')) {
     state.params.style.url = fixURL(qparams.get('style'))
   }
+  if (qparams.has('debug')) {
+    state.params.debug = qparams.get('debug')
+    if (state.params.debug === '') state.params.debug = true
+    if (state.params.debug === 'false') state.params.debug = false
+    if (state.params.debug === '0') state.params.debug = false
+  }
 })
 
 function fixURL(u) {
@@ -107,7 +113,7 @@ app.use(function (state, emitter) {
     var protocol = typeof url === 'string' ? url.split('://')[0] : ''
     if (protocol.startsWith('http')) {
       console.info('creating http backend for url', url)
-      return createHttpBackend(url)
+      return createHttpBackend(url, { debug: state.params.debug })
     } else if (protocol === 'hyper') {
       console.info('creating hyperdrive storage for url', url)
       return createHyperdriveBackend(url, {
