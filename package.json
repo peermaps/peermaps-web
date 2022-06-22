@@ -15,6 +15,7 @@
     "regl": "^2.1.0",
     "resl": "^1.0.3",
     "sheetify": "^7.4.0",
+    "sparse-geonames-search": "^1.0.0",
     "subleveldown": "^6.0.1"
   },
   "devDependencies": {

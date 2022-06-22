@@ -182,6 +182,23 @@ Settings.prototype.getStorageUrl = function (zoom) {
   }
 }
 
+Settings.prototype.getSearchEndpoint = function () {
+  var endpoints = (this.config.search || {}).endpoints || []
+  var fallback
+  for (var i = 0; i < endpoints.length; ++i) {
+    var endpoint = endpoints[i]
+    if (typeof endpoint.url === 'string' && endpoint.active) {
+      if (!fallback) fallback = endpoint
+    }
+  }
+  if (fallback) {
+    return fallback.url
+  } else {
+    console.warn('no matching search endpoint')
+  }
+}
+
+
 /**
  * Loads json data for all tabs and use default data if nothing was stored.
  */
