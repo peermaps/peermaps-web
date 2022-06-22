@@ -12,7 +12,7 @@ module.exports = function (state, emit) {
       </div>
     </form>
     <div class="results">
-      ${state.search.results.map(r => html`<div class="result">
+      ${state.search.results.map(r => html`<div class="result" onclick=${() => jump(r)}>
         <div class="fullname">
           <div class="name">${r.name}</div>
           <div class="admin">${admin(r).join(' ')}</div>
@@ -33,6 +33,9 @@ module.exports = function (state, emit) {
     var q = ev.target.elements.query.value
     if (q === '') emit('search:clear')
     else emit('search:query', q)
+  }
+  function jump(r) {
+    emit('map:center', [ r.longitude, r.latitude ])
   }
 }
 

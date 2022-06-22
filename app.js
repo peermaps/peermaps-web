@@ -97,6 +97,15 @@ app.use(function (state, emitter) {
     state.map.setViewbox(viewbox)
     state.map.draw()
   })
+  emitter.on('map:center', function (lonlat) {
+    var dx = 0.01
+    var dy = 0.01
+    state.map.setViewbox([
+      lonlat[0]-dx, lonlat[1]-dy,
+      lonlat[0]+dx, lonlat[1]+dy
+    ])
+    state.map.draw()
+  })
 })
 
 app.use(function (state, emitter) {
