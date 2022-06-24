@@ -81,7 +81,7 @@ module.exports = function (root, opts) {
     var to = setTimeout(function () {
       if (controllers[name]) controllers[name].abort()
       delete controllers[name]
-    }, 10_000)
+    }, 10000)
     var delay = 10
     var data = null
     try {
@@ -94,7 +94,7 @@ module.exports = function (root, opts) {
       } else {
         if (debug) console.error(name, err)
         queue.push({ name, cb })
-        delay = 5_000
+        delay = 5000
       }
     }
     clearTimeout(to)
