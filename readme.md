@@ -2,6 +2,8 @@
 
 > Map web application for peermaps
 
+[![Node.js CI](https://github.com/peermaps/peermaps-web/actions/workflows/node.js.yml/badge.svg)](https://github.com/peermaps/peermaps-web/actions/workflows/node.js.yml)
+
 ![image](image.png)
 
 ## usage
