@@ -37,7 +37,7 @@
     "prepare:style": "georender-style2png node_modules/georender-style2png/example/style.json -o public/style.png",
     "prepare:wasm": "cp node_modules/eyros/2d.wasm public/eyros2d.wasm",
     "browserify": "browserify -p tinyify app.js | indexhtmlify --title 'peermaps' > public/index.html",
-    "test:browserify": "browserify -p tinyify app.js",
+    "test:browserify": "browserify -p tinyify app.js > /dev/null",
     "web": "budo app.js -l -d public"
   }
 }
