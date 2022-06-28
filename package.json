@@ -21,7 +21,7 @@
   "devDependencies": {
     "budo": "^11.6.4",
     "indexhtmlify": "^2.0.1",
-    "tinyify": "^3.0.0"
+    "tinyify": "ralphtheninja/tinyify#ecma-version"
   },
   "browserify": {
     "transform": [
@@ -37,7 +37,7 @@
     "prepare:style": "georender-style2png node_modules/georender-style2png/example/style.json -o public/style.png",
     "prepare:wasm": "cp node_modules/eyros/2d.wasm public/eyros2d.wasm",
     "browserify": "browserify -p tinyify app.js | indexhtmlify --title 'peermaps' > public/index.html",
-    "test:browserify": "browserify -p tinyify app.js > /dev/null",
+    "test:browserify": "browserify -p [ tinyify --ecmaVersion 10 ] app.js > /dev/null",
     "web": "budo app.js -l -d public"
   }
 }
