@@ -6,10 +6,8 @@ var mixmap = require('mixmap')
 var resl = require('resl')
 var regl = require('regl')
 
-var idbStorage = require('random-access-idb')
 var createStorage = require('./storage')
-var createHttpBackend = require('./storage/http')
-var createHyperdriveBackend = require('./storage/hyperdrive')
+var createStorageBackend = require('./storage/backend')
 
 var level = require('level')
 var sub = require('subleveldown')
@@ -123,43 +121,19 @@ app.use(function (state, emitter) {
     }
   }
 
-  function createStorageBackend (url) {
-    var protocol = typeof url === 'string' ? url.split('://')[0] : ''
-    if (protocol.startsWith('http')) {
-      console.info('creating http backend for url', url)
-      return createHttpBackend(url, { debug: state.params.debug })
-    } else if (protocol === 'hyper') {
-      console.info('creating hyperdrive storage for url', url)
-      return createHyperdriveBackend(url, {
-        swarmOpts: config.swarmOpts,
-        ram: createIdbStorage(url),
-        debug: true
-      })
-    } else {
-      console.warn('missing protocol handler for url', url)
-    }
-  }
-
-  function createIdbStorage (url) {
-    try {
-      return idbStorage(url)
-    } catch (e) {
-      console.error('random-access-idb failed', e)
-    }
-  }
-
   function updateStorageBackend () {
-    var currentUrl = state.storage.getBackend().getRootUrl()
+    var storage = state.storage
+    var currentUrl = storage.getBackend().getRootUrl()
     var url = getStorageUrl()
     if (url && url !== currentUrl) {
       console.info('now using storage url', url)
-      state.storage.setBackend(createStorageBackend(url))
+      state.storage.setBackend(createStorageBackend(state, url))
       state.map.draw()
     }
   }
 
   function onReady () {
-    var backend = createStorageBackend(getStorageUrl())
+    var backend = createStorageBackend(state, getStorageUrl())
     state.storage = createStorage(backend)
 
     emitter.on('settings:updated', updateStorageBackend)
