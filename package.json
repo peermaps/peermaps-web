@@ -31,13 +31,15 @@
   "scripts": {
     "start": "npm run prepare && cp index-dev.html public/index.html && npm run web",
     "build": "npm run prepare && npm run browserify",
+    "build:webxdc": "npm run prepare && npm run browserify:webxdc",
     "prepare": "npm run prepare:config && npm run prepare:public && npm run prepare:style && npm run prepare:wasm",
     "prepare:config": "cp -n config.default.json config.json",
     "prepare:public": "rm -rf public && mkdir public",
     "prepare:style": "georender-style2png node_modules/georender-style2png/example/style.json -o public/style.png",
     "prepare:wasm": "cp node_modules/eyros/2d.wasm public/eyros2d.wasm",
-    "browserify": "browserify -p tinyify app.js | indexhtmlify --title 'peermaps' > public/index.html",
-    "test:browserify": "browserify -p [ tinyify --ecmaVersion 10 ] app.js > /dev/null",
+    "browserify": "ln -sf backend-browser.js storage/backend.js && browserify app.js | indexhtmlify --title 'peermaps' > public/index.html",
+    "browserify:webxdc": "ln -sf backend-webxdc.js storage/backend.js && browserify -p [ tinyify --ecmaVersion 10 ] app.js | indexhtmlify --title 'peermaps (webxdc)' > public/index.html",
+    "test:browserify:webxdc": "ln -sf backend-webxdc.js storage/backend.js && browserify -p [ tinyify --ecmaVersion 10 ] app.js > /dev/null",
     "web": "budo app.js -l -d public"
   }
 }
