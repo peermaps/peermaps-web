@@ -3,8 +3,6 @@ var config = require('../config.json')
 var createHttpBackend = require('./http')
 var createHyperdriveBackend = require('./hyperdrive')
 
-console.log('in browser backend')
-
 function createIdbStorage (url) {
   try {
     return idbStorage(url)

@@ -40,6 +40,6 @@
     "browserify": "ln -sf backend-browser.js storage/backend.js && browserify app.js | indexhtmlify --title 'peermaps' > public/index.html",
     "browserify:webxdc": "ln -sf backend-webxdc.js storage/backend.js && browserify -p [ tinyify --ecmaVersion 10 ] app.js | indexhtmlify --title 'peermaps (webxdc)' > public/index.html",
     "test:browserify:webxdc": "ln -sf backend-webxdc.js storage/backend.js && browserify -p [ tinyify --ecmaVersion 10 ] app.js > /dev/null",
-    "web": "budo app.js -l -d public"
+    "web": "ln -sf backend-browser.js storage/backend.js && budo app.js -l -d public"
   }
 }
