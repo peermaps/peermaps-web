@@ -30,6 +30,7 @@
   },
   "scripts": {
     "start": "npm run prepare && cp index-dev.html public/index.html && npm run web",
+    "start:webxdc": "npm run prepare && cp index-dev.html public/index.html && npm run webxdc",
     "build": "npm run prepare && npm run browserify",
     "build:webxdc": "npm run prepare && npm run browserify:webxdc",
     "prepare": "npm run prepare:config && npm run prepare:public && npm run prepare:style && npm run prepare:wasm",
@@ -40,6 +41,7 @@
     "browserify": "ln -sf backend-browser.js storage/backend.js && browserify app.js | indexhtmlify --title 'peermaps' > public/index.html",
     "browserify:webxdc": "ln -sf backend-webxdc.js storage/backend.js && browserify -p [ tinyify --ecmaVersion 10 ] app.js | indexhtmlify --title 'peermaps (webxdc)' > public/index.html",
     "test:browserify:webxdc": "ln -sf backend-webxdc.js storage/backend.js && browserify -p [ tinyify --ecmaVersion 10 ] app.js > /dev/null",
-    "web": "ln -sf backend-browser.js storage/backend.js && budo app.js -l -d public"
+    "web": "ln -sf backend-browser.js storage/backend.js && budo app.js -l -d public",
+    "webxdc": "ln -sf backend-webxdc.js storage/backend.js && budo app.js -l -d public"
   }
 }
