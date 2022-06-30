@@ -1,6 +1,18 @@
 var rx = 0
 var connectionLimit = 10
 
+const serializeCache = () => {
+  const result = ['const cache = {}']
+  Object.keys(window.CACHE).forEach(k => {
+    const v = window.CACHE[k]
+    result.push(`cache['${k}'] = new Uint8Array([${v.join(',')}])`)
+  })
+  result.push('module.exports = cache')
+  return result.join(';')
+}
+
+window.serializeCache = serializeCache
+
 module.exports = function (root, opts) {
   if (!opts) opts = {}
   var debug = opts.debug
@@ -10,6 +22,8 @@ module.exports = function (root, opts) {
   var queue = []
   var pending = 0
   var cache = {}
+
+  window.CACHE = cache
 
   return {
     length: function f (name, cb) {
