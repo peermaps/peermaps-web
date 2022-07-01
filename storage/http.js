@@ -1,17 +1,15 @@
 var rx = 0
 var connectionLimit = 10
 
-const serializeCache = () => {
-  const result = ['const cache = {}']
-  Object.keys(window.CACHE).forEach(k => {
-    const v = window.CACHE[k]
-    result.push(`cache['${k}'] = new Uint8Array([${v.join(',')}])`)
+window.serializeMapCache = function () {
+  const code = ['const c={}']
+  Object.keys(window.MAP_CACHE).forEach(k => {
+    const v = window.MAP_CACHE[k]
+    code.push(`c['${k}'] = new Uint8Array([${v.join(',')}])`)
   })
-  result.push('module.exports = cache')
-  return result.join(';')
+  code.push('module.exports = cache')
+  return code.join(';')
 }
-
-window.serializeCache = serializeCache
 
 module.exports = function (root, opts) {
   if (!opts) opts = {}
@@ -23,7 +21,7 @@ module.exports = function (root, opts) {
   var pending = 0
   var cache = {}
 
-  window.CACHE = cache
+  window.MAP_CACHE = cache
 
   return {
     length: function f (name, cb) {

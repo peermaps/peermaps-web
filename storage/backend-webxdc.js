@@ -1,4 +1,4 @@
-const cache = require('./cache')
+const cache = require('./map-cache')
 const nextTick = process.nextTick
 
 function createStorageBackend (state, url) {
