@@ -7,7 +7,7 @@ window.serializeMapCache = function () {
     const v = window.MAP_CACHE[k]
     code.push(`c['${k}'] = new Uint8Array([${v.join(',')}])`)
   })
-  code.push('module.exports = cache')
+  code.push('module.exports = c')
   return code.join(';')
 }
 
