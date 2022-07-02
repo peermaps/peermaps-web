@@ -1,6 +1,16 @@
 var rx = 0
 var connectionLimit = 10
 
+window.serializeMapCache = function () {
+  const code = ['const c={}']
+  Object.keys(window.MAP_CACHE).forEach(k => {
+    const v = window.MAP_CACHE[k]
+    code.push(`c['${k}'] = new Uint8Array([${v.join(',')}])`)
+  })
+  code.push('module.exports = c')
+  return code.join(';')
+}
+
 module.exports = function (root, opts) {
   if (!opts) opts = {}
   var debug = opts.debug
@@ -10,6 +20,8 @@ module.exports = function (root, opts) {
   var queue = []
   var pending = 0
   var cache = {}
+
+  window.MAP_CACHE = cache
 
   return {
     length: function f (name, cb) {
@@ -81,7 +93,7 @@ module.exports = function (root, opts) {
     var to = setTimeout(function () {
       if (controllers[name]) controllers[name].abort()
       delete controllers[name]
-    }, 10_000)
+    }, 10000)
     var delay = 10
     var data = null
     try {
@@ -94,7 +106,7 @@ module.exports = function (root, opts) {
       } else {
         if (debug) console.error(name, err)
         queue.push({ name, cb })
-        delay = 5_000
+        delay = 5000
       }
     }
     clearTimeout(to)

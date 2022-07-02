@@ -2,3 +2,5 @@ config.json
 node_modules/
 public/
 package-lock.json
+storage/backend.js
+peermaps.xdc
