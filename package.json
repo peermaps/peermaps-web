@@ -40,11 +40,9 @@
     "prepare:public": "rm -rf public && mkdir public",
     "prepare:style": "georender-style2png node_modules/georender-style2png/example/style.json -o public/style.png",
     "prepare:wasm": "cp node_modules/eyros/2d.wasm public/eyros2d.wasm",
-    "browserify": "ln -sf backend-browser.js storage/backend.js && browserify app.js | indexhtmlify --title 'peermaps' > public/index.html",
-    "browserify:webxdc": "ln -sf backend-webxdc.js storage/backend.js && browserify -p [ tinyify --ecmaVersion 10 ] app.js | indexhtmlify --title 'peermaps (webxdc)' > public/index.html && rm -f peermaps.xdc && zip -j -r peermaps.xdc public/ && echo '>> public/ folder disk size' && du -sh public && echo '>> peermaps.xdc size' && wc -c peermaps.xdc",
-    "test:browserify:webxdc": "ln -sf backend-webxdc.js storage/backend.js && browserify -p [ tinyify --ecmaVersion 10 ] app.js > /dev/null",
-    "web": "ln -sf backend-browser.js storage/backend.js && npm run budo",
-    "webxdc": "ln -sf backend-webxdc.js storage/backend.js && concurrently \"npm:budo\" \"webxdc-dev run http://localhost:9966\"",
-    "budo": "budo app.js -l -d public"
+    "browserify": "browserify -r ./storage/backend-browser.js:./storage/backend app.js | indexhtmlify --title 'peermaps' > public/index.html",
+    "browserify:webxdc": "browserify -r ./storage/backend-webxdc.js:./storage/backend app.js | indexhtmlify --title 'peermaps (webxdc)' > public/index.html && rm -f peermaps.xdc && zip -j -r peermaps.xdc public/ && echo '>> public/ folder disk size' && du -sh public && echo '>> peermaps.xdc size' && wc -c peermaps.xdc",
+    "web": "budo app.js -l -d public -- -r ./storage/backend-browser.js:./storage/backend",
+    "webxdc": "concurrently \"budo app.js -l -d public -- -r ./storage/backend-webxdc.js:./storage/backend\" \"webxdc-dev run http://localhost:9966\""
   }
 }
