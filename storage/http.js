@@ -1,5 +1,6 @@
 var rx = 0
 var connectionLimit = 10
+var nextTick = process.nextTick
 
 window.serializeMapCache = function () {
   const code = ['const c={}']
@@ -33,7 +34,7 @@ module.exports = function (root, opts) {
           cb(null, data.length)
         })
       } else {
-        cb(null, data.length)
+        nextTick(cb, null, data.length)
       }
     },
     read: function f (name, offset, length, cb) {
@@ -50,9 +51,9 @@ module.exports = function (root, opts) {
           }
         })
       } else if (offset === 0 && length === data.length) {
-        cb(null, data)
+        nextTick(cb, null, data)
       } else {
-        cb(null, data.subarray(offset, offset+length))
+        nextTick(cb, null, data.subarray(offset, offset+length))
       }
     },
     getRootUrl: function () { return root },
@@ -73,7 +74,7 @@ module.exports = function (root, opts) {
         }
       }
       queue = queue.filter(q => q.name !== name)
-      if (cb) cb()
+      if (cb) nextTick(cb)
     }
   }
 
