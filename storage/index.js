@@ -38,21 +38,19 @@ module.exports = function (STATE, URL) {
     }
   }
 
-  // TODO use throw below on nyi methods
-
   var storageFn = function (name) {
     return {
       write: function (offset, buf, cb) {
-        cb(new Error('write not implemented'))
+        throw new Error('write not implemented')
       },
       truncate: function (length, cb) {
-        cb(new Error('truncate not implemented'))
+        throw new Error('truncate not implemented')
       },
       del: function (cb) {
-        cb(new Error('del not implemented'))
+        throw new Error('del not implemented')
       },
       sync: function (cb) {
-        cb(new Error('sync not implemented'))
+        throw new Error('sync not implemented')
       },
       length: function (cb) {
         backend.length(name, cb)
