@@ -22,8 +22,6 @@ function createStorageBackend (state, url) {
       ram: createIdbStorage(url),
       debug
     })
-  } else {
-    console.warn('missing protocol handler for url', url)
   }
 }
 
