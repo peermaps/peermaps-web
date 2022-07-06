@@ -125,9 +125,10 @@ module.exports = function (root, opts) {
         }
       }
       if (found) queue = queue.filter(q => q.name !== name)
-      if (callbacks[name]) {
-        for (var i = 0; i < callbacks.length; i++) {
-          try { callbacks[i](null, data) }
+      var cbs = callbacks[name]
+      if (Array.isArray(cbs)) {
+        for (var i = 0; i < cbs.length; i++) {
+          try { cbs[i](null, data) }
           catch (err) { if (debug) console.error(err) }
         }
         delete callbacks[name]
