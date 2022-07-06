@@ -5,7 +5,7 @@ var createStorageBackend = require('./backend')
  */
 module.exports = function (STATE, URL) {
   var backend = undefined
-  var backendCache = {}
+  var cache = {}
 
   // TODO add some clean up functionality in update for cached backends
   // that no longer should stay alive to clean up resources etc
@@ -15,7 +15,7 @@ module.exports = function (STATE, URL) {
     backend = createStorageBackend(state, url)
     if (backend) {
       if (debug) console.log('storage: created new backend for url', url)
-      backendCache[url] = backend
+      cache[url] = backend
     } else {
       console.warn('storage: missing protocol handler for url', url)
     }
@@ -24,7 +24,7 @@ module.exports = function (STATE, URL) {
   function updateBackend (state, url) {
     var debug = state.params.debug
     if (backend) {
-      var cached = backendCache[url]
+      var cached = cache[url]
       if (cached && cached === backend) {
         if (debug) console.log('storage: not updating backend')
       } else if (cached) {
