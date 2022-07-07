@@ -71,8 +71,6 @@ module.exports = function (url, opts) {
       })
     },
 
-    getRootUrl: function () { return url },
-    setRootUrl: function () {},
     destroy: function (name, cb) {
       console.log('destroy',name)
       // todo

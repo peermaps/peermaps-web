@@ -56,8 +56,6 @@ module.exports = function (root, opts) {
         nextTick(cb, null, data.subarray(offset, offset+length))
       }
     },
-    getRootUrl: function () { return root },
-    setRootUrl: function (url) { root = url},
     destroy: function (name, cb) {
       if (debug) console.log('destroy',name)
       if (controllers[name]) {
