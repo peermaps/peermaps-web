@@ -1,10 +1,11 @@
 var createHttpBackend = require('./http')
 
 function createStorageBackend (state, url) {
-  // TODO using http backend directly for all urls, even though only ipfs
-  // is supported over http (since webxdc client can't do http calls to
-  // http urls on the outside)
-  return createHttpBackend(url)
+  var protocol = typeof url === 'string' ? url.split('://')[0] : ''
+  var debug = state.params.debug
+  if (protocol.startsWith('ipfs')) {
+    return createHttpBackend(url, { debug: state.params.debug })
+  }
 }
 
 module.exports = createStorageBackend

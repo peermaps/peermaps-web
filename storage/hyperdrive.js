@@ -3,8 +3,9 @@ path.posix = path // work-around for https://github.com/andrewosh/mountable-hype
 
 var Hyperdrive = require('hyperdrive')
 var hyperswarm = require('hyperswarm-web')
-var ram = require('random-access-memory')
 var pump = require('pump')
+var idbStorage = require('random-access-idb')
+var ram = require('random-access-memory')
 
 var DEFAULT_SWARM_OPTS = {
   bootstrap: [ 'wss://swarm.cblgh.org' ]
@@ -14,7 +15,7 @@ module.exports = function (url, opts) {
   opts = opts || {}
   var debug = opts.debug || false
   var key = url.replace(/^hyper:[\/]*/,'')
-  var drive = new Hyperdrive(opts.ram || ram, key)
+  var drive = new Hyperdrive(createIdbStorage(url), key)
   var isOpen = false
   var openQueue = []
   function open() {
@@ -70,8 +71,6 @@ module.exports = function (url, opts) {
       })
     },
 
-    getRootUrl: function () { return url },
-    setRootUrl: function () {},
     destroy: function (name, cb) {
       console.log('destroy',name)
       // todo
@@ -81,5 +80,14 @@ module.exports = function (url, opts) {
 
   function retry(f) {
     setTimeout(f, 1000)
+  }
+}
+
+function createIdbStorage (url) {
+  try {
+    return idbStorage(url)
+  } catch (e) {
+    console.warn('random-access-idb failed', e)
+    return ram
   }
 }
