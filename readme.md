@@ -91,17 +91,20 @@ The short answer, is that we have managed to build a `.xdc` file and launch it i
 
 You can bundle a webxdc app yourself with the following basic steps:
 
-* first open peermaps in the browser, optionally modify the `bbox` url parameter for your target location
-* we're currently only saving cache data from http requests, so make sure that the storage you're using is http and not something else
-* type `console.log(window.serializeMapCache())` in the browser console and you'll get the cached map data as a string, this will contain all cached map data via http calls so make sure to reload the page so the cache is cleared and only contains the bare minimum
-* copy paste this string into `storage/web-cache.js`
-* run `npm run build:webxdc`
-* take the resulting `peermaps.xdc` and attach it to a message in `DeltaChat`
+* `npm install`
+* `npm run build:webxdc`
+* attach the resulting `peermaps.xdc` to a chat
+
+**NOTE** currently this only works on a modified version of `deltachat-desktop`, where `ipfs cat` calls are made to the local ipfs daemon and funneled back when a `fetch()` call is made to `ipfs://${CIDv1}` urls. This is done in a streaming fashion.
+
+To get this modified version you can do e.g.:
+
+```sh
+cd $(mktemp -d) && git clone https://github.com/ralphtheninja/deltachat-desktop.git -b ipfs-experimental && cd deltachat-desktop && npm i && npm run dev
+```
 
 How do we take it further from here? Some questions:
 
-* we could add a feature in `peermaps-web` with a button to export the cached map data or a ui where you draw a rectangle `->` this would at least simplify this process of using the console and manually copying data to a file on disk
-* can we use this type of map data to pass around as attachments to different webxdc instances? `->` this would help a lot with the application size
 * can we get rid of the webgl extensions altogether? at least the most problematic ones? `->` this would make it easier to run the app on different systems and webviews
 * there's also the webxdc api that we haven't touched on yet to interact between different instances for a different user experience, maybe sharing POIs and whatnot
 
