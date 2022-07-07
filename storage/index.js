@@ -38,8 +38,6 @@ module.exports = function (STATE, URL) {
     }
   }
 
-  // TODO use throw below on nyi methods
-
   var storageFn = function (name) {
     return {
       write: function (offset, buf, cb) {
