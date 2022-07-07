@@ -7,7 +7,6 @@ var resl = require('resl')
 var regl = require('regl')
 
 var createStorage = require('./storage')
-var createStorageBackend = require('./storage/backend')
 
 var level = require('level')
 var sub = require('subleveldown')
@@ -122,19 +121,12 @@ app.use(function (state, emitter) {
   }
 
   function updateStorageBackend () {
-    var storage = state.storage
-    var currentUrl = storage.getBackend().getRootUrl()
-    var url = getStorageUrl()
-    if (url && url !== currentUrl) {
-      console.info('now using storage url', url)
-      state.storage.setBackend(createStorageBackend(state, url))
-      state.map.draw()
-    }
+    state.storage.updateBackend(state, getStorageUrl())
+    state.map.draw()
   }
 
   function onReady () {
-    var backend = createStorageBackend(state, getStorageUrl())
-    state.storage = createStorage(backend)
+    state.storage = createStorage(state, getStorageUrl())
 
     emitter.on('settings:updated', updateStorageBackend)
     emitter.on('map:zoom:set', updateStorageBackend)
