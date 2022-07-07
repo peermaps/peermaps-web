@@ -12,42 +12,36 @@ module.exports = function (url, opts) {
   var pending = 0
   var db = level(url, { keyEncoding: 'string', valueEncoding: 'binary' })
 
+  function wrappedGet (name, cb) {
+    db.get(name, function (err, data) {
+      if (!err) {
+        cb(null, data)
+      } else {
+        getData(name, function (err, data) {
+          if (err) return cb(err)
+          db.put(name, data, function (err) {
+            if (err) cb(err)
+            else cb(null, data)
+          })
+        })
+      }
+    })
+  }
+
   return {
     length: function f (name, cb) {
-      db.get(name, function (err, data) {
-        if (!err) {
-          return cb(null, data.length)
-        } else if (err) {
-          getData(name, function (err, data) {
-            if (err) return cb(err)
-            db.put(name, data, function (err) {
-              if (err) return cb(err)
-              else cb(null, data.length)
-            })
-          })
-        }
+      wrappedGet(name, function (err, data) {
+        cb(err, err ? null : data.length)
       })
     },
     read: function f (name, offset, length, cb) {
-      function done (data) {
-        if (offset === 0 && length === data.length) {
+      wrappedGet(name, function (err, data) {
+        if (err) {
+          cb(err)
+        } else if (offset === 0 && length === data.length) {
           cb(null, data)
         } else {
           cb(null, data.subarray(offset, offset+length))
-        }
-      }
-
-      db.get(name, function (err, data) {
-        if (!err) {
-          done(data)
-        } else if (err) {
-          getData(name, function (err, data) {
-            if (err) return cb(err)
-            db.put(name, data, function (err) {
-              if (err) return cb(err)
-              done(data)
-            })
-          })
         }
       })
     },
