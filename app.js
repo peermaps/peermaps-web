@@ -40,6 +40,7 @@ app.use(require('./store/settings.js'))
 app.use(require('./store/search.js'))
 
 var view = {
+  settings: require('./view/settings.js'),
   search: require('./view/search.js'),
 }
 
@@ -334,8 +335,8 @@ app.route('*', function (state, emit) {
       <div class="buttons right-bottom-buttons">
         <div><button onclick=${toggleSearch}>${state.search.visible ? 'x' : '?'}</button></div>
       </div>
-      ${view.search(state,emit)}
-      ${settings.render(emit)}
+      ${view.search(state, emit)}
+      ${view.settings(state, emit)}
     </div>
     ${state.mix.render()}
     ${state.map.render({ width: state.width, height: state.height })}
