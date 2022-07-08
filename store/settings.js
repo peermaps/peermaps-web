@@ -13,7 +13,7 @@ function Settings (state, emitter) {
 
   self.db = sub(state.db, 'settings', { valueEncoding: 'json' }),
 
-  self.show = true // TODO for debug purpose
+  self.show = false
   self.dirty = false
   self.canReload = false
   self.width = 550
