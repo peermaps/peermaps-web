@@ -8,33 +8,9 @@ var regl = require('regl')
 
 var createStorage = require('./storage')
 
-var config = require('./config.json')
 var nextTick = process.nextTick
 
-app.use(function (state, emitter) {
-  state.params = {
-    data: '',
-    bbox: config.bbox,
-    style: config.style
-  }
-  var qparams = new URLSearchParams(location.hash.replace(/^#/,''))
-  if (qparams.has('data')) {
-    state.params.data = fixURL(qparams.get('data'))
-  }
-  if (qparams.has('bbox')) {
-    state.params.bbox = qparams.get('bbox').split(/\s*,\s*/).map(parseFloat)
-  }
-  if (qparams.has('style')) {
-    state.params.style.url = fixURL(qparams.get('style'))
-  }
-  if (qparams.has('debug')) {
-    state.params.debug = qparams.get('debug')
-    if (state.params.debug === '') state.params.debug = true
-    if (state.params.debug === 'false') state.params.debug = false
-    if (state.params.debug === '0') state.params.debug = false
-  }
-})
-
+app.use(require('./store/params.js'))
 app.use(require('./store/db.js'))
 app.use(require('./store/settings.js'))
 app.use(require('./store/search.js'))
@@ -42,13 +18,6 @@ app.use(require('./store/search.js'))
 var view = {
   settings: require('./view/settings/index.js'),
   search: require('./view/search.js'),
-}
-
-function fixURL(u) {
-  if (/^\/?ipfs\//.test(u)) {
-    u = 'https://ipfs.io/' + u.replace(/^\//,'')
-  }
-  return u
 }
 
 app.use(function (state, emitter) {
