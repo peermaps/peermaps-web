@@ -8,22 +8,8 @@ var regl = require('regl')
 
 var createStorage = require('./storage')
 
-var level = require('level')
-var sub = require('subleveldown')
-var db = level('peermaps-web')
-
 var config = require('./config.json')
-var Settings = require('./components/settings')
 var nextTick = process.nextTick
-
-app.use(function (state, emitter) {
-  var settings = Settings({
-    emitter: emitter,
-    db: sub(db, 'settings', { valueEncoding: 'json' }),
-    config: config.settings
-  })
-  state.settings = settings
-})
 
 app.use(function (state, emitter) {
   state.params = {
@@ -49,7 +35,10 @@ app.use(function (state, emitter) {
   }
 })
 
+app.use(require('./store/db.js'))
+app.use(require('./store/settings.js'))
 app.use(require('./store/search.js'))
+
 var view = {
   search: require('./view/search.js'),
 }
