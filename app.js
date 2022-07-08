@@ -40,7 +40,7 @@ app.use(require('./store/settings.js'))
 app.use(require('./store/search.js'))
 
 var view = {
-  settings: require('./view/settings.js'),
+  settings: require('./view/settings/index.js'),
   search: require('./view/search.js'),
 }
 
