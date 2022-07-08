@@ -7,30 +7,12 @@ app.use(require('./store/db.js'))
 app.use(require('./store/settings.js'))
 app.use(require('./store/search.js'))
 app.use(require('./store/mixmap.js'))
+app.use(require('./store/window.js'))
 
 var view = {
   settings: require('./view/settings/index.js'),
   search: require('./view/search.js'),
 }
-
-app.use(function (state, emitter) {
-  window.addEventListener('keydown', function (ev) {
-    if (ev.code === 'Digit0') {
-      emitter.emit('map:zoom:set', 6)
-    } else if (ev.code === 'Minus') {
-      emitter.emit('map:zoom:add', -1)
-    } else if (ev.code === 'Equal') {
-      emitter.emit('map:zoom:add', +1)
-    }
-  })
-  state.width = window.innerWidth
-  state.height = window.innerHeight
-  window.addEventListener('resize', function (ev) {
-    state.width = window.innerWidth
-    state.height = window.innerHeight
-    emitter.emit('render')
-  })
-})
 
 app.route('*', function (state, emit) {
   nextTick(function () {
