@@ -2,6 +2,80 @@ var html = require('choo/html')
 var css = require('sheetify')
 var StorageTab = require('./storage')
 
+var containerStyle = css`
+  :host {
+    z-index: inherit;
+    position: absolute;
+    right: 0px;
+    background: rgba(0, 0, 0, 0.7);
+    height: 100%;
+    max-width: 100%;
+  }
+`
+
+var tabContainerStyle = css`
+  :host {
+    display: flex;
+    justify-content: space-around;
+    height: 25px;
+  }
+`
+
+var tabStyle = css`
+  :host {
+    text-align: center;
+    width: 100%;
+    cursor: pointer;
+    padding: 5px;
+  }
+`
+
+var tabContentStyle = css`
+  :host {
+    background: rgba(0, 0, 0, 0.3);
+    position: absolute;
+    top: 25px;
+    bottom: 40px;
+    left: 0px;
+    right: 0px;
+    overflow-x: hidden;
+    overflow-y: auto;
+    border-left: 1px solid #999;
+    border-right: 1px solid #999;
+  }
+`
+
+var buttonContainerStyle = css`
+  :host {
+    position: absolute;
+    bottom: 0px;
+    height: 40px;
+    left: 0px;
+    right: 0px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-top: 1px solid #999;
+    padding-right: 10px;
+    display: flex;
+  }
+`
+
+var buttonStyle = css`
+  :host {
+    background: black;
+    text-align: center;
+    min-width: 20px;
+    width: 50px;
+    margin-left: 5px;
+    margin-top: 0px;
+    margin-bottom: 0px;
+    padding: 5px;
+    cursor: pointer;
+    border: 1px solid #999;
+  }
+`
+
 /**
  * Settings dialog.
  */
@@ -17,77 +91,6 @@ function Settings (opts) {
   self.dirty = false
   self.canReload = false
   self.width = 550
-
-  // TODO configure transparency level used in the settings dialog?
-
-  self.containerStyle = css`
-    :host {
-      z-index: inherit;
-      position: absolute;
-      right: 0px;
-      background: rgba(0, 0, 0, 0.7);
-      height: 100%;
-      max-width: 100%;
-    }
-  `
-  self.tabContainerStyle = css`
-    :host {
-      display: flex;
-      justify-content: space-around;
-      height: 25px;
-    }
-  `
-  self.tabStyle = css`
-    :host {
-      text-align: center;
-      width: 100%;
-      cursor: pointer;
-      padding: 5px;
-    }
-  `
-  self.tabContentStyle = css`
-    :host {
-      background: rgba(0, 0, 0, 0.3);
-      position: absolute;
-      top: 25px;
-      bottom: 40px;
-      left: 0px;
-      right: 0px;
-      overflow-x: hidden;
-      overflow-y: auto;
-      border-left: 1px solid #999;
-      border-right: 1px solid #999;
-    }
-  `
-  self.buttonContainerStyle = css`
-    :host {
-      position: absolute;
-      bottom: 0px;
-      height: 40px;
-      left: 0px;
-      right: 0px;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      border-top: 1px solid #999;
-      padding-right: 10px;
-      display: flex;
-    }
-  `
-  self.buttonStyle = css`
-    :host {
-      background: black;
-      text-align: center;
-      min-width: 20px;
-      width: 50px;
-      margin-left: 5px;
-      margin-top: 0px;
-      margin-bottom: 0px;
-      padding: 5px;
-      cursor: pointer;
-      border: 1px solid #999;
-    }
-  `
 
   self.tabs = [
     StorageTab(self.config.storage),
@@ -283,7 +286,7 @@ Settings.prototype.render = function (emit) {
   var self = this
   if (!self.show) return
   var cstyle = `width: ${self.width}px;`
-  return html`<div class=${self.containerStyle} style=${cstyle}>
+  return html`<div class=${containerStyle} style=${cstyle}>
     ${self.renderTabs(emit)}
     ${self.renderTabContent(emit)}
     ${self.renderButtons(emit)}
@@ -304,16 +307,16 @@ Settings.prototype.renderTabs = function (emit) {
       color: #999;
     `
     var name = tab.name
-    return html`<div class=${self.tabStyle} style=${cstyle} onclick=${() => emit('settings:ontabclick', name)}>${name}</div>`
+    return html`<div class=${tabStyle} style=${cstyle} onclick=${() => emit('settings:ontabclick', name)}>${name}</div>`
   })
-  return html`<div class=${this.tabContainerStyle}>${content}</div>`
+  return html`<div class=${tabContainerStyle}>${content}</div>`
 }
 
 Settings.prototype.renderTabContent = function (emit) {
   var tab = this.getSelectedTab()
   var data = this.getTabData(tab.name)
   if (data) {
-    return html`<div class=${this.tabContentStyle}>${tab.render(data, emit)}</div>`
+    return html`<div class=${tabContentStyle}>${tab.render(data, emit)}</div>`
   }
 }
 
@@ -338,12 +341,12 @@ Settings.prototype.renderButtons = function (emit) {
     }
   }
 
-  return html`<div class=${this.buttonContainerStyle}>
-    <a title='hide'><div class=${this.buttonStyle} style='max-width: 20px;' onclick=${() => emit('settings:toggle')}>${'>'}</div></a>
+  return html`<div class=${buttonContainerStyle}>
+    <a title='hide'><div class=${buttonStyle} style='max-width: 20px;' onclick=${() => emit('settings:toggle')}>${'>'}</div></a>
     <div style='display: flex;'>
-      <div class=${this.buttonStyle} onclick=${() => emit('settings:reset')}>reset</div>
-      <div class=${this.buttonStyle} style=${cstyle(self.canReload)} onclick=${() => onReload()}>reload</div>
-      <div class=${this.buttonStyle} style=${cstyle(self.dirty)} onclick=${() => onApply()}>apply</div>
+      <div class=${buttonStyle} onclick=${() => emit('settings:reset')}>reset</div>
+      <div class=${buttonStyle} style=${cstyle(self.canReload)} onclick=${() => onReload()}>reload</div>
+      <div class=${buttonStyle} style=${cstyle(self.dirty)} onclick=${() => onApply()}>apply</div>
     </div>
   </div>`
 }
