@@ -64,6 +64,7 @@ module.exports = function (state, emitter) {
         eyros,
         storage: state.storage,
         wasmSource: fetch('eyros2d.wasm'),
+        font: maybeFetchFont(),
         style
       })
     }
@@ -81,6 +82,12 @@ module.exports = function (state, emitter) {
   function updateStorageBackend () {
     state.storage.updateBackend(state, getStorageUrl())
     state.map.draw()
+  }
+
+  function maybeFetchFont() {
+    var font = state.settings.getFont()
+    if (!font) return undefined
+    return fetch(font)
   }
 
   if (state.params.data) {

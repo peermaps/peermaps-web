@@ -8,7 +8,7 @@
     "hyperswarm-web": "^2.2.0",
     "level": "^7.0.1",
     "mixmap": "^1.5.2",
-    "mixmap-peermaps": "^1.2.0",
+    "mixmap-peermaps": "^1.4.1",
     "pump": "^3.0.0",
     "random-access-idb": "^1.2.2",
     "random-access-memory": "^4.1.0",
