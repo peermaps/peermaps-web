@@ -15,7 +15,7 @@ module.exports = function (state, emitter) {
   if (qparams.has('bbox')) {
     params.bbox = qparams.get('bbox').split(/\s*,\s*/).map(parseFloat)
   } else if (Array.isArray(params.bbox)) {
-    updateViewBox(params.bbox)
+    updateViewboxParams(params.bbox)
   }
   if (qparams.has('style')) {
     params.style.url = fixURL(qparams.get('style'))
@@ -30,11 +30,11 @@ module.exports = function (state, emitter) {
     params.fonts = { endpoints: qparams.getAll('font').map(fixURL) }
   }
 
-  function updateViewBox (bbox) {
+  function updateViewboxParams (bbox) {
     qparams.set('bbox', bbox.toString())
     window.location.hash = qparams.toString()
   }
-  emitter.on('map:viewbox:updated', updateViewBox)
+  emitter.on('map:viewbox:updated', updateViewboxParams)
 
   state.params = params
 }
