@@ -9,6 +9,7 @@ module.exports = function (state, emitter) {
     debug: false
   }
   var qparams = new URLSearchParams(window.location.hash.replace(/^#/,''))
+  var timeout = null
   if (qparams.has('data')) {
     params.data = fixURL(qparams.get('data'))
   }
@@ -31,8 +32,13 @@ module.exports = function (state, emitter) {
   }
 
   function updateViewboxParams (bbox) {
-    qparams.set('bbox', bbox.toString())
-    window.location.hash = qparams.toString()
+    if (!timeout) {
+      timeout = setTimeout(function () {
+        timeout = null
+        qparams.set('bbox', bbox.toString())
+        window.location.hash = qparams.toString()
+      }, 500)
+    }
   }
   emitter.on('map:viewbox:updated', updateViewboxParams)
 
