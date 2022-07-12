@@ -198,7 +198,7 @@ Settings.prototype.getSearchEndpoint = function () {
 }
 
 Settings.prototype.getFont = function () {
-  var endpoints = (this.params.font || {}).endpoints || []
+  var endpoints = (this.params.fonts || {}).endpoints || []
   var fallback
   for (var i = 0; i < endpoints.length; ++i) {
     var endpoint = endpoints[i]

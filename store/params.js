@@ -4,7 +4,7 @@ module.exports = function (state, emitter) {
   state.params = {
     data: '',
     bbox: config.bbox,
-    font: config.font,
+    fonts: config.fonts,
     style: config.style,
     debug: false
   }
@@ -25,7 +25,7 @@ module.exports = function (state, emitter) {
     if (state.params.debug === '0') state.params.debug = false
   }
   if (qparams.has('font')) {
-    state.params.font = { endpoints: qparams.getAll('font').map(fixURL) }
+    state.params.fonts = { endpoints: qparams.getAll('font').map(fixURL) }
   }
 }
 
