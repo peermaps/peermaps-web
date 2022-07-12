@@ -3,6 +3,7 @@ var pump = require('pump')
 var sgs = require('sparse-geonames-search')
 
 module.exports = function (state, emitter) {
+  var debug = state.parameters.debug
   state.search = {
     visible: false,
     results: [],
@@ -14,12 +15,12 @@ module.exports = function (state, emitter) {
       read: function (name, cb) {
         var e = state.search.endpoint
         var u = /\/$/.test(e) ? e + name : e + '/' + name
-        if (state.params.debug) console.log(`search request ${u}`)
+        if (debug) console.log(`search request ${u}`)
         fetch(u).then(r => r.arrayBuffer()).then(r => {
-          if (state.params.debug) console.log(`search response (${r.byteLength} bytes) ${u}`)
+          if (debug) console.log(`search response (${r.byteLength} bytes) ${u}`)
           cb(null, Buffer.from(r))
         }).catch((err) => {
-          if (state.params.debug) console.log('search fetch error', err)
+          if (debug) console.log('search fetch error', err)
           cb(err)
         })
       }

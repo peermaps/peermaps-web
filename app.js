@@ -2,7 +2,7 @@ var app = require('choo')()
 var html = require('choo/html')
 var nextTick = process.nextTick
 
-app.use(require('./store/params.js'))
+app.use(require('./store/parameters.js'))
 app.use(require('./store/db.js'))
 app.use(require('./store/settings.js'))
 app.use(require('./store/search.js'))
