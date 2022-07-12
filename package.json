@@ -3,7 +3,7 @@
   "dependencies": {
     "choo": "^7.1.0",
     "eyros": "^4.7.0",
-    "georender-style2png": "^3.0.0",
+    "georender-style2png": "^5.0.1",
     "hyperdrive": "^10.21.0",
     "hyperswarm-web": "^2.2.0",
     "level": "^7.0.1",
