@@ -1,7 +1,7 @@
 var config = require('../config.json')
 
 module.exports = function (state, emitter) {
-  state.params = {
+  var params = {
     data: '',
     bbox: config.bbox,
     fonts: config.fonts,
@@ -10,23 +10,27 @@ module.exports = function (state, emitter) {
   }
   var qparams = new URLSearchParams(window.location.hash.replace(/^#/,''))
   if (qparams.has('data')) {
-    state.params.data = fixURL(qparams.get('data'))
+    params.data = fixURL(qparams.get('data'))
   }
   if (qparams.has('bbox')) {
-    state.params.bbox = qparams.get('bbox').split(/\s*,\s*/).map(parseFloat)
+    params.bbox = qparams.get('bbox').split(/\s*,\s*/).map(parseFloat)
+  } else if (Array.isArray(params.bbox)) {
+    qparams.set('bbox', params.bbox.toString())
+    window.location.hash = qparams.toString()
   }
   if (qparams.has('style')) {
-    state.params.style.url = fixURL(qparams.get('style'))
+    params.style.url = fixURL(qparams.get('style'))
   }
   if (qparams.has('debug')) {
-    state.params.debug = qparams.get('debug')
-    if (state.params.debug === '') state.params.debug = true
-    if (state.params.debug === 'false') state.params.debug = false
-    if (state.params.debug === '0') state.params.debug = false
+    params.debug = qparams.get('debug')
+    if (params.debug === '') params.debug = true
+    if (params.debug === 'false') params.debug = false
+    if (params.debug === '0') params.debug = false
   }
   if (qparams.has('font')) {
-    state.params.fonts = { endpoints: qparams.getAll('font').map(fixURL) }
+    params.fonts = { endpoints: qparams.getAll('font').map(fixURL) }
   }
+  state.params = params
 }
 
 function fixURL (u) {
