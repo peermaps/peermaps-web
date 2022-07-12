@@ -17,6 +17,7 @@ function Settings (state, emitter) {
   self.dirty = false
   self.canReload = false
   self.width = 550
+  self.params = state.params
 
   self.tabs = [
     {
@@ -193,6 +194,22 @@ Settings.prototype.getSearchEndpoint = function () {
     return fallback.url
   } else {
     console.warn('no matching search endpoint')
+  }
+}
+
+Settings.prototype.getFont = function () {
+  var endpoints = (this.params.fonts || {}).endpoints || []
+  var fallback
+  for (var i = 0; i < endpoints.length; ++i) {
+    var endpoint = endpoints[i]
+    if (typeof endpoint.url === 'string' && endpoint.active) {
+      if (!fallback) fallback = endpoint
+    }
+  }
+  if (fallback) {
+    return fallback.url
+  } else {
+    console.warn('no matching font endpoint')
   }
 }
 

@@ -3,6 +3,20 @@
   "style": {
     "url": "style.png"
   },
+  "fonts": {
+    "endpoints": [
+      {
+        "url": "https://ipfs.io/ipfs/QmNQCPGV3XZrtNdQyMbZhSJcGisg4xCFyxeHs1tacrdETm/DejaVuSans.qbzf",
+        "description": "DejaVuSans on ipfs",
+        "active": true
+      },
+      {
+        "url": "hyper://126065f6b93924f976034b84ce74d9d570a44903ce9d110069a7aa65ddccd507/DejaVuSans.qbzf",
+        "description": "DejaVuSans on hyperdrive",
+        "active": false
+      }
+    ]
+  },
   "swarmOpts": {
     "bootstrap": [
       "wss://hyperswarm.linkping.org",

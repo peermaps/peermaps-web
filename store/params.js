@@ -4,6 +4,7 @@ module.exports = function (state, emitter) {
   state.params = {
     data: '',
     bbox: config.bbox,
+    fonts: config.fonts,
     style: config.style,
     debug: false
   }
@@ -22,6 +23,9 @@ module.exports = function (state, emitter) {
     if (state.params.debug === '') state.params.debug = true
     if (state.params.debug === 'false') state.params.debug = false
     if (state.params.debug === '0') state.params.debug = false
+  }
+  if (qparams.has('font')) {
+    state.params.fonts = { endpoints: qparams.getAll('font').map(fixURL) }
   }
 }
 
