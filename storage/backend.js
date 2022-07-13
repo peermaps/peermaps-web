@@ -4,7 +4,7 @@ var config = require('../config.json')
 
 function createStorageBackend (state, url) {
   var protocol = typeof url === 'string' ? url.split('://')[0] : ''
-  var debug = state.params.debug
+  var debug = state.parameters.debug
   if (protocol.startsWith('http')) {
     return createHttpBackend(url, { debug })
   } else if (protocol === 'hyper') {

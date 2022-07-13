@@ -11,7 +11,7 @@ module.exports = function (STATE, URL) {
   // that no longer should stay alive to clean up resources etc
 
   function createNewBackend (state, url) {
-    var debug = state.params.debug
+    var debug = state.parameters.debug
     backend = createStorageBackend(state, url)
     if (backend) {
       if (debug) console.log('storage: created new backend for url', url)
@@ -22,7 +22,7 @@ module.exports = function (STATE, URL) {
   }
 
   function updateBackend (state, url) {
-    var debug = state.params.debug
+    var debug = state.parameters.debug
     if (backend) {
       var cached = cache[url]
       if (cached && cached === backend) {
