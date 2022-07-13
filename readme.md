@@ -112,7 +112,7 @@ The following settings can be set via url search parameters:
 
 * `data` (string) url to data source, defaults to `https://peermaps.linkping.org/data` (taken from the first active url in `config.settings.storage.storages` matching the current zoom level)
 * `bbox` (comma separated string `'minx,miny,maxx,maxy'`) view bounding box, defaults to `'7.56,47.55,7.58,47.56'` (taken from `config.bbox`)
-* `pos` (comma separated string `'posx,posy'`) map center position, temporary url parameter that will generate a suitable value for `bbox`
+* `lonlat` (comma separated string `'lon,lat'`) map center position, temporary url parameter that will generate a suitable value for `bbox`
 * `style` (string) url to shader style png, defaults to `style.png` (taken from `config.style.url`)
 
 **Example** `http://localhost:9966/#data=http://localhost:8000` would set the `data` source to `http://localhost:8000`.

@@ -14,10 +14,10 @@ module.exports = function (state, emitter) {
   if (qparams.has('data')) {
     parameters.data = fixURL(qparams.get('data'))
   }
-  if (qparams.has('pos')) {
-    var pos = qparams.get('pos').split(/\s*,\s*/).map(parseFloat)
-    parameters.bbox = centerViewbox(pos)
-    qparams.delete('pos')
+  if (qparams.has('lonlat')) {
+    var lonlat = qparams.get('lonlat').split(/\s*,\s*/).map(parseFloat)
+    parameters.bbox = centerViewbox(lonlat)
+    qparams.delete('lonlat')
     updateViewboxParams(parameters.bbox)
   } else if (qparams.has('bbox')) {
     parameters.bbox = qparams.get('bbox').split(/\s*,\s*/).map(parseFloat)
