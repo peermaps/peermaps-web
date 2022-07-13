@@ -36,13 +36,25 @@ module.exports = function (state, emitter) {
       timeout = setTimeout(function () {
         timeout = null
         qparams.set('bbox', bbox)
-        window.location.hash = qparams.toString()
+        window.location.hash = encodeParams(qparams)
       }, 500)
     }
   }
   emitter.on('map:viewbox:updated', updateViewboxParams)
 
   state.parameters = parameters
+}
+
+function encodeParams (qparams) {
+  var parts = []
+  qparams.forEach(function (value, key) {
+    parts.push(lenientEscape(key) + '=' + lenientEscape(value))
+  })
+  return parts.join('&')
+}
+
+function lenientEscape (x) {
+  return x.replace(/[&=%]/g, encodeURIComponent)
 }
 
 function fixURL (u) {
