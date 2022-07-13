@@ -3,7 +3,7 @@ var mixmap = require('mixmap')
 var mixmapPeermaps = require('mixmap-peermaps')
 var eyros = require('eyros/2d')
 var createStorage = require('../storage')
-var centerViewbox = require('../util').centerViewbox
+var centerViewbox = require('../lib/bbox').centerViewbox
 
 module.exports = function (state, emitter) {
   state.mix = mixmap(regl, {

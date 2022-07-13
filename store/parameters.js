@@ -1,5 +1,5 @@
 var config = require('../config.json')
-var centerViewbox = require('../util').centerViewbox
+var centerViewbox = require('../lib/bbox').centerViewbox
 
 module.exports = function (state, emitter) {
   var parameters = {
