@@ -35,7 +35,7 @@ module.exports = function (state, emitter) {
     if (!timeout) {
       timeout = setTimeout(function () {
         timeout = null
-        qparams.set('bbox', bbox)
+        qparams.set('bbox', bbox.map(p => Math.round(p * 100000) / 100000))
         window.location.hash = encodeParams(qparams)
       }, 500)
     }
