@@ -18,6 +18,9 @@ module.exports = function (state, emitter) {
     pickfb: { colorFormat: 'rgba', colorType: 'float32' }
   })
 
+  state.map.on('viewbox', function (viewbox) {
+    emitter.emit('map:viewbox:updated', viewbox)
+  })
   emitter.on('map:zoom:add', function (x) {
     emitter.emit('map:zoom:set', state.map.getZoom()+x)
   })
@@ -48,6 +51,10 @@ module.exports = function (state, emitter) {
       lonlat[0]-dx, lonlat[1]-dy,
       lonlat[0]+dx, lonlat[1]+dy
     ])
+    state.map.draw()
+  })
+  emitter.on('parameters:bbox:updated', function (viewbox) {
+    state.map.setViewbox(viewbox)
     state.map.draw()
   })
 
