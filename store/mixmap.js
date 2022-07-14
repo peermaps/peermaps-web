@@ -3,6 +3,7 @@ var mixmap = require('mixmap')
 var mixmapPeermaps = require('mixmap-peermaps')
 var eyros = require('eyros/2d')
 var createStorage = require('../storage')
+var centerViewbox = require('../lib/bbox').centerViewbox
 
 module.exports = function (state, emitter) {
   state.mix = mixmap(regl, {
@@ -45,12 +46,7 @@ module.exports = function (state, emitter) {
     state.map.draw()
   })
   emitter.on('map:center', function (lonlat) {
-    var dx = 0.01
-    var dy = 0.01
-    state.map.setViewbox([
-      lonlat[0]-dx, lonlat[1]-dy,
-      lonlat[0]+dx, lonlat[1]+dy
-    ])
+    state.map.setViewbox(centerViewbox(lonlat))
     state.map.draw()
   })
   emitter.on('parameters:bbox:updated', function (viewbox) {

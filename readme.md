@@ -27,13 +27,33 @@ Running `npm run build` will result in a `public/` folder with static content th
 
 ### via `config.json`
 
-Settings can be configured by providing a `config.json` file with the following default values taken from `config.default.json`:
+Configuration can be provided in a `config.json` file with the following default values taken from `config.default.json`:
 
 ```json
 {
   "bbox": [7.56,47.55,7.58,47.56],
   "style": {
     "url": "style.png"
+  },
+  "fonts": {
+    "endpoints": [
+      {
+        "url": "https://ipfs.io/ipfs/QmNQCPGV3XZrtNdQyMbZhSJcGisg4xCFyxeHs1tacrdETm/DejaVuSans.qbzf",
+        "description": "DejaVuSans on ipfs",
+        "active": true
+      },
+      {
+        "url": "hyper://126065f6b93924f976034b84ce74d9d570a44903ce9d110069a7aa65ddccd507/DejaVuSans.qbzf",
+        "description": "DejaVuSans on hyperdrive",
+        "active": false
+      }
+    ]
+  },
+  "swarmOpts": {
+    "bootstrap": [
+      "wss://hyperswarm.linkping.org",
+      "wss://swarm.cblgh.org"
+    ]
   },
   "settings": {
     "storage": {
@@ -43,6 +63,12 @@ Settings can be configured by providing a `config.json` file with the following 
           "description": "Peermaps data hosted by linkping.org",
           "zoom": [1, 21],
           "active": true
+        },
+        {
+          "url": "hyper://3dd1656d6408a718fae1117b5283fb18cb1f9139b892ce0f8cacbb6737ec1d67",
+          "description": "Peermaps data via hyperswarm-web",
+          "zoom": [15, 21],
+          "active": false
         },
         {
           "url": "https://ipfs.io/ipfs/QmVCYUK51Miz4jEjJxCq3bA6dfq5FXD6s2EYp6LjHQhGmh",
@@ -58,6 +84,22 @@ Settings can be configured by providing a `config.json` file with the following 
         }
       ]
     }
+    "search": {
+      "endpoints": [
+        {
+          "url": "https://ipfs.io/ipfs/QmcWEeF9UGuo1VUw8N97uEH5rjcXvoay2fJusDvajHfmNN",
+          "description": "cities500 ipfs",
+          "type": "sparse-geonames",
+          "active": true
+        },
+        {
+          "url": "hyper://c1fed4a7be3d36e437fec0fba04d40fee7565ccf756c4801ffcea2f0ae1eecc9",
+          "description": "cities500 hyperdrive",
+          "type": "sparse-geonames",
+          "active": false
+        }
+      ]
+    }
   }
 }
 ```
@@ -68,9 +110,10 @@ If you want to run your own version of `peermaps-web` with a different configura
 
 The following settings can be set via url search parameters:
 
-* `data` (string) url to data source, defaults to `https://peermaps.linkping.org/data` (taken from the first active url in `settings.storages` matching the current zoom level)
-* `bbox` (comma separated string `'minx,miny,maxx,maxy'`) view bounding box, defaults to `'7.56,47.55,7.58,47.56'` (taken from `settings.bbox`)
-* `style` (string) url to shader style png, defaults to `style.png` (taken from `settings.style.url`)
+* `data` (string) url to data source, defaults to `https://peermaps.linkping.org/data` (taken from the first active url in `config.settings.storage.storages` matching the current zoom level)
+* `bbox` (comma separated string `'minx,miny,maxx,maxy'`) view bounding box, defaults to `'7.56,47.55,7.58,47.56'` (taken from `config.bbox`)
+* `lonlat` (comma separated string `'lon,lat'`) map center position, temporary url parameter that will generate a suitable value for `bbox`
+* `style` (string) url to shader style png, defaults to `style.png` (taken from `config.style.url`)
 
 **Example** `http://localhost:9966/#data=http://localhost:8000` would set the `data` source to `http://localhost:8000`.
 
@@ -107,7 +150,6 @@ How do we take it further from here? Some questions:
 
 * can we get rid of the webgl extensions altogether? at least the most problematic ones? `->` this would make it easier to run the app on different systems and webviews
 * there's also the webxdc api that we haven't touched on yet to interact between different instances for a different user experience, maybe sharing POIs and whatnot
-
 
 ## license
 

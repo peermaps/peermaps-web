@@ -1,4 +1,5 @@
 var config = require('../config.json')
+var centerViewbox = require('../lib/bbox').centerViewbox
 
 module.exports = function (state, emitter) {
   var parameters = {
@@ -13,7 +14,12 @@ module.exports = function (state, emitter) {
   if (qparams.has('data')) {
     parameters.data = fixURL(qparams.get('data'))
   }
-  if (qparams.has('bbox')) {
+  if (qparams.has('lonlat')) {
+    var lonlat = qparams.get('lonlat').split(/\s*,\s*/).map(parseFloat)
+    parameters.bbox = centerViewbox(lonlat)
+    qparams.delete('lonlat')
+    updateViewboxParams(parameters.bbox)
+  } else if (qparams.has('bbox')) {
     parameters.bbox = qparams.get('bbox').split(/\s*,\s*/).map(parseFloat)
   } else if (Array.isArray(parameters.bbox)) {
     updateViewboxParams(parameters.bbox)
