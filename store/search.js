@@ -1,6 +1,7 @@
 var Writable = require('readable-stream/writable')
 var pump = require('pump')
 var sgs = require('sparse-geonames-search')
+var config = require('../config.json')
 
 module.exports = function (state, emitter) {
   var debug = state.parameters.debug
@@ -16,13 +17,26 @@ module.exports = function (state, emitter) {
         var e = state.search.endpoint
         var u = /\/$/.test(e) ? e + name : e + '/' + name
         if (debug) console.log(`search request ${u}`)
-        fetch(u).then(r => r.arrayBuffer()).then(r => {
-          if (debug) console.log(`search response (${r.byteLength} bytes) ${u}`)
-          cb(null, Buffer.from(r))
-        }).catch((err) => {
-          if (debug) console.log('search fetch error', err)
-          cb(err)
-        })
+        var retries = 0, retryLimit = config.settings.search.retryLimit || -1
+        ;(function retry() {
+          fetch(u).then(r => {
+            if (r.ok) {
+              r.arrayBuffer().then(r => {
+                if (debug) console.log(`search response (${r.byteLength} bytes) ${u}`)
+                cb(null, Buffer.from(r))
+              }).catch(cb)
+            } else {
+              if (debug) console.log('search fetch response status', r.status)
+              if (retryLimit === 0 || (retryLimit > 0 && retries === retryLimit)) {
+                cb(new Error('search retry limit reached'))
+              } else {
+                retries++
+                if (debug) console.log('search retry', retries, u)
+                retry()
+              }
+            }
+          }).catch(cb)
+        })()
       }
     })
   }
