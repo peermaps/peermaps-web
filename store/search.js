@@ -16,21 +16,25 @@ module.exports = function (state, emitter) {
         var e = state.search.endpoint
         var u = /\/$/.test(e) ? e + name : e + '/' + name
         if (debug) console.log(`search request ${u}`)
-        var retries = 0, retryLimit = -1
+        var retries = 0, retryLimit = 3
         ;(function retry() {
-          fetch(u).then(r => r.arrayBuffer()).then(r => {
-            if (debug) console.log(`search response (${r.byteLength} bytes) ${u}`)
-            cb(null, Buffer.from(r))
-          }).catch((err) => {
-            if (debug) console.log('search fetch error', err)
-            if (retryLimit === 0 || (retryLimit > 0 && retries < retryLimit)) {
-              cb(err)
+          fetch(u).then(r => {
+            if (r.ok) {
+              r.arrayBuffer().then(r => {
+                if (debug) console.log(`search response (${r.byteLength} bytes) ${u}`)
+                cb(null, Buffer.from(r))
+              }).catch(cb)
             } else {
-              retries++
-              if (debug) console.log('search retry', retries)
-              retry()
+              if (debug) console.log('search fetch response status', r.status)
+              if (retryLimit === 0 || (retryLimit > 0 && retries === retryLimit)) {
+                cb(new Error('search retry limit reached'))
+              } else {
+                retries++
+                if (debug) console.log('search retry', retries, u)
+                retry()
+              }
             }
-          })
+          }).catch(cb)
         })()
       }
     })
