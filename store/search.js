@@ -1,6 +1,7 @@
 var Writable = require('readable-stream/writable')
 var pump = require('pump')
 var sgs = require('sparse-geonames-search')
+var config = require('../config.json')
 
 module.exports = function (state, emitter) {
   var debug = state.parameters.debug
@@ -16,7 +17,7 @@ module.exports = function (state, emitter) {
         var e = state.search.endpoint
         var u = /\/$/.test(e) ? e + name : e + '/' + name
         if (debug) console.log(`search request ${u}`)
-        var retries = 0, retryLimit = 3
+        var retries = 0, retryLimit = config.settings.search.retryLimit || -1
         ;(function retry() {
           fetch(u).then(r => {
             if (r.ok) {
