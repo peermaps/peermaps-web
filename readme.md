@@ -85,6 +85,7 @@ Configuration can be provided in a `config.json` file with the following default
       ]
     }
     "search": {
+      "retryLimit": 3,
       "endpoints": [
         {
           "url": "https://ipfs.io/ipfs/QmcWEeF9UGuo1VUw8N97uEH5rjcXvoay2fJusDvajHfmNN",
