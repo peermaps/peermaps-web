@@ -13,7 +13,7 @@ module.exports = function (state, emitter) {
     ]
   })
   state.map = state.mix.create({
-    viewbox: state.params.bbox,
+    viewbox: state.parameters.bbox,
     backgroundColor: [0.82, 0.85, 0.99, 1.0],
     pickfb: { colorFormat: 'rgba', colorType: 'float32' }
   })
@@ -53,6 +53,10 @@ module.exports = function (state, emitter) {
     ])
     state.map.draw()
   })
+  emitter.on('parameters:bbox:updated', function (viewbox) {
+    state.map.setViewbox(viewbox)
+    state.map.draw()
+  })
 
   function onReady () {
     state.storage = createStorage(state, getStorageUrl())
@@ -71,12 +75,12 @@ module.exports = function (state, emitter) {
         style
       })
     }
-    style.src = state.params.style.url
+    style.src = state.parameters.style.url
   }
 
   function getStorageUrl () {
-    if (state.params.data) {
-      return state.params.data
+    if (state.parameters.data) {
+      return state.parameters.data
     } else {
       return state.settings.getStorageUrl(state.map.getZoom())
     }
@@ -93,7 +97,7 @@ module.exports = function (state, emitter) {
     return fetch(font)
   }
 
-  if (state.params.data) {
+  if (state.parameters.data) {
     onReady()
   } else {
     emitter.on('settings:ready', onReady)

@@ -17,7 +17,7 @@ function Settings (state, emitter) {
   self.dirty = false
   self.canReload = false
   self.width = 550
-  self.params = state.params
+  self.parameters = state.parameters
 
   self.tabs = [
     {
@@ -198,7 +198,7 @@ Settings.prototype.getSearchEndpoint = function () {
 }
 
 Settings.prototype.getFont = function () {
-  var endpoints = (this.params.fonts || {}).endpoints || []
+  var endpoints = (this.parameters.fonts || {}).endpoints || []
   var fallback
   for (var i = 0; i < endpoints.length; ++i) {
     var endpoint = endpoints[i]
