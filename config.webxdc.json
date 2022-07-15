@@ -3,6 +3,15 @@
   "style": {
     "url": "style.png"
   },
+  "fonts": {
+    "endpoints": [
+      {
+        "url": "ipfs://bafybeiaa5chmilnm2zy46xptvnl3jikyz234bd2yabj4ztkvqwnretefgq/DejaVuSans.qbzf",
+        "description": "DejaVuSans on ipfs",
+        "active": true
+      }
+    ]
+  },
   "settings": {
     "storage": {
       "storages": [
@@ -18,16 +27,10 @@
       "retryLimit": 3,
       "endpoints": [
         {
-          "url": "https://ipfs.io/ipfs/QmcWEeF9UGuo1VUw8N97uEH5rjcXvoay2fJusDvajHfmNN",
+          "url": "ipfs://bafybeigspa3h7jz7tqeepgm37njmfo2nwkard6tklojimlcu4i4zltay64",
           "description": "cities500 ipfs",
           "type": "sparse-geonames",
           "active": true
-        },
-        {
-          "url": "hyper://c1fed4a7be3d36e437fec0fba04d40fee7565ccf756c4801ffcea2f0ae1eecc9",
-          "description": "cities500 hyperdrive",
-          "type": "sparse-geonames",
-          "active": false
         }
       ]
     }
