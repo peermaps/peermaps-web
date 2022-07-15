@@ -22,6 +22,10 @@ function Settings (state, emitter) {
 
   self.tabs = [
     {
+      name: 'search',
+      description: 'Search POIs'
+    },
+    {
       name: 'storage',
       description: 'Define data urls and zoom levels for map storage',
       defaultData: function () {
@@ -99,6 +103,7 @@ function Settings (state, emitter) {
 
 Settings.prototype.loadTabs = function (state, emitter) {
   require('./tabs/storage')(state, emitter)
+  require('./tabs/search')(state, emitter)
 }
 
 Settings.prototype.reset = function (cb) {

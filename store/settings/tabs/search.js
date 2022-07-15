@@ -1,11 +1,11 @@
 var Writable = require('readable-stream/writable')
 var pump = require('pump')
 var sgs = require('sparse-geonames-search')
-var config = require('../config.json')
+var config = require('../../../config.json')
 
 module.exports = function (state, emitter) {
   var debug = state.parameters.debug
-  state.search = {
+  var search = state.settings.search = {
     visible: false,
     results: [],
     errors: [],
@@ -14,7 +14,7 @@ module.exports = function (state, emitter) {
     endpoint: state.settings.getSearchEndpoint(),
     geonames: sgs({
       read: function (name, cb) {
-        var e = state.search.endpoint
+        var e = search.endpoint
         var u = /\/$/.test(e) ? e + name : e + '/' + name
         if (debug) console.log(`search request ${u}`)
         var retries = 0, retryLimit = config.settings.search.retryLimit || -1
@@ -40,46 +40,37 @@ module.exports = function (state, emitter) {
       }
     })
   }
-  emitter.on('search:toggle', function () {
-    state.search.visible = !state.search.visible
-    emitter.emit('render')
-    if (state.search.visible) {
-      setTimeout(() => {
-        document.querySelector('.search form input[type=text]').focus()
-      }, 50)
-    }
-  })
   emitter.on('search:result:push', function (r) {
-    state.search.results.push(r)
+    search.results.push(r)
     emitter.emit('render')
   })
   emitter.on('search:result:clear', function () {
-    state.search.results = []
-    if (state.search.stream) state.search.stream.destroy()
-    state.search.stream = null
+    search.results = []
+    if (search.stream) search.stream.destroy()
+    search.stream = null
     emitter.emit('render')
   })
   emitter.on('search:error:push', function (err) {
-    state.search.errors.push(err)
+    search.errors.push(err)
     emitter.emit('render')
   })
   emitter.on('search:error:clear', function () {
-    state.search.errors = []
+    search.errors = []
     emitter.emit('render')
   })
   emitter.on('search:clear', function () {
-    state.search.query = ''
-    state.search.errors = []
-    state.search.results = []
-    if (state.search.stream) state.search.stream.destroy()
-    state.search.stream = null
+    search.query = ''
+    search.errors = []
+    search.results = []
+    if (search.stream) search.stream.destroy()
+    search.stream = null
     emitter.emit('render')
   })
   emitter.on('search:query', function (q) {
-    state.search.query = q
+    search.query = q
     emitter.emit('search:result:clear')
-    var stream = state.search.geonames.search(q)
-    state.search.stream = stream
+    var stream = search.geonames.search(q)
+    search.stream = stream
     pump(stream, Writable({
       objectMode: true,
       write: function (row, enc, next) {
@@ -89,7 +80,7 @@ module.exports = function (state, emitter) {
     }), finish)
     function finish(err) {
       if (err) emitter.emit('search:error:push', err)
-      state.search.stream = null
+      search.stream = null
       emitter.emit('render')
     }
   })
