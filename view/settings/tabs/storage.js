@@ -18,7 +18,8 @@ function deleteIcon () {
 </svg>`
 }
 
-module.exports = function (data, emit) {
+module.exports = function (state, emit) {
+  var data = state.settings.getTabData('storage')
   if (!Array.isArray(data.storages)) return
 
   var content = data.storages.map(function (item, index) {

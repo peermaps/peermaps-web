@@ -79,12 +79,10 @@ var tabContentStyle = css`
 `
 
 function renderTabContent (state, emit) {
-  var settings = state.settings
-  var tab = settings.getSelectedTab()
-  var tabData = settings.getTabData(tab.name)
+  var tab = state.settings.getSelectedTab()
   var tabView = tabViews[tab.name]
-  if (tabData && typeof tabView === 'function') {
-    return html`<div class=${tabContentStyle}>${tabView(tabData, emit)}</div>`
+  if (typeof tabView === 'function') {
+    return html`<div class=${tabContentStyle}>${tabView(state, emit)}</div>`
   }
 }
 
