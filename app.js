@@ -4,7 +4,7 @@ var nextTick = process.nextTick
 
 app.use(require('./store/parameters.js'))
 app.use(require('./store/db.js'))
-app.use(require('./store/settings.js'))
+app.use(require('./store/settings'))
 app.use(require('./store/search.js'))
 app.use(require('./store/mixmap.js'))
 app.use(require('./store/window.js'))
