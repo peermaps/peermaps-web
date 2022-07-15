@@ -27,83 +27,33 @@ Running `npm run build` will result in a `public/` folder with static content th
 
 ### via `config.json`
 
-Configuration can be provided in a `config.json` file with the following default values taken from `config.default.json`:
+Configuration can be provided in a `config.json` file. There's a `config.default.json` file with default values. The following properties can be configured:
 
-```json
-{
-  "bbox": [7.56,47.55,7.58,47.56],
-  "style": {
-    "url": "style.png"
-  },
-  "fonts": {
-    "endpoints": [
-      {
-        "url": "https://ipfs.io/ipfs/QmNQCPGV3XZrtNdQyMbZhSJcGisg4xCFyxeHs1tacrdETm/DejaVuSans.qbzf",
-        "description": "DejaVuSans on ipfs",
-        "active": true
-      },
-      {
-        "url": "hyper://126065f6b93924f976034b84ce74d9d570a44903ce9d110069a7aa65ddccd507/DejaVuSans.qbzf",
-        "description": "DejaVuSans on hyperdrive",
-        "active": false
-      }
-    ]
-  },
-  "swarmOpts": {
-    "bootstrap": [
-      "wss://hyperswarm.linkping.org",
-      "wss://swarm.cblgh.org"
-    ]
-  },
-  "settings": {
-    "storage": {
-      "storages": [
-        {
-          "url": "https://peermaps.linkping.org/data",
-          "description": "Peermaps data hosted by linkping.org",
-          "zoom": [1, 21],
-          "active": true
-        },
-        {
-          "url": "hyper://3dd1656d6408a718fae1117b5283fb18cb1f9139b892ce0f8cacbb6737ec1d67",
-          "description": "Peermaps data via hyperswarm-web",
-          "zoom": [15, 21],
-          "active": false
-        },
-        {
-          "url": "https://ipfs.io/ipfs/QmVCYUK51Miz4jEjJxCq3bA6dfq5FXD6s2EYp6LjHQhGmh",
-          "description": "Dataset on ipfs",
-          "zoom": [1, 21],
-          "active": false
-        },
-        {
-          "url": "http://localhost:8000",
-          "description": "Data from local machine",
-          "zoom": [1, 21],
-          "active": false
-        }
-      ]
-    }
-    "search": {
-      "retryLimit": 3,
-      "endpoints": [
-        {
-          "url": "https://ipfs.io/ipfs/QmcWEeF9UGuo1VUw8N97uEH5rjcXvoay2fJusDvajHfmNN",
-          "description": "cities500 ipfs",
-          "type": "sparse-geonames",
-          "active": true
-        },
-        {
-          "url": "hyper://c1fed4a7be3d36e437fec0fba04d40fee7565ccf756c4801ffcea2f0ae1eecc9",
-          "description": "cities500 hyperdrive",
-          "type": "sparse-geonames",
-          "active": false
-        }
-      ]
-    }
-  }
-}
-```
+* `bbox` (array of floats): the starting viewbox for the map
+* `style` (object)
+  * `style.url` (string) file name for styling
+* `fonts` (object)
+  * `fonts.endpoints` (array of objects)
+    * `fonts.endpoints[].url` (string) data source url
+    * `fonts.endpoints[].description` (string) font description
+    * `fonts.endpoints[].active` (boolean) true if the data source is active, otherwise false
+* `swarmOpts` (object) configuration for `hyperswarm-web`
+  * `swarmOpts.bootstrap` (array of strings)
+    * `swarmOpts.bootstrap[]` (string) url to websocket server (e.g. `ws://` or `wss://` url)
+* `settings` (object)
+  * `settings.storage` (object) configuration for the storage tab in the settings dialog
+    * `settings.storage.storages` (array of objects)
+      * `settings.storage.storages[].url` (string) data source url
+      * `settings.storage.storages[].description` (string) data source description
+      * `settings.storage.storages[].zoom` (array of integers) zoom range for this data source
+      * `settings.storage.storages[].active` (boolean) true if data source is active, otherwise false
+  * `settings.search` (object)
+    * `settings.search.retryLimit` (number) how many times to retry fetching search results, default is `-1`, which is retry indefinitely
+    * `settings.search.endpoints` (array of objects)
+      * `settings.search.endpoints[].url` (string) data source url
+      * `settings.search.endpoints[].description` (string) data source description
+      * `settings.search.endpoints[].type` (string) type of data source, currently only supporting `'sparse-geonames'`
+      * `settings.search.endpoints[].active` (boolean) true if data source is active, otherwise false
 
 If you want to run your own version of `peermaps-web` with a different configuration, you can copy `config.default.json` to `config.json` before running `npm run build` or `npm start`.
 
