@@ -96,23 +96,18 @@ app.route('*', function (state, emit) {
         display: none;
       }
       .ui-overlay .search {
-        position: absolute;
-        bottom: 0em;
-        top: 0em;
-        right: 0em;
-        width: 60ex;
         padding: 1em;
-        background-color: white;
         color: black;
         z-index: inherit;
       }
       .ui-overlay .search form input[type=text] {
-        width: calc(100% - 12ex);
+        width: calc(100% - 11ex);
         padding: 0.5em;
       }
       .ui-overlay .search form button {
         width: 8ex;
         padding: 0.5em;
+        float: right;
       }
       .ui-overlay .search .results {
         position: absolute;
