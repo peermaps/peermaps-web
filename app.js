@@ -4,14 +4,12 @@ var nextTick = process.nextTick
 
 app.use(require('./store/parameters.js'))
 app.use(require('./store/db.js'))
-app.use(require('./store/settings.js'))
-app.use(require('./store/search.js'))
+app.use(require('./store/settings'))
 app.use(require('./store/mixmap.js'))
 app.use(require('./store/window.js'))
 
 var view = {
-  settings: require('./view/settings/index.js'),
-  search: require('./view/search.js'),
+  settings: require('./view/settings/index.js')
 }
 
 app.route('*', function (state, emit) {
@@ -52,13 +50,6 @@ app.route('*', function (state, emit) {
         bottom: 0px;
         right: ${settings.show ? settings.width + 20 : 20}px;
         padding: 1em;
-      }
-      .right-bottom-buttons {
-        position: absolute;
-        bottom: 2em;
-        right: 2em;
-        padding: 1em;
-        z-index: 2001;
       }
       .buttons button {
         position: absolute;
@@ -105,23 +96,18 @@ app.route('*', function (state, emit) {
         display: none;
       }
       .ui-overlay .search {
-        position: absolute;
-        bottom: 0em;
-        top: 0em;
-        right: 0em;
-        width: 60ex;
         padding: 1em;
-        background-color: white;
         color: black;
         z-index: inherit;
       }
       .ui-overlay .search form input[type=text] {
-        width: calc(100% - 12ex);
+        width: calc(100% - 11ex);
         padding: 0.5em;
       }
       .ui-overlay .search form button {
         width: 8ex;
         padding: 0.5em;
+        float: right;
       }
       .ui-overlay .search .results {
         position: absolute;
@@ -185,10 +171,6 @@ app.route('*', function (state, emit) {
       <div class="buttons right-top-buttons">
         <div><button class="toggle-settings" onclick=${toggleSettings}>${settings.show ? '>' : '<'}</button></div>
       </div>
-      <div class="buttons right-bottom-buttons">
-        <div><button onclick=${toggleSearch}>${state.search.visible ? 'x' : '?'}</button></div>
-      </div>
-      ${view.search(state, emit)}
       ${view.settings(state, emit)}
     </div>
     ${state.mix.render()}
@@ -203,6 +185,5 @@ app.route('*', function (state, emit) {
   function panEast() { emit('map:pan:lon',+1) }
   function panWest() { emit('map:pan:lon',-1) }
   function toggleSettings() { emit('settings:toggle') }
-  function toggleSearch() { emit('search:toggle') }
 })
 app.mount(document.body)

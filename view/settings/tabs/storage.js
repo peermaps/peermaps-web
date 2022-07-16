@@ -18,8 +18,9 @@ function deleteIcon () {
 </svg>`
 }
 
-module.exports = function (data, emit) {
-  if (!Array.isArray(data.storages)) return
+module.exports = function (state, emit) {
+  var data = state.settings.getTabData('storage')
+  if (!data || !Array.isArray(data.storages)) return
 
   var content = data.storages.map(function (item, index) {
     var zoom = item.zoom

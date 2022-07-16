@@ -1,6 +1,7 @@
 var html = require('choo/html')
 var css = require('sheetify')
 var tabViews = {
+  search: require('./tabs/search'),
   storage: require('./tabs/storage'),
   misc: require('./tabs/misc')
 }
@@ -79,12 +80,10 @@ var tabContentStyle = css`
 `
 
 function renderTabContent (state, emit) {
-  var settings = state.settings
-  var tab = settings.getSelectedTab()
-  var tabData = settings.getTabData(tab.name)
+  var tab = state.settings.getSelectedTab()
   var tabView = tabViews[tab.name]
-  if (tabData && typeof tabView === 'function') {
-    return html`<div class=${tabContentStyle}>${tabView(tabData, emit)}</div>`
+  if (typeof tabView === 'function') {
+    return html`<div class=${tabContentStyle}>${tabView(state, emit)}</div>`
   }
 }
 
