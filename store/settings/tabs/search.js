@@ -42,6 +42,11 @@ module.exports = function (state, emitter) {
   }
   emitter.on('search:result:push', function (r) {
     search.results.push(r)
+    search.results.sort(function (lhs, rhs) {
+      if (lhs.population < rhs.population) return 1
+      else if (lhs.population > rhs.population) return -1
+      else return 0
+    })
     emitter.emit('render')
   })
   emitter.on('search:result:clear', function () {
