@@ -82,11 +82,11 @@ app.route('*', function (state, emit) {
       .buttons .east {
         transform: rotate(45deg);
         top: 4em;
-        left: 6.5em;
+        left: 6.8em;
       }
       .buttons .south {
         transform: rotate(135deg);
-        top: 6.5em;
+        top: 6.8em;
         left: 4em;
       }
       .buttons button:hover {
