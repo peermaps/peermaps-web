@@ -68,7 +68,7 @@ app.route('*', function (state, emit) {
       }
       .emoji-icon-small {
         font-family: "Noto Color Emoji", "Apple Color Emoji", "Segoe UI Emoji", Times, Symbola, Aegyptus, Code2000, Code2001, Code2002, Musica, serif, LastResort;
-        font-size: 0.9em;
+        font-size: 0.8em;
       }
       .buttons .arrow {
         height: 3em;
