@@ -63,10 +63,12 @@ app.route('*', function (state, emit) {
         padding: 0px;
       }
       .emoji-icon-large {
-        font-size: 1.3em;
+        font-family: "Noto Color Emoji", "Apple Color Emoji", "Segoe UI Emoji", Times, Symbola, Aegyptus, Code2000, Code2001, Code2002, Musica, serif, LastResort;
+        font-size: 1.2em;
       }
       .emoji-icon-small {
-        font-size: 0.8em;
+        font-family: "Noto Color Emoji", "Apple Color Emoji", "Segoe UI Emoji", Times, Symbola, Aegyptus, Code2000, Code2001, Code2002, Musica, serif, LastResort;
+        font-size: 0.9em;
       }
       .buttons .arrow {
         height: 3em;
@@ -174,7 +176,7 @@ app.route('*', function (state, emit) {
         <button style="top: 4.5em; left: 3em;" onclick=${zoomOut}><div class="emoji-icon-small">🔎</div></button>
       </div>
       <div class="buttons right-top-buttons">
-        <button class="toggle-settings" onclick=${toggleSettings}><div class="emoji-icon-large" style="margin-bottom: 0.1em;">⚙</div></button>
+        <button class="toggle-settings" onclick=${toggleSettings}><div class="emoji-icon-large">⚙</div></button>
       </div>
       ${view.settings(state, emit)}
     </div>
