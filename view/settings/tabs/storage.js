@@ -26,7 +26,7 @@ module.exports = function (state, emit) {
       <textarea name='description' style='resize: none; height: 5em; width: 100%' onchange=${(e) => emit('settings:storage:description:update', index, e.target.value)}>${item.description}</textarea>
       <label for='active'>active</label>
       <input type='checkbox' name='active' style='margin-left: 10px; margin-bottom: 10px;' onchange=${(e) => emit('settings:storage:active:update', index)} ${item.active ? 'checked' : ''} value=${item.active ? true : false}>
-      <a title='delete storage'><div style='cursor: pointer; font-size: 1.5em;' onclick=${() => emit('settings:storage:delete', index)}>🗑</div></a>
+      <a title='delete storage'><div class="emoji-icon-large" style='cursor: pointer;' onclick=${() => emit('settings:storage:delete', index)}>🗑</div></a>
     </div>`
   })
   return html`<div>

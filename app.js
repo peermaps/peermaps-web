@@ -55,13 +55,18 @@ app.route('*', function (state, emit) {
         position: absolute;
         height: 2em;
         width: 2em;
-        font-family: monospace;
         opacity: 30%;
         background-color: black;
         color: white;
         border: 0px;
         border-radius: 20px;
         padding: 0px;
+      }
+      .emoji-icon-large {
+        font-size: 1.3em;
+      }
+      .emoji-icon-small {
+        font-size: 0.8em;
       }
       .buttons .arrow {
         height: 3em;
@@ -82,11 +87,11 @@ app.route('*', function (state, emit) {
       .buttons .east {
         transform: rotate(45deg);
         top: 4em;
-        left: 6.8em;
+        left: 7em;
       }
       .buttons .south {
         transform: rotate(135deg);
-        top: 6.8em;
+        top: 7em;
         left: 4em;
       }
       .buttons button:hover {
@@ -161,15 +166,15 @@ app.route('*', function (state, emit) {
     </style>
     <div class="ui-overlay">
       <div class="buttons left-top-buttons">
-        <div><button class="arrow north" onclick=${panNorth}></button></div>
-        <div><button class="arrow west" onclick=${panWest}></button></div>
-        <div><button class="arrow east" onclick=${panEast}></button></div>
-        <div><button class="arrow south" onclick=${panSouth}></button></div>
-        <div><button style="top: 3em; left: 4.5em;" onclick=${zoomIn}>+</button></div>
-        <div><button style="top: 6em; left: 4.5em;" onclick=${zoomOut}>-</button></div>
+        <button class="arrow north" onclick=${panNorth}></button>
+        <button class="arrow west" onclick=${panWest}></button>
+        <button class="arrow east" onclick=${panEast}></button>
+        <button class="arrow south" onclick=${panSouth}></button>
+        <button style="top: 4.5em; left: 6em;" onclick=${zoomIn}><div class="emoji-icon-large">🔎</div></button>
+        <button style="top: 4.5em; left: 3em;" onclick=${zoomOut}><div class="emoji-icon-small">🔎</div></button>
       </div>
       <div class="buttons right-top-buttons">
-        <div><button class="toggle-settings" onclick=${toggleSettings}>${settings.show ? '>' : '<'}</button></div>
+        <button class="toggle-settings" onclick=${toggleSettings}><div class="emoji-icon-large" style="margin-bottom: 0.1em;">⚙</div></button>
       </div>
       ${view.settings(state, emit)}
     </div>
