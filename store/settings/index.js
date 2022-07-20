@@ -29,8 +29,8 @@ function Settings (state, emitter) {
       name: 'storage',
       description: 'Define data urls and zoom levels for map storage',
       defaultData: function () {
-        var storages = [ ...config.storage.storages ]
-        return { storages }
+        var endpoints = [ ...config.storage.endpoints ]
+        return { endpoints }
       }
     },
     {
@@ -128,14 +128,14 @@ Settings.prototype.setTabDefaults = function (tab) {
 
 Settings.prototype.getStorageUrl = function (zoom) {
   var fallback
-  var storages = this.tabData.storage.storages
+  var endpoints = this.tabData.storage.endpoints
 
-  for (var i = 0; i < storages.length; ++i) {
-    var storage = storages[i]
-    if (typeof storage.url === 'string' && storage.active) {
-      if (!fallback) fallback = storage
-      if (storage.zoom[0] <= zoom && storage.zoom[1] >= zoom) {
-        return storage.url
+  for (var i = 0; i < endpoints.length; ++i) {
+    var endpoint = endpoints[i]
+    if (typeof endpoint.url === 'string' && endpoint.active) {
+      if (!fallback) fallback = endpoint
+      if (endpoint.zoom[0] <= zoom && endpoint.zoom[1] >= zoom) {
+        return endpoint.url
       }
     }
   }
@@ -143,7 +143,7 @@ Settings.prototype.getStorageUrl = function (zoom) {
   if (fallback) {
     return fallback.url
   } else {
-    console.warn('no matching data url for zoom level', zoom)
+    console.warn('no matching map endpoint for zoom level', zoom)
   }
 }
 

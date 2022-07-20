@@ -14,7 +14,7 @@
   },
   "settings": {
     "storage": {
-      "storages": [
+      "endpoints": [
         {
           "url": "ipfs://bafybeidf5yn56cxk6zkyjmay4wigu2o7ynqh7q62z3kppag5v7jpqavy5q",
           "description": "Dataset on ipfs",

@@ -25,7 +25,7 @@
   },
   "settings": {
     "storage": {
-      "storages": [
+      "endpoints": [
         {
           "url": "https://peermaps.linkping.org/data",
           "description": "Peermaps data hosted by linkping.org",

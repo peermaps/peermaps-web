@@ -42,11 +42,11 @@ Configuration can be provided in a `config.json` file. There's a `config.default
     * `swarmOpts.bootstrap[]` (string) url to websocket server (e.g. `ws://` or `wss://` url)
 * `settings` (object)
   * `settings.storage` (object) configuration for the storage tab in the settings dialog
-    * `settings.storage.storages` (array of objects)
-      * `settings.storage.storages[].url` (string) data source url
-      * `settings.storage.storages[].description` (string) data source description
-      * `settings.storage.storages[].zoom` (array of integers) zoom range for this data source
-      * `settings.storage.storages[].active` (boolean) true if data source is active, otherwise false
+    * `settings.storage.endpoint` (array of objects)
+      * `settings.storage.endpoint[].url` (string) data source url
+      * `settings.storage.endpoint[].description` (string) data source description
+      * `settings.storage.endpoint[].zoom` (array of integers) zoom range for this data source
+      * `settings.storage.endpoint[].active` (boolean) true if data source is active, otherwise false
   * `settings.search` (object)
     * `settings.search.retryLimit` (number) how many times to retry fetching search results, default is `-1`, which is retry indefinitely
     * `settings.search.endpoints` (array of objects)
@@ -61,7 +61,7 @@ If you want to run your own version of `peermaps-web` with a different configura
 
 The following settings can be set via url search parameters:
 
-* `data` (string) url to data source, defaults to `https://peermaps.linkping.org/data` (taken from the first active url in `config.settings.storage.storages` matching the current zoom level)
+* `data` (string) url to data source, defaults to `https://peermaps.linkping.org/data` (taken from the first active url in `config.settings.storage.endpoints` matching the current zoom level)
 * `bbox` (comma separated string `'minx,miny,maxx,maxy'`) view bounding box, defaults to `'7.56,47.55,7.58,47.56'` (taken from `config.bbox`)
 * `lonlat` (comma separated string `'lon,lat'`) map center position, temporary url parameter that will generate a suitable value for `bbox`
 * `style` (string) url to shader style png, defaults to `style.png` (taken from `config.style.url`)
