@@ -48,7 +48,7 @@ app.route('*', function (state, emit) {
         position: absolute;
         top: 0px;
         bottom: 0px;
-        right: ${settings.show ? settings.width + 20 : 20}px;
+        right: ${settings.show ? `${settings.width + 20}px` : '2em'};
         padding: 1em;
       }
       .buttons button {
