@@ -88,7 +88,7 @@ module.exports = function (state, emitter) {
   }
 
   function maybeFetchFont() {
-    var font = state.settings.getFont()
+    var font = state.settings.getFontEndpoint()
     if (!font) return undefined
     return fetch(font)
   }

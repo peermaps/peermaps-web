@@ -163,7 +163,7 @@ Settings.prototype.getSearchEndpoint = function () {
   }
 }
 
-Settings.prototype.getFont = function () {
+Settings.prototype.getFontEndpoint = function () {
   var endpoints = (this.parameters.fonts || {}).endpoints || []
   var fallback
   for (var i = 0; i < endpoints.length; ++i) {
