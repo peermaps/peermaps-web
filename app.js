@@ -176,7 +176,7 @@ app.route('*', function (state, emit) {
         <button style="top: 4.5em; left: 3em;" onclick=${zoomOut}><div title="zoom out" class="emoji-icon-small">🔎</div></button>
       </div>
       <div class="buttons right-top-buttons">
-        <button class="toggle-settings" onclick=${toggleSettings}><div title="show settings" class="emoji-icon-large">⚙</div></button>
+        <button class="toggle-settings" onclick=${toggleSettings}><div title="${settings.show ? 'hide' : 'show'} settings" class="emoji-icon-large">⚙</div></button>
       </div>
       ${view.settings(state, emit)}
     </div>
