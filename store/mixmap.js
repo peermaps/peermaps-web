@@ -55,7 +55,7 @@ module.exports = function (state, emitter) {
   })
 
   function onReady () {
-    state.storage = createStorage(state, getStorageUrl())
+    state.storage = createStorage(state, getStorageEndpoint())
 
     emitter.on('settings:updated', updateStorageBackend)
     emitter.on('map:zoom:set', updateStorageBackend)
@@ -74,16 +74,16 @@ module.exports = function (state, emitter) {
     style.src = state.parameters.style.url
   }
 
-  function getStorageUrl () {
+  function getStorageEndpoint () {
     if (state.parameters.data) {
       return state.parameters.data
     } else {
-      return state.settings.getStorageUrl(state.map.getZoom())
+      return state.settings.getStorageEndpoint(state.map.getZoom())
     }
   }
 
   function updateStorageBackend () {
-    state.storage.updateBackend(state, getStorageUrl())
+    state.storage.updateBackend(state, getStorageEndpoint())
     state.map.draw()
   }
 

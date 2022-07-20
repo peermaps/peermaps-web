@@ -126,7 +126,7 @@ Settings.prototype.setTabDefaults = function (tab) {
   }
 }
 
-Settings.prototype.getStorageUrl = function (zoom) {
+Settings.prototype.getStorageEndpoint = function (zoom) {
   var fallback
   var endpoints = this.tabData.storage.endpoints
 
