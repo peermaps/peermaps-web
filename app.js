@@ -172,11 +172,11 @@ app.route('*', function (state, emit) {
         <button class="arrow west" onclick=${panWest}></button>
         <button class="arrow east" onclick=${panEast}></button>
         <button class="arrow south" onclick=${panSouth}></button>
-        <button style="top: 4.5em; left: 6em;" onclick=${zoomIn}><div class="emoji-icon-large">🔎</div></button>
-        <button style="top: 4.5em; left: 3em;" onclick=${zoomOut}><div class="emoji-icon-small">🔎</div></button>
+        <button style="top: 4.5em; left: 6em;" onclick=${zoomIn}><div title="zoom in" class="emoji-icon-large">🔎</div></button>
+        <button style="top: 4.5em; left: 3em;" onclick=${zoomOut}><div title="zoom out" class="emoji-icon-small">🔎</div></button>
       </div>
       <div class="buttons right-top-buttons">
-        <button class="toggle-settings" onclick=${toggleSettings}><div class="emoji-icon-large">⚙</div></button>
+        <button class="toggle-settings" onclick=${toggleSettings}><div title="show settings" class="emoji-icon-large">⚙</div></button>
       </div>
       ${view.settings(state, emit)}
     </div>
