@@ -15,6 +15,23 @@ module.exports = function (state, emit) {
 
   var content = data.endpoints.map(function (endpoint, index) {
     var zoom = endpoint.zoom
+
+    function renderUpArrow () {
+      if (index !== 0) {
+        return html`<div title='move up' class='emoji-icon-large' style='cursor: pointer;' onclick=${() => emit('settings:storage:move-up', index)}>⬆</div>`
+      } else {
+        return html`<div class='emoji-icon-large' style='opacity: 50%; cursor: default;'>⬆</div>`
+      }
+    }
+
+    function renderDownArrow () {
+      if (index !== data.endpoints.length - 1) {
+        return html`<div title='move down' class='emoji-icon-large' style='cursor: pointer;' onclick=${() => emit('settings:storage:move-down', index)}>⬇</div>`
+      } else {
+        return html`<div class='emoji-icon-large' style='opacity: 50%; cursor: default;'>⬇</div>`
+      }
+    }
+
     return html`<div class=${endpointStyle}>
       <label for='url'>data url</label>
       <input type='url' name='url' value=${endpoint.url || ''} placeholder='https://example.com' required style='margin-top: 10px; margin-bottom: 10px; width: 100%;' onchange=${(e) => emit('settings:storage:url:update', index, e.target.value)}>
@@ -26,11 +43,19 @@ module.exports = function (state, emit) {
       <textarea name='description' style='resize: none; height: 5em; width: 100%' onchange=${(e) => emit('settings:storage:description:update', index, e.target.value)}>${endpoint.description}</textarea>
       <label for='active'>active</label>
       <input type='checkbox' name='active' style='margin-left: 10px; margin-bottom: 10px;' onchange=${(e) => emit('settings:storage:active:update', index)} ${endpoint.active ? 'checked' : ''} value=${endpoint.active ? true : false}>
-      <a title='delete storage'><div class="emoji-icon-large" style='cursor: pointer;' onclick=${() => emit('settings:storage:delete', index)}>🗑</div></a>
+      <div style='display: flex; justify-content: space-between;'>
+        <div title='delete storage' class='emoji-icon-large' style='cursor: pointer;' onclick=${() => emit('settings:storage:delete', index)}>🗑</div>
+        <div style='display: flex;'>
+          ${renderUpArrow()}
+          ${renderDownArrow()}
+        </div>
+      </div>
     </div>`
   })
   return html`<div>
     ${content}
-    <a title='add storage'><div style='cursor: pointer; padding: 5px 0px; text-align: center; border-bottom: 1px solid #999' onclick=${() => emit('settings:storage:add')}><div class="emoji-icon-large">➕</div></div></a>
+    <div title='add storage' style='cursor: pointer; padding: 5px 0px; text-align: center; border-bottom: 1px solid #999' onclick=${() => emit('settings:storage:add')}>
+      <div class='emoji-icon-large'>➕</div>
+    </div>
   </div>`
 }

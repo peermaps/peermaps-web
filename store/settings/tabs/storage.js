@@ -39,4 +39,16 @@ module.exports = function (state, emitter) {
     data.endpoints.push({ zoom: [1, 21], active: false })
     emitter.emit('settings:dirty')
   })
+  emitter.on('settings:storage:move-up', function (index) {
+    var data = state.settings.getTabData('storage')
+    var el = data.endpoints.splice(index, 1)
+    data.endpoints.splice(index - 1, 0, el[0])
+    emitter.emit('settings:dirty')
+  })
+  emitter.on('settings:storage:move-down', function (index) {
+    var data = state.settings.getTabData('storage')
+    var el = data.endpoints.splice(index, 1)
+    data.endpoints.splice(index + 1, 0, el[0])
+    emitter.emit('settings:dirty')
+  })
 }
