@@ -48,20 +48,27 @@ app.route('*', function (state, emit) {
         position: absolute;
         top: 0px;
         bottom: 0px;
-        right: ${settings.show ? settings.width + 20 : 20}px;
+        right: ${settings.show ? `${settings.width + 20}px` : '2em'};
         padding: 1em;
       }
       .buttons button {
         position: absolute;
         height: 2em;
         width: 2em;
-        font-family: monospace;
         opacity: 30%;
         background-color: black;
         color: white;
         border: 0px;
         border-radius: 20px;
         padding: 0px;
+      }
+      .emoji-icon-large {
+        font-family: "Noto Color Emoji", "Apple Color Emoji", "Segoe UI Emoji", Times, Symbola, Aegyptus, Code2000, Code2001, Code2002, Musica, serif, LastResort;
+        font-size: 1.2em;
+      }
+      .emoji-icon-small {
+        font-family: "Noto Color Emoji", "Apple Color Emoji", "Segoe UI Emoji", Times, Symbola, Aegyptus, Code2000, Code2001, Code2002, Musica, serif, LastResort;
+        font-size: 0.8em;
       }
       .buttons .arrow {
         height: 3em;
@@ -82,11 +89,11 @@ app.route('*', function (state, emit) {
       .buttons .east {
         transform: rotate(45deg);
         top: 4em;
-        left: 6.8em;
+        left: 7em;
       }
       .buttons .south {
         transform: rotate(135deg);
-        top: 6.8em;
+        top: 7em;
         left: 4em;
       }
       .buttons button:hover {
@@ -161,15 +168,15 @@ app.route('*', function (state, emit) {
     </style>
     <div class="ui-overlay">
       <div class="buttons left-top-buttons">
-        <div><button class="arrow north" onclick=${panNorth}></button></div>
-        <div><button class="arrow west" onclick=${panWest}></button></div>
-        <div><button class="arrow east" onclick=${panEast}></button></div>
-        <div><button class="arrow south" onclick=${panSouth}></button></div>
-        <div><button style="top: 3em; left: 4.5em;" onclick=${zoomIn}>+</button></div>
-        <div><button style="top: 6em; left: 4.5em;" onclick=${zoomOut}>-</button></div>
+        <button title="pan north" class="arrow north" onclick=${panNorth}></button>
+        <button title="pan west" class="arrow west" onclick=${panWest}></button>
+        <button title="pan east" class="arrow east" onclick=${panEast}></button>
+        <button title="pan south" class="arrow south" onclick=${panSouth}></button>
+        <button style="top: 4.5em; left: 6em;" onclick=${zoomIn}><div title="zoom in" class="emoji-icon-large">🔎</div></button>
+        <button style="top: 4.5em; left: 3em;" onclick=${zoomOut}><div title="zoom out" class="emoji-icon-small">🔎</div></button>
       </div>
       <div class="buttons right-top-buttons">
-        <div><button class="toggle-settings" onclick=${toggleSettings}>${settings.show ? '>' : '<'}</button></div>
+        <button class="toggle-settings" onclick=${toggleSettings}><div title="${settings.show ? 'hide' : 'show'} settings" class="emoji-icon-large">⚙</div></button>
       </div>
       ${view.settings(state, emit)}
     </div>

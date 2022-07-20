@@ -140,7 +140,7 @@ function renderButtons (state, emit) {
   }
 
   return html`<div class=${buttonContainerStyle}>
-    <a title='hide'><div class=${buttonStyle} style='max-width: 20px;' onclick=${() => emit('settings:toggle')}>${'>'}</div></a>
+    <a title="hide settings"><div class=${buttonStyle} style='max-width: 20px;' onclick=${() => emit('settings:toggle')}><div class="emoji-icon-small">❌</div></div></a>
     <div style='display: flex;'>
       <div class=${buttonStyle} onclick=${() => emit('settings:reset')}>reset</div>
       <div class=${buttonStyle} style=${cstyle(settings.canReload)} onclick=${() => onReload()}>reload</div>
