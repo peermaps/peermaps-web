@@ -31,6 +31,6 @@ module.exports = function (state, emit) {
   })
   return html`<div>
     ${content}
-    <a title='add storage'><div style='cursor: pointer; margin: 5px; padding: 2px; border: 1px solid #999; width: 14px; text-align: center;' onclick=${() => emit('settings:storage:add')}>+</div></a>
+    <a title='add storage'><div style='cursor: pointer; padding: 5px 0px; text-align: center; border-bottom: 1px solid #999' onclick=${() => emit('settings:storage:add')}><div class="emoji-icon-large">➕</div></div></a>
   </div>`
 }
