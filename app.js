@@ -168,10 +168,10 @@ app.route('*', function (state, emit) {
     </style>
     <div class="ui-overlay">
       <div class="buttons left-top-buttons">
-        <button class="arrow north" onclick=${panNorth}></button>
-        <button class="arrow west" onclick=${panWest}></button>
-        <button class="arrow east" onclick=${panEast}></button>
-        <button class="arrow south" onclick=${panSouth}></button>
+        <button title="pan north" class="arrow north" onclick=${panNorth}></button>
+        <button title="pan west" class="arrow west" onclick=${panWest}></button>
+        <button title="pan east" class="arrow east" onclick=${panEast}></button>
+        <button title="pan south" class="arrow south" onclick=${panSouth}></button>
         <button style="top: 4.5em; left: 6em;" onclick=${zoomIn}><div title="zoom in" class="emoji-icon-large">🔎</div></button>
         <button style="top: 4.5em; left: 3em;" onclick=${zoomOut}><div title="zoom out" class="emoji-icon-small">🔎</div></button>
       </div>
