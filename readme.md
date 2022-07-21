@@ -94,7 +94,7 @@ You can bundle a webxdc app yourself with the following basic steps:
 To get this modified version you can do e.g.:
 
 ```sh
-cd $(mktemp -d) && git clone https://github.com/ralphtheninja/deltachat-desktop.git -b ipfs-experimental && cd deltachat-desktop && npm i && npm run dev
+cd $(mktemp -d) && git clone https://github.com/deltachat/deltachat-desktop.git -b ipfs-experimental && cd deltachat-desktop && npm i && npm run dev
 ```
 
 How do we take it further from here? Some questions:
