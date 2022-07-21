@@ -17,6 +17,7 @@ app.route('*', function (state, emit) {
     state.map.draw()
   })
   var settings = state.settings
+  var l = settings.ui.locale
   return html`<body>
     <style>
       body {
@@ -168,15 +169,15 @@ app.route('*', function (state, emit) {
     </style>
     <div class="ui-overlay">
       <div class="buttons left-top-buttons">
-        <button title="pan north" class="arrow north" onclick=${panNorth}></button>
-        <button title="pan west" class="arrow west" onclick=${panWest}></button>
-        <button title="pan east" class="arrow east" onclick=${panEast}></button>
-        <button title="pan south" class="arrow south" onclick=${panSouth}></button>
-        <button style="top: 4.5em; left: 6em;" onclick=${zoomIn}><div title="zoom in" class="emoji-icon-large">🔎</div></button>
-        <button style="top: 4.5em; left: 3em;" onclick=${zoomOut}><div title="zoom out" class="emoji-icon-small">🔎</div></button>
+        <button title=${l('pan_north')} class="arrow north" onclick=${panNorth}></button>
+        <button title=${l('pan_west')} class="arrow west" onclick=${panWest}></button>
+        <button title=${l('pan_east')} class="arrow east" onclick=${panEast}></button>
+        <button title=${l('pan_south')} class="arrow south" onclick=${panSouth}></button>
+        <button style="top: 4.5em; left: 6em;" onclick=${zoomIn}><div title=${l('zoom_in')} class="emoji-icon-large">🔎</div></button>
+        <button style="top: 4.5em; left: 3em;" onclick=${zoomOut}><div title=${l('zoom_out')} class="emoji-icon-small">🔎</div></button>
       </div>
       <div class="buttons right-top-buttons">
-        <button class="toggle-settings" onclick=${toggleSettings}><div title="${settings.show ? 'hide' : 'show'} settings" class="emoji-icon-large">⚙</div></button>
+        <button class="toggle-settings" onclick=${toggleSettings}><div title="${settings.show ? l('close_settings') : l('open_settings')}" class="emoji-icon-large">⚙</div></button>
       </div>
       ${view.settings(state, emit)}
     </div>
