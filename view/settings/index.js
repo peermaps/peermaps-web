@@ -47,6 +47,7 @@ var tabStyle = css`
 
 function renderTabs (state, emit) {
   var settings = state.settings
+  var locale = settings.ui.locale
   var content = settings.tabs.map(function (tab, i) {
     var selected = settings.selected === tab.name
     var cstyle = selected ? `
@@ -58,8 +59,7 @@ function renderTabs (state, emit) {
       border-bottom: 1px solid #999;
       color: #999;
     `
-    var name = tab.name
-    return html`<div class=${tabStyle} style=${cstyle} onclick=${() => emit('settings:ontabclick', name)}>${name}</div>`
+    return html`<div class=${tabStyle} style=${cstyle} onclick=${() => emit('settings:ontabclick', tab.name)}>${locale(`${tab.name}_tab_title`)}</div>`
   })
   return html`<div class=${tabContainerStyle}>${content}</div>`
 }
