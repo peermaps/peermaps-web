@@ -26,16 +26,16 @@ function Settings (state, emitter) {
       description: 'Search POIs'
     },
     {
+      name: 'ui',
+      description: 'UI settings'
+    },
+    {
       name: 'storage',
       description: 'Define data urls and zoom levels for map storage',
       defaultData: function () {
         var endpoints = [ ...config.storage.endpoints ]
         return { endpoints }
       }
-    },
-    {
-      name: 'misc',
-      description: 'Miscelleanous settings'
     }
   ]
   self.tabData = {}
@@ -103,6 +103,7 @@ function Settings (state, emitter) {
 
 Settings.prototype.initTabs = function (state, emitter) {
   require('./tabs/search')(state, emitter)
+  require('./tabs/ui')(state, emitter)
   require('./tabs/storage')(state, emitter)
 }
 
