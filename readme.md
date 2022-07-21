@@ -42,11 +42,11 @@ Configuration can be provided in a `config.json` file. There's a `config.default
     * `swarmOpts.bootstrap[]` (string) url to websocket server (e.g. `ws://` or `wss://` url)
 * `settings` (object)
   * `settings.storage` (object) configuration for the storage tab in the settings dialog
-    * `settings.storage.endpoint` (array of objects)
-      * `settings.storage.endpoint[].url` (string) data source url
-      * `settings.storage.endpoint[].description` (string) data source description
-      * `settings.storage.endpoint[].zoom` (array of integers) zoom range for this data source
-      * `settings.storage.endpoint[].active` (boolean) true if data source is active, otherwise false
+    * `settings.storage.endpoints` (array of objects)
+      * `settings.storage.endpoints[].url` (string) data source url
+      * `settings.storage.endpoints[].description` (string) data source description
+      * `settings.storage.endpoints[].zoom` (array of integers) zoom range for this data source
+      * `settings.storage.endpoints[].active` (boolean) true if data source is active, otherwise false
   * `settings.search` (object)
     * `settings.search.retryLimit` (number) how many times to retry fetching search results, default is `-1`, which is retry indefinitely
     * `settings.search.endpoints` (array of objects)
