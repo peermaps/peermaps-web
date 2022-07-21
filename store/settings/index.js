@@ -3,7 +3,7 @@ var config = require('../../config.json').settings
 
 module.exports = function (state, emitter) {
   state.settings = new Settings(state, emitter)
-  state.settings.loadTabs(state, emitter)
+  state.settings.initTabs(state, emitter)
 }
 
 /**
@@ -101,9 +101,9 @@ function Settings (state, emitter) {
   })
 }
 
-Settings.prototype.loadTabs = function (state, emitter) {
-  require('./tabs/storage')(state, emitter)
+Settings.prototype.initTabs = function (state, emitter) {
   require('./tabs/search')(state, emitter)
+  require('./tabs/storage')(state, emitter)
 }
 
 Settings.prototype.reset = function (cb) {
