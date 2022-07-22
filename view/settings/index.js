@@ -108,7 +108,7 @@ var buttonStyle = css`
     background: black;
     text-align: center;
     min-width: 20px;
-    width: 50px;
+    width: 75px;
     margin-left: 5px;
     margin-top: 0px;
     margin-bottom: 0px;
@@ -139,12 +139,13 @@ function renderButtons (state, emit) {
     }
   }
 
+  var l = settings.ui.locale
   return html`<div class=${buttonContainerStyle}>
-    <a title="hide settings"><div class=${buttonStyle} style='max-width: 20px;' onclick=${() => emit('settings:toggle')}><div class="emoji-icon-small">❌</div></div></a>
+    <a title=${l('close_settings')}><div class=${buttonStyle} style='max-width: 20px;' onclick=${() => emit('settings:toggle')}><div class="emoji-icon-small">❌</div></div></a>
     <div style='display: flex;'>
-      <div class=${buttonStyle} onclick=${() => emit('settings:reset')}>reset</div>
-      <div class=${buttonStyle} style=${cstyle(settings.canReload)} onclick=${() => onReload()}>reload</div>
-      <div class=${buttonStyle} style=${cstyle(settings.dirty)} onclick=${() => onApply()}>apply</div>
+      <div class=${buttonStyle} onclick=${() => emit('settings:reset')}>${l('reset_settings')}</div>
+      <div class=${buttonStyle} style=${cstyle(settings.canReload)} onclick=${() => onReload()}>${l('reload_settings')}</div>
+      <div class=${buttonStyle} style=${cstyle(settings.dirty)} onclick=${() => onApply()}>${l('save_settings')}</div>
     </div>
   </div>`
 }
