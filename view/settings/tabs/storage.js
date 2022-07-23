@@ -12,7 +12,7 @@ module.exports = function (state, emit) {
   var data = state.settings.getTabData('storage')
   if (!data || !Array.isArray(data.endpoints)) return
 
-  var l = state.settings.ui.locale
+  var l = state.settings.ui.lookup
   var content = data.endpoints.map(function (endpoint, index) {
     var zoom = endpoint.zoom
 

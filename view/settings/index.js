@@ -47,7 +47,7 @@ var tabStyle = css`
 
 function renderTabs (state, emit) {
   var settings = state.settings
-  var l = settings.ui.locale
+  var l = settings.ui.lookup
   var content = settings.tabs.map(function (tab, i) {
     var selected = settings.selected === tab.name
     var cstyle = selected ? `
@@ -139,7 +139,7 @@ function renderButtons (state, emit) {
     }
   }
 
-  var l = settings.ui.locale
+  var l = settings.ui.lookup
   return html`<div class=${buttonContainerStyle}>
     <a title=${l('close_settings')}><div class=${buttonStyle} style='max-width: 20px;' onclick=${() => emit('settings:toggle')}><div class="emoji-icon-small">❌</div></div></a>
     <div style='display: flex;'>

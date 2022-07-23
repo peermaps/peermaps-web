@@ -17,7 +17,7 @@ app.route('*', function (state, emit) {
     state.map.draw()
   })
   var settings = state.settings
-  var l = settings.ui.locale
+  var l = settings.ui.lookup
   return html`<body>
     <style>
       body {
