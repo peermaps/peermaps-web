@@ -1,4 +1,6 @@
 var i18n = require('../../../lib/i18n.js')
+var strings = i18n.strings
+var locales = i18n.locales
 
 module.exports = function (state, emitter) {
   function locale () {
@@ -10,12 +12,9 @@ module.exports = function (state, emitter) {
     get locale () {
       return locale()
     },
-    locales: [
-      { value: 'en-US', description: 'english - american' },
-      { value: 'sv-SE', description: 'svenska' },
-    ],
+    locales,
     lookup: function (key) {
-      return i18n[locale()][key] || i18n['en-US'][key] || 'n/a'
+      return strings[locale()][key] || strings['en-US'][key] || 'n/a'
     }
   }
 
