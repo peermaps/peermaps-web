@@ -65,6 +65,17 @@ module.exports = function (state, emitter) {
     data: []
   }
 
+  emitter.on('settings:favorites:add', function (r) {
+    db.put(r.id, r, function (err) {
+      if (err) {
+        console.error('failed to add favorite')
+      } else {
+        favorites.data.push(r)
+        emitter.emit('render')
+      }
+    })
+  })
+
   emitter.on('settings:favorites:delete', function (r) {
     db.del(r.id, function (err) {
       if (err) {

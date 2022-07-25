@@ -2,9 +2,6 @@ var html = require('choo/html')
 var css = require('sheetify')
 
 module.exports = function (state, emit) {
-  // TODO
-  // var data = state.settings.getTabData('favorites')
-  // if (!data) return
   var data = state.settings.favorites.data
   var l = state.settings.ui.lookup
 
@@ -24,7 +21,7 @@ module.exports = function (state, emit) {
           </div>
         </div>
         <div class="favorite">
-          <div title=${l('favorites_tab_delete_favorite')} class="emoji-icon-small" style="cursor: pointer;" onclick=${(e) => onDelete(e, r)}>🗑</div>
+          <div title=${l('favorites_tab_remove_favorite')} class="emoji-icon-large" style="cursor: pointer;" onclick=${(ev) => onDelete(ev, r)}>❤</div>
         </div>
       </div>`)}
     </div>
