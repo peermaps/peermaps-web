@@ -110,6 +110,7 @@ function Settings (state, emitter) {
 
 Settings.prototype.initTabs = function (state, emitter) {
   require('./tabs/search')(state, emitter)
+  require('./tabs/favorites')(state, emitter)
   require('./tabs/ui')(state, emitter)
   require('./tabs/storage')(state, emitter)
 }
