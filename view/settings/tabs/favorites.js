@@ -2,12 +2,12 @@ var html = require('choo/html')
 var css = require('sheetify')
 
 module.exports = function (state, emit) {
-  var data = state.settings.favorites.data
+  var favorites = state.settings.favorites
   var l = state.settings.ui.lookup
 
   return html`<div class="search">
     <div class="results" style="top: 0px;">
-      ${data.map(r => html`<div class="result" onclick=${() => jump(r)}>
+      ${favorites.map(r => html`<div class="result" onclick=${() => jump(r)}>
         <div class="fullname">
           <div class="name">${r.name}</div>
           <div class="admin">${admin(r).join(' ')}</div>

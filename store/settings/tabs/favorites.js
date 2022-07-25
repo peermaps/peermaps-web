@@ -2,16 +2,14 @@ var sub = require('subleveldown')
 
 module.exports = function (state, emitter) {
   var db = sub(state.settings.db, 'favorites', { valueEncoding: 'json' })
-  var favorites = state.settings.favorites = {
-    data: []
-  }
+  var favorites = state.settings.favorites = []
 
   emitter.on('settings:favorites:add', function (r) {
     db.put(r.id, r, function (err) {
       if (err) {
         console.error('failed to add favorite')
       } else {
-        favorites.data.push(r)
+        favorites.push(r)
         emitter.emit('render')
       }
     })
@@ -22,11 +20,11 @@ module.exports = function (state, emitter) {
       if (err) {
         console.error('failed to delete favorite')
       } else {
-        favorites.data = favorites.data.filter(i => i.id !== r.id)
+        state.settings.favorites = favorites = favorites.filter(i => i.id !== r.id)
         emitter.emit('render')
       }
     })
   })
 
-  db.createReadStream().on('data', data => favorites.data.push(data.value))
+  db.createReadStream().on('data', data => favorites.push(data.value))
 }

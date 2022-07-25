@@ -2,7 +2,7 @@ var html = require('choo/html')
 
 module.exports = function (state, emit) {
   var search = state.settings.search
-  var favorites = state.settings.favorites.data
+  var favorites = state.settings.favorites
   var l = state.settings.ui.lookup
 
   function renderFavorite (r) {
