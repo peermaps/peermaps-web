@@ -1,11 +1,12 @@
 var i18n = require('../../../lib/i18n.js')
+var config = require('../../../config.json')
 var strings = i18n.strings
 var locales = i18n.locales
 
 module.exports = function (state, emitter) {
   function locale () {
     var data = state.settings.getTabData('ui')
-    return (data && data.locale) || 'en-US'
+    return (data && data.locale) || config.settings.ui.locale || 'en-US'
   }
 
   state.settings.ui = {
