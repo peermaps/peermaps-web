@@ -26,6 +26,10 @@ function Settings (state, emitter) {
       description: 'Search POIs'
     },
     {
+      name: 'favorites',
+      description: 'Favorite POIs'
+    },
+    {
       name: 'ui',
       description: 'UI settings',
       defaultData: function () {
