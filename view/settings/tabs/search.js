@@ -16,11 +16,11 @@ module.exports = function (state, emit) {
           <div class="admin">${admin(r).join(' ')}</div>
         </div>
         <div class="fields">
-          <div class="population">
-            ${r.population}
-          </div>
           <div class="lonlat">
             ${r.longitude.toFixed(2)},${r.latitude.toFixed(2)}
+          </div>
+          <div class="population">
+            ${r.population}
           </div>
         </div>
       </div>`)}
