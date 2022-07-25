@@ -3,7 +3,7 @@ var config = require('../../config.json').settings
 
 module.exports = function (state, emitter) {
   state.settings = new Settings(state, emitter)
-  state.settings.loadTabs(state, emitter)
+  state.settings.initTabs(state, emitter)
 }
 
 /**
@@ -26,16 +26,19 @@ function Settings (state, emitter) {
       description: 'Search POIs'
     },
     {
+      name: 'ui',
+      description: 'UI settings',
+      defaultData: function () {
+        return { locale: config.ui.locale }
+      }
+    },
+    {
       name: 'storage',
       description: 'Define data urls and zoom levels for map storage',
       defaultData: function () {
         var endpoints = [ ...config.storage.endpoints ]
         return { endpoints }
       }
-    },
-    {
-      name: 'misc',
-      description: 'Miscelleanous settings'
     }
   ]
   self.tabData = {}
@@ -101,9 +104,10 @@ function Settings (state, emitter) {
   })
 }
 
-Settings.prototype.loadTabs = function (state, emitter) {
-  require('./tabs/storage')(state, emitter)
+Settings.prototype.initTabs = function (state, emitter) {
   require('./tabs/search')(state, emitter)
+  require('./tabs/ui')(state, emitter)
+  require('./tabs/storage')(state, emitter)
 }
 
 Settings.prototype.reset = function (cb) {

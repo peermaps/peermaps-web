@@ -2,8 +2,8 @@ var html = require('choo/html')
 var css = require('sheetify')
 var tabViews = {
   search: require('./tabs/search'),
-  storage: require('./tabs/storage'),
-  misc: require('./tabs/misc')
+  ui: require('./tabs/ui'),
+  storage: require('./tabs/storage')
 }
 
 var containerStyle = css`
@@ -47,6 +47,7 @@ var tabStyle = css`
 
 function renderTabs (state, emit) {
   var settings = state.settings
+  var l = settings.ui.lookup
   var content = settings.tabs.map(function (tab, i) {
     var selected = settings.selected === tab.name
     var cstyle = selected ? `
@@ -58,8 +59,7 @@ function renderTabs (state, emit) {
       border-bottom: 1px solid #999;
       color: #999;
     `
-    var name = tab.name
-    return html`<div class=${tabStyle} style=${cstyle} onclick=${() => emit('settings:ontabclick', name)}>${name}</div>`
+    return html`<div class=${tabStyle} style=${cstyle} onclick=${() => emit('settings:ontabclick', tab.name)}>${l(`${tab.name}_tab_title`)}</div>`
   })
   return html`<div class=${tabContainerStyle}>${content}</div>`
 }
@@ -108,7 +108,7 @@ var buttonStyle = css`
     background: black;
     text-align: center;
     min-width: 20px;
-    width: 50px;
+    width: 75px;
     margin-left: 5px;
     margin-top: 0px;
     margin-bottom: 0px;
@@ -139,12 +139,13 @@ function renderButtons (state, emit) {
     }
   }
 
+  var l = settings.ui.lookup
   return html`<div class=${buttonContainerStyle}>
-    <a title="hide settings"><div class=${buttonStyle} style='max-width: 20px;' onclick=${() => emit('settings:toggle')}><div class="emoji-icon-small">❌</div></div></a>
+    <a title=${l('close_settings')}><div class=${buttonStyle} style='max-width: 20px;' onclick=${() => emit('settings:toggle')}><div class="emoji-icon-small">❌</div></div></a>
     <div style='display: flex;'>
-      <div class=${buttonStyle} onclick=${() => emit('settings:reset')}>reset</div>
-      <div class=${buttonStyle} style=${cstyle(settings.canReload)} onclick=${() => onReload()}>reload</div>
-      <div class=${buttonStyle} style=${cstyle(settings.dirty)} onclick=${() => onApply()}>apply</div>
+      <div class=${buttonStyle} onclick=${() => emit('settings:reset')}>${l('reset_settings')}</div>
+      <div class=${buttonStyle} style=${cstyle(settings.canReload)} onclick=${() => onReload()}>${l('reload_settings')}</div>
+      <div class=${buttonStyle} style=${cstyle(settings.dirty)} onclick=${() => onApply()}>${l('save_settings')}</div>
     </div>
   </div>`
 }

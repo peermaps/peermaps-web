@@ -47,6 +47,8 @@ Configuration can be provided in a `config.json` file. There's a `config.default
       * `settings.storage.endpoints[].description` (string) data source description
       * `settings.storage.endpoints[].zoom` (array of integers) zoom range for this data source
       * `settings.storage.endpoints[].active` (boolean) true if data source is active, otherwise false
+  * `settings.ui` (object)
+    * `settings.ui.locale` (string) default locale
   * `settings.search` (object)
     * `settings.search.retryLimit` (number) how many times to retry fetching search results, default is `-1`, which is retry indefinitely
     * `settings.search.endpoints` (array of objects)
@@ -67,6 +69,13 @@ The following settings can be set via url search parameters:
 * `style` (string) url to shader style png, defaults to `style.png` (taken from `config.style.url`)
 
 **Example** `http://localhost:9966/#data=http://localhost:8000` would set the `data` source to `http://localhost:8000`.
+
+## localization
+
+To add a new language you need to do the following:
+
+* add the locale to the `locales` array in `lib/i18n.js`
+* add translations to the corresponding locale object
 
 ## webxdc
 

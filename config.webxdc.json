@@ -23,6 +23,9 @@
         }
       ]
     },
+    "ui": {
+      "locale": "en-US"
+    },
     "search": {
       "retryLimit": 3,
       "endpoints": [
