@@ -154,6 +154,7 @@ app.route('*', function (state, emit) {
         display: flex;
         justify-content: space-between;
         align-items: center;
+        margin-bottom: 0.5em;
       }
       .ui-overlay .search .results .result .population {
         background-color: #d0d0d0;

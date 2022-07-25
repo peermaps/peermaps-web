@@ -65,6 +65,17 @@ module.exports = function (state, emitter) {
     data: []
   }
 
+  emitter.on('settings:favorites:delete', function (r) {
+    db.del(r.id, function (err) {
+      if (err) {
+        console.error('failed to delete favorite')
+      } else {
+        favorites.data = favorites.data.filter(i => i.id !== r.id)
+        emitter.emit('render')
+      }
+    })
+  })
+
   db.createReadStream()
     .on('data', function (data) {
       favorites.data.push(data.value)
