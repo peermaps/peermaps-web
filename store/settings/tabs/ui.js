@@ -15,7 +15,7 @@ module.exports = function (state, emitter) {
     },
     locales,
     lookup: function (key) {
-      return strings[locale()][key] || strings['en-US'][key] || 'n/a'
+      return strings[locale()][key] || strings['en-US'][key] || key
     }
   }
 
