@@ -7,13 +7,9 @@ module.exports = function (state, emit) {
 
   function renderFavorite (r) {
     if (favorites.find(i => i.id === r.id)) {
-      return html`<div class="favorite">
-        <div title=${l('search_tab_remove_favorite')} class="emoji-icon-large" style="cursor: pointer;" onclick=${(ev) => onRemoveFavorite(ev, r)}>❤</div>
-      </div>`
+      return html`<div title=${l('search_tab_remove_favorite')} class="emoji-icon-large" style="cursor: pointer;" onclick=${(ev) => onRemoveFavorite(ev, r)}>💚</div>`
     } else {
-      return html`<div class="favorite">
-        <div title=${l('search_tab_add_favorite')} class="emoji-icon-large" style="cursor: pointer;" onclick=${(ev) => onAddFavorite(ev, r)}>🖤</div>
-      </div>`
+      return html`<div title=${l('search_tab_add_favorite')} class="emoji-icon-large" style="cursor: pointer;" onclick=${(ev) => onAddFavorite(ev, r)}>🤍</div>`
     }
   }
 
@@ -48,7 +44,9 @@ module.exports = function (state, emit) {
             ${r.population}
           </div>
         </div>
-        ${renderFavorite(r)}
+        <div class="icons">
+          ${renderFavorite(r)}
+        </div>
       </div>`)}
     </div>
   </div>`

@@ -20,8 +20,8 @@ module.exports = function (state, emit) {
             ${r.population}
           </div>
         </div>
-        <div class="favorite">
-          <div title=${l('favorites_tab_remove_favorite')} class="emoji-icon-large" style="cursor: pointer;" onclick=${(ev) => onDelete(ev, r)}>❤</div>
+        <div class="icons">
+          <div title=${l('favorites_tab_remove_favorite')} class="emoji-icon-large" style="cursor: pointer;" onclick=${(ev) => onDelete(ev, r)}>💚</div>
         </div>
       </div>`)}
     </div>
