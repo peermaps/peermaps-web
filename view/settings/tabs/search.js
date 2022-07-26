@@ -45,7 +45,7 @@ module.exports = function (state, emit) {
           </div>
         </div>
         <div class="icons">
-          <div title=${l('goto_location')} class="emoji-icon-large" style="cursor: pointer;" onclick=${() => jump(r)}>👁</div>
+          <div title=${l('jump_to_location')} class="emoji-icon-large" style="cursor: pointer;" onclick=${() => jump(r)}>👁</div>
           ${renderFavorite(r)}
         </div>
       </div>`)}
