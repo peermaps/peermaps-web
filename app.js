@@ -163,6 +163,10 @@ app.route('*', function (state, emit) {
       .ui-overlay .search .results .result:nth-child(even) .population {
         background-color: #e0e0e0;
       }
+      .ui-overlay .search .results .result .icons {
+        display: flex;
+        justify-content: space-between;
+      }
     </style>
     <div class="ui-overlay">
       <div class="buttons left-top-buttons">

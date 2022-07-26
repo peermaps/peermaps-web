@@ -7,7 +7,7 @@ module.exports = function (state, emit) {
 
   return html`<div class="search">
     <div class="results" style="top: 0px;">
-      ${favorites.map(r => html`<div class="result" onclick=${() => jump(r)}>
+      ${favorites.map(r => html`<div class="result">
         <div class="fullname">
           <div class="name">${r.name}</div>
           <div class="admin">${admin(r).join(' ')}</div>
@@ -21,7 +21,8 @@ module.exports = function (state, emit) {
           </div>
         </div>
         <div class="icons">
-          <div title=${l('favorites_tab_remove_favorite')} class="emoji-icon-large" style="cursor: pointer;" onclick=${(ev) => onDelete(ev, r)}>💚</div>
+          <div title=${l('goto_location')} class="emoji-icon-large" style="cursor: pointer;" onclick=${() => jump(r)}>👁</div>
+          <div title=${l('remove_favorite')} class="emoji-icon-large" style="cursor: pointer;" onclick=${(ev) => onDelete(ev, r)}>💚</div>
         </div>
       </div>`)}
     </div>

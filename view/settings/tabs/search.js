@@ -7,9 +7,9 @@ module.exports = function (state, emit) {
 
   function renderFavorite (r) {
     if (favorites.find(i => i.id === r.id)) {
-      return html`<div title=${l('search_tab_remove_favorite')} class="emoji-icon-large" style="cursor: pointer;" onclick=${(ev) => onRemoveFavorite(ev, r)}>💚</div>`
+      return html`<div title=${l('remove_favorite')} class="emoji-icon-large" style="cursor: pointer;" onclick=${(ev) => onRemoveFavorite(ev, r)}>💚</div>`
     } else {
-      return html`<div title=${l('search_tab_add_favorite')} class="emoji-icon-large" style="cursor: pointer;" onclick=${(ev) => onAddFavorite(ev, r)}>🤍</div>`
+      return html`<div title=${l('add_favorite')} class="emoji-icon-large" style="cursor: pointer;" onclick=${(ev) => onAddFavorite(ev, r)}>🤍</div>`
     }
   }
 
@@ -31,7 +31,7 @@ module.exports = function (state, emit) {
       </div>
     </form>
     <div class="results">
-      ${search.results.map(r => html`<div class="result" onclick=${() => jump(r)}>
+      ${search.results.map(r => html`<div class="result">
         <div class="fullname">
           <div class="name">${r.name}</div>
           <div class="admin">${admin(r).join(' ')}</div>
@@ -45,6 +45,7 @@ module.exports = function (state, emit) {
           </div>
         </div>
         <div class="icons">
+          <div title=${l('goto_location')} class="emoji-icon-large" style="cursor: pointer;" onclick=${() => jump(r)}>👁</div>
           ${renderFavorite(r)}
         </div>
       </div>`)}
