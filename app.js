@@ -126,45 +126,46 @@ app.route('*', function (state, emit) {
         padding: 1em;
         overflow-y: scroll;
       }
-      .ui-overlay .search .result {
-        padding-left: 1em;
-        padding-right: 1em;
-        padding-top: 0.5em;
-        padding-bottom: 1em;
+      .ui-overlay .search .results .result {
+        padding: 0.75em;
         margin-bottom: 1em;
       }
-      .ui-overlay .search .result:nth-child(odd) {
+      .ui-overlay .search .results .result:nth-child(odd) {
         background-color: #e0e0e0;
       }
-      .ui-overlay .search .result:nth-child(even) {
+      .ui-overlay .search .results .result:nth-child(even) {
         background-color: #f0f0f0;
       }
-      .ui-overlay .search .result .fullname {
+      .ui-overlay .search .results .result .fullname {
         height: 2em;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 0.5em;
       }
-      .ui-overlay .search .result .name {
-        display: inline-block;
-      }
-      .ui-overlay .search .result .admin {
-        display: inline-block;
-        float: right;
+      .ui-overlay .search .results .result .fullname .admin {
         background-color: #d0d0d0;
-        padding: 0.3em;
+        padding: 0.2em;
       }
-      .ui-overlay .search .result:nth-child(even) .admin {
+      .ui-overlay .search .results .result:nth-child(even) .admin {
         background-color: #e0e0e0;
       }
-      .ui-overlay .search .result .lonlat {
-        display: inline-block;
+      .ui-overlay .search .results .result .fields {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 0.5em;
       }
-      .ui-overlay .search .result .population {
-        display: inline-block;
+      .ui-overlay .search .results .result .population {
         background-color: #d0d0d0;
-        float: right;
-        padding: 0.3em;
+        padding: 0.2em;
       }
-      .ui-overlay .search .result:nth-child(even) .population {
+      .ui-overlay .search .results .result:nth-child(even) .population {
         background-color: #e0e0e0;
+      }
+      .ui-overlay .search .results .result .icons {
+        display: flex;
+        justify-content: space-between;
       }
     </style>
     <div class="ui-overlay">

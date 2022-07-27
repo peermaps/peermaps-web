@@ -2,6 +2,7 @@ var html = require('choo/html')
 var css = require('sheetify')
 var tabViews = {
   search: require('./tabs/search'),
+  favorites: require('./tabs/favorites'),
   ui: require('./tabs/ui'),
   storage: require('./tabs/storage')
 }
