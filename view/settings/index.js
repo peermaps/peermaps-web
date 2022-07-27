@@ -23,17 +23,44 @@ module.exports = function (state, emit) {
   if (!settings.show) return
   var cstyle = `width: ${settings.width}px;`
   return html`<div class=${containerStyle} style=${cstyle}>
+    ${renderStretcher(state, emit)}
     ${renderTabs(state, emit)}
     ${renderTabContent(state, emit)}
     ${renderButtons(state, emit)}
   </div>`
 }
 
+var stretcherStyle = css`
+  :host {
+    position: absolute;
+    top: 0px;
+    bottom: 0px;
+    left: 0px;
+    width: 4px;
+    cursor: col-resize;
+    background: repeating-linear-gradient(
+      -55deg,
+      #888,
+      #888 4px,
+      #999 4px,
+      #999 8px
+    );
+  }
+`
+
+function renderStretcher (state, emit) {
+  return html`<div class=${stretcherStyle}></div>`
+}
+
 var tabContainerStyle = css`
   :host {
     display: flex;
     justify-content: space-around;
-    height: 25px;
+    position: absolute;
+    top: 0px;
+    bottom: 25px;
+    left: 4px;
+    right: 0px;
   }
 `
 
@@ -43,6 +70,7 @@ var tabStyle = css`
     width: 100%;
     cursor: pointer;
     padding: 5px;
+    height: 15px;
   }
 `
 
@@ -71,7 +99,7 @@ var tabContentStyle = css`
     position: absolute;
     top: 25px;
     bottom: 40px;
-    left: 0px;
+    left: 4px;
     right: 0px;
     overflow-x: hidden;
     overflow-y: auto;
@@ -93,7 +121,7 @@ var buttonContainerStyle = css`
     position: absolute;
     bottom: 0px;
     height: 40px;
-    left: 0px;
+    left: 4px;
     right: 0px;
     display: flex;
     justify-content: space-between;
