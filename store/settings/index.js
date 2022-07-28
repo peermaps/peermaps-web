@@ -32,10 +32,7 @@ function Settings (state, emitter) {
     },
     {
       name: 'ui',
-      description: 'UI settings',
-      defaultData: function () {
-        return { locale: config.ui.locale }
-      }
+      description: 'UI settings'
     },
     {
       name: 'storage',
