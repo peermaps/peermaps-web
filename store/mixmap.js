@@ -57,7 +57,7 @@ module.exports = function (state, emitter) {
   function onReady () {
     state.storage = createStorage(state, getStorageEndpoint())
 
-    emitter.on('settings:updated', updateStorageBackend)
+    emitter.on('settings:storage:updated', updateStorageBackend)
     emitter.on('map:zoom:set', updateStorageBackend)
 
     var style = new Image
@@ -96,6 +96,6 @@ module.exports = function (state, emitter) {
   if (state.parameters.data) {
     onReady()
   } else {
-    emitter.on('settings:ready', onReady)
+    emitter.on('settings:storage:ready', onReady)
   }
 }

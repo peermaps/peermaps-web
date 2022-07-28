@@ -9,11 +9,10 @@ var endpointStyle = css`
 `
 
 module.exports = function (state, emit) {
-  var data = state.settings.getTabData('storage')
-  if (!data || !Array.isArray(data.endpoints)) return
+  var endpoints = state.settings.storage.endpoints
 
   var l = state.settings.ui.lookup
-  var content = data.endpoints.map(function (endpoint, index) {
+  var content = endpoints.map(function (endpoint, index) {
     var zoom = endpoint.zoom
 
     function renderUpArrow () {
@@ -25,7 +24,7 @@ module.exports = function (state, emit) {
     }
 
     function renderDownArrow () {
-      if (index !== data.endpoints.length - 1) {
+      if (index !== endpoints.length - 1) {
         return html`<div title=${l('storage_tab_move_storage_down')} class='emoji-icon-large' style='cursor: pointer;' onclick=${() => emit('settings:storage:move-down', index)}>⬇</div>`
       } else {
         return html`<div class='emoji-icon-large' style='opacity: 50%; cursor: default;'>⬇</div>`
@@ -53,9 +52,69 @@ module.exports = function (state, emit) {
     </div>`
   })
   return html`<div>
-    ${content}
-    <div title=${l('storage_tab_add_storage')} style='cursor: pointer; padding: 5px 0px; text-align: center; border-bottom: 1px solid #999' onclick=${() => emit('settings:storage:add')}>
-      <div class='emoji-icon-large'>➕</div>
+    <div style="position: absolute; top: 0px; bottom: 40px; left: 0px; right: 0px; overflow-x: hidden; overflow-y: auto;">
+      ${content}
+      <div title=${l('storage_tab_add_storage')} style='cursor: pointer; padding: 5px 0px; text-align: center; border-bottom: 1px solid #999' onclick=${() => emit('settings:storage:add')}>
+        <div class='emoji-icon-large'>➕</div>
+      </div>
     </div>
+    ${renderButtons(state, emit)}
+  </div>`
+}
+
+var buttonContainerStyle = css`
+  :host {
+    display: flex;
+    align-items: center;
+    position: absolute;
+    height: 40px;
+    bottom: 0px;
+    left: 0px;
+    right: 0px;
+    border-top: 1px solid #999;
+  }
+`
+
+var buttonStyle = css`
+  :host {
+    background: black;
+    text-align: center;
+    min-width: 20px;
+    width: 75px;
+    margin-left: 5px;
+    margin-top: 0px;
+    margin-bottom: 0px;
+    padding: 5px;
+    cursor: pointer;
+    border: 1px solid #999;
+  }
+`
+
+function renderButtons (state, emit) {
+  var storage = state.settings.storage
+  var cstyle = function (active) {
+    return `
+      color: #${active ? 'FFF' : '999'};
+      cursor: ${active ? 'pointer' : 'default'};
+    `
+  }
+
+  function onReload () {
+    if (storage.canReload) {
+      emit('settings:storage:reload')
+    }
+  }
+
+  function onSave () {
+    if (storage.dirty) {
+      emit('settings:storage:save')
+    }
+  }
+
+  var l = state.settings.ui.lookup
+  return html`<div class=${buttonContainerStyle}>
+    <div class=${buttonStyle} onclick=${() => emit('settings:storage:reset')}>${l('storage_tab_reset')}</div>
+    <div class=${buttonStyle} style=${cstyle(storage.canReload)} onclick=${() => onReload()}>${l('storage_tab_reload')}</div>
+    <div class=${buttonStyle} style=${cstyle(storage.dirty)} onclick=${() => onSave()}>${l('storage_tab_save')}</div>
   </div>`
 }

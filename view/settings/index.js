@@ -26,7 +26,6 @@ module.exports = function (state, emit) {
     ${renderResizer(state, emit)}
     ${renderHeader(state, emit)}
     ${renderTabContent(state, emit)}
-    ${renderButtons(state, emit)}
   </div>`
 }
 
@@ -148,7 +147,7 @@ var tabContentStyle = css`
     background: rgba(0, 0, 0, 0.3);
     position: absolute;
     top: 26px;
-    bottom: 40px;
+    bottom: 0px;
     left: 4px;
     right: 0px;
     overflow-x: hidden;
@@ -165,66 +164,4 @@ function renderTabContent (state, emit) {
   if (typeof tabView === 'function') {
     return html`<div class=${tabContentStyle}>${tabView(state, emit)}</div>`
   }
-}
-
-var buttonContainerStyle = css`
-  :host {
-    position: absolute;
-    bottom: 0px;
-    height: 40px;
-    left: 4px;
-    right: 0px;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    border-top: 1px solid #999;
-    padding-right: 10px;
-    display: flex;
-  }
-`
-
-var buttonStyle = css`
-  :host {
-    background: black;
-    text-align: center;
-    min-width: 20px;
-    width: 75px;
-    margin-left: 5px;
-    margin-top: 0px;
-    margin-bottom: 0px;
-    padding: 5px;
-    cursor: pointer;
-    border: 1px solid #999;
-  }
-`
-
-function renderButtons (state, emit) {
-  var settings = state.settings
-  var cstyle = function (active) {
-    return `
-      color: #${active ? 'FFF' : '999'};
-      cursor: ${active ? 'pointer' : 'default'};
-    `
-  }
-
-  function onReload () {
-    if (settings.canReload) {
-      emit('settings:reload')
-    }
-  }
-
-  function onApply () {
-    if (settings.dirty) {
-      emit('settings:apply')
-    }
-  }
-
-  var l = settings.ui.lookup
-  return html`<div class=${buttonContainerStyle}>
-    <div style='display: flex;'>
-      <div class=${buttonStyle} onclick=${() => emit('settings:reset')}>${l('reset_settings')}</div>
-      <div class=${buttonStyle} style=${cstyle(settings.canReload)} onclick=${() => onReload()}>${l('reload_settings')}</div>
-      <div class=${buttonStyle} style=${cstyle(settings.dirty)} onclick=${() => onApply()}>${l('save_settings')}</div>
-    </div>
-  </div>`
 }
