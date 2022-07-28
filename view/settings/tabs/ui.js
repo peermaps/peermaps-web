@@ -9,9 +9,6 @@ var localeStyle = css`
 `
 
 module.exports = function (state, emit) {
-  var data = state.settings.getTabData('ui')
-  if (!data) return
-
   var l = state.settings.ui.lookup
   var locale = state.settings.ui.locale
   var locales = state.settings.ui.locales
