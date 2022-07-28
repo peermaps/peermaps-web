@@ -17,6 +17,7 @@ function Settings (state, emitter) {
   self.show = false
   self.dirty = false
   self.canReload = false
+  self.resize = null
   self.width = 550
   self.parameters = state.parameters
 
@@ -62,6 +63,18 @@ function Settings (state, emitter) {
       self.selected = name
       emitter.emit('render')
     }
+  })
+
+  emitter.on('settings:resize:start', function (clientX) {
+    self.resize = { clientX, width: self.width }
+  })
+  emitter.on('settings:resize:move', function (clientX) {
+    var dx = state.settings.resize.clientX - clientX
+    self.width = state.settings.resize.width + dx
+    emitter.emit('render')
+  })
+  emitter.on('settings:resize:end', function () {
+    self.resize = null
   })
 
   emitter.on('settings:reset', function () {

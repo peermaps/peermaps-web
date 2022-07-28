@@ -23,14 +23,24 @@ module.exports = function (state, emit) {
   if (!settings.show) return
   var cstyle = `width: ${settings.width}px;`
   return html`<div class=${containerStyle} style=${cstyle}>
-    ${renderStretcher(state, emit)}
+    ${renderResizer(state, emit)}
     ${renderTabs(state, emit)}
     ${renderTabContent(state, emit)}
     ${renderButtons(state, emit)}
   </div>`
 }
 
-var stretcherStyle = css`
+var guardStyle = css`
+  :host {
+    position: absolute;
+    top: 0px;
+    bottom: 0px;
+    cursor: col-resize;
+    z-index: 100;
+  }
+`
+
+var resizerStyle = css`
   :host {
     position: absolute;
     top: 0px;
@@ -48,8 +58,32 @@ var stretcherStyle = css`
   }
 `
 
-function renderStretcher (state, emit) {
-  return html`<div class=${stretcherStyle}></div>`
+function renderResizer (state, emit) {
+  function onMouseDown (ev) {
+    setVisibility('resize-guard-left', 'visible')
+    setVisibility('resize-guard-right', 'visible')
+    emit('settings:resize:start', ev.clientX)
+  }
+  function onMouseUp (ev) {
+    setVisibility('resize-guard-left', 'hidden')
+    setVisibility('resize-guard-right', 'hidden')
+    emit('settings:resize:end')
+  }
+  function onMouseMove (ev) {
+    if (state.settings.resize) {
+      emit('settings:resize:move', ev.clientX)
+    }
+  }
+  function setVisibility (id, visibility) {
+    var el = document.getElementById(id)
+    if (el) el.style.visibility = visibility
+  }
+  var visibility = state.settings.resize ? 'visible' : 'hidden'
+  return html`<div>
+    <div id="resize-guard-left" onmouseup=${onMouseUp} onmousemove=${onMouseMove} class=${guardStyle} style="left: -1500px; right: ${state.settings.width}px; visibility: ${visibility};"></div>
+    <div id="resize-settings" onmousedown=${onMouseDown} onmouseup=${onMouseUp} onmousemove=${onMouseMove} class=${resizerStyle}></div>
+    <div id="resize-guard-right" onmouseup=${onMouseUp} onmousemove=${onMouseMove} class=${guardStyle} style="left: 4px; right: 0px; visibility: ${visibility};"></div>
+  </div>`
 }
 
 var tabContainerStyle = css`
