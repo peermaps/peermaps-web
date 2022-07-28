@@ -23,9 +23,66 @@ module.exports = function (state, emit) {
   if (!settings.show) return
   var cstyle = `width: ${settings.width}px;`
   return html`<div class=${containerStyle} style=${cstyle}>
+    ${renderResizer(state, emit)}
     ${renderTabs(state, emit)}
     ${renderTabContent(state, emit)}
     ${renderButtons(state, emit)}
+  </div>`
+}
+
+var guardStyle = css`
+  :host {
+    position: absolute;
+    top: 0px;
+    bottom: 0px;
+    cursor: col-resize;
+    z-index: 100;
+  }
+`
+
+var resizerStyle = css`
+  :host {
+    position: absolute;
+    top: 0px;
+    bottom: 0px;
+    left: 0px;
+    width: 4px;
+    cursor: col-resize;
+    background: repeating-linear-gradient(
+      -55deg,
+      #888,
+      #888 4px,
+      #999 4px,
+      #999 8px
+    );
+  }
+`
+
+function renderResizer (state, emit) {
+  function onMouseDown (ev) {
+    setVisibility('resize-guard-left', 'visible')
+    setVisibility('resize-guard-right', 'visible')
+    emit('settings:resize:start', ev.clientX)
+  }
+  function onMouseUp (ev) {
+    setVisibility('resize-guard-left', 'hidden')
+    setVisibility('resize-guard-right', 'hidden')
+    emit('settings:resize:end')
+  }
+  function onMouseMove (ev) {
+    if (state.settings.resize) {
+      emit('settings:resize:move', ev.clientX)
+    }
+  }
+  function setVisibility (id, visibility) {
+    var el = document.getElementById(id)
+    if (el) el.style.visibility = visibility
+  }
+  var visibility = state.settings.resize ? 'visible' : 'hidden'
+  return html`<div>
+    <div id="resize-guard-left" onmouseup=${onMouseUp} onmousemove=${onMouseMove} class=${guardStyle} style="left: -1500px; right: ${state.settings.width}px; visibility: ${visibility};"></div>
+    <div id="resize-settings" onmousedown=${onMouseDown} onmouseup=${onMouseUp} onmousemove=${onMouseMove} class=${resizerStyle}></div>
+    <div id="resize-guard-right" onmouseup=${onMouseUp} onmousemove=${onMouseMove} class=${guardStyle} style="left: 4px; right: 0px; visibility: ${visibility};"></div>
   </div>`
 }
 
@@ -33,7 +90,11 @@ var tabContainerStyle = css`
   :host {
     display: flex;
     justify-content: space-around;
-    height: 25px;
+    position: absolute;
+    top: 0px;
+    bottom: 25px;
+    left: 4px;
+    right: 0px;
   }
 `
 
@@ -43,6 +104,7 @@ var tabStyle = css`
     width: 100%;
     cursor: pointer;
     padding: 5px;
+    height: 15px;
   }
 `
 
@@ -71,7 +133,7 @@ var tabContentStyle = css`
     position: absolute;
     top: 25px;
     bottom: 40px;
-    left: 0px;
+    left: 4px;
     right: 0px;
     overflow-x: hidden;
     overflow-y: auto;
@@ -93,7 +155,7 @@ var buttonContainerStyle = css`
     position: absolute;
     bottom: 0px;
     height: 40px;
-    left: 0px;
+    left: 4px;
     right: 0px;
     display: flex;
     justify-content: space-between;
