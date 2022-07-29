@@ -55,8 +55,8 @@ module.exports = function (state, emit) {
   function onSearch (ev) {
     ev.preventDefault()
     var q = ev.target.elements.query.value
-    if (q === '') emit('search:clear')
-    else emit('search:query', q)
+    if (q === '') emit('settings:search:clear')
+    else emit('settings:search:query', q)
   }
 
   function jump (r) {

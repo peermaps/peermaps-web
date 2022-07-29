@@ -59,7 +59,7 @@ module.exports = function (state, emitter) {
     search.errors.push(err)
     emitter.emit('render')
   }
-  emitter.on('search:clear', function () {
+  emitter.on('settings:search:clear', function () {
     search.query = ''
     search.errors = []
     search.results = []
@@ -67,7 +67,7 @@ module.exports = function (state, emitter) {
     search.stream = null
     emitter.emit('render')
   })
-  emitter.on('search:query', function (q) {
+  emitter.on('settings:search:query', function (q) {
     search.query = q
     clearResults()
     var stream = search.geonames.search(q)
