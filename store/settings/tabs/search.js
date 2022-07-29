@@ -59,10 +59,6 @@ module.exports = function (state, emitter) {
     search.errors.push(err)
     emitter.emit('render')
   })
-  emitter.on('search:error:clear', function () {
-    search.errors = []
-    emitter.emit('render')
-  })
   emitter.on('search:clear', function () {
     search.query = ''
     search.errors = []
