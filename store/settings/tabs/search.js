@@ -6,7 +6,6 @@ var config = require('../../../config.json')
 module.exports = function (state, emitter) {
   var debug = state.parameters.debug
   var search = state.settings.search = {
-    visible: false,
     results: [],
     errors: [],
     query: '',
