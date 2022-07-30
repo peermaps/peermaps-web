@@ -109,13 +109,12 @@ app.route('*', function (state, emit) {
         z-index: inherit;
       }
       .ui-overlay .search form input[type=text] {
-        width: calc(100% - 11ex);
+        width: 100%;
         padding: 0.5em;
       }
       .ui-overlay .search form button {
-        width: 8ex;
-        padding: 0.5em;
-        float: right;
+        width: 6ex;
+        margin-left: 2px;
       }
       .ui-overlay .search .results {
         position: absolute;
