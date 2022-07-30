@@ -27,8 +27,8 @@ module.exports = function (state, emit) {
     <form onsubmit=${onSearch}>
       <div style="display: flex;">
         <input name="query" type="text" value=${search.query || ''} disabled=${search.isSearching}>
-        <button disabled=${search.isSearching}>?</button>
-        <button disabled=${!search.isSearching}>x</button>
+        <button title=${l('search_tab_title')} disabled=${search.isSearching} class="emoji-icon-small">🔎</button>
+        <button title=${l('search_tab_abort')} disabled=${!search.isSearching}>x</button>
       </div>
     </form>
     <div class="results">
