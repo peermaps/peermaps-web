@@ -67,6 +67,11 @@ module.exports = function (state, emitter) {
     search.stream = null
     emitter.emit('render')
   })
+  emitter.on('settings:search:abort', function () {
+    if (search.stream) search.stream.destroy()
+    search.stream = null
+    emitter.emit('render')
+  })
   emitter.on('settings:search:query', function (q) {
     search.query = q
     clearResults()
