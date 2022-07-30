@@ -2,6 +2,7 @@ var html = require('choo/html')
 
 module.exports = function (state, emit) {
   var search = state.settings.search
+  var isSearching = search.isSearching
   var favorites = state.settings.favorites
   var l = state.settings.ui.lookup
 
@@ -26,9 +27,9 @@ module.exports = function (state, emit) {
   return html`<div class="search">
     <form onsubmit=${onSearch}>
       <div style="display: flex;">
-        <input name="query" type="text" value=${search.query || ''} disabled=${search.isSearching}>
-        <button title=${l('search_tab_title')} disabled=${search.isSearching} class="emoji-icon-small">🔎</button>
-        <button title=${l('search_tab_abort')} disabled=${!search.isSearching}>x</button>
+        <input name="query" type="text" value=${search.query || ''} disabled=${isSearching}>
+        <button title=${l('search_tab_title')} disabled=${isSearching}><div class="emoji-icon-small" style="opacity: ${!isSearching ? '100' : '50'}%;">🔎</div></button>
+        <button title=${l('search_tab_abort')} disabled=${!isSearching}><div class="emoji-icon-small" style="opacity: ${isSearching ? '100' : '50'}%;">🔴</div></button>
       </div>
     </form>
     <div class="results">
