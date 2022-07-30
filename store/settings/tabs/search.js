@@ -9,6 +9,7 @@ module.exports = function (state, emitter) {
     results: [],
     errors: [],
     query: '',
+    get isSearching () { return search.stream !== null },
     stream: null,
     endpoint: state.settings.getSearchEndpoint(),
     geonames: sgs({
