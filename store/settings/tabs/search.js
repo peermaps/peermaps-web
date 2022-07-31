@@ -6,10 +6,10 @@ var config = require('../../../config.json')
 module.exports = function (state, emitter) {
   var debug = state.parameters.debug
   var search = state.settings.search = {
-    visible: false,
     results: [],
     errors: [],
     query: '',
+    get isSearching () { return search.stream !== null },
     stream: null,
     endpoint: state.settings.getSearchEndpoint(),
     geonames: sgs({
@@ -40,7 +40,7 @@ module.exports = function (state, emitter) {
       }
     })
   }
-  emitter.on('search:result:push', function (r) {
+  function addResult (r) {
     search.results.push(r)
     search.results.sort(function (lhs, rhs) {
       if (lhs.population < rhs.population) return 1
@@ -48,22 +48,18 @@ module.exports = function (state, emitter) {
       else return 0
     })
     emitter.emit('render')
-  })
-  emitter.on('search:result:clear', function () {
+  }
+  function clearResults () {
     search.results = []
     if (search.stream) search.stream.destroy()
     search.stream = null
     emitter.emit('render')
-  })
-  emitter.on('search:error:push', function (err) {
+  }
+  function addError (err) {
     search.errors.push(err)
     emitter.emit('render')
-  })
-  emitter.on('search:error:clear', function () {
-    search.errors = []
-    emitter.emit('render')
-  })
-  emitter.on('search:clear', function () {
+  }
+  emitter.on('settings:search:clear', function () {
     search.query = ''
     search.errors = []
     search.results = []
@@ -71,20 +67,25 @@ module.exports = function (state, emitter) {
     search.stream = null
     emitter.emit('render')
   })
-  emitter.on('search:query', function (q) {
+  emitter.on('settings:search:abort', function () {
+    if (search.stream) search.stream.destroy()
+    search.stream = null
+    emitter.emit('render')
+  })
+  emitter.on('settings:search:query', function (q) {
     search.query = q
-    emitter.emit('search:result:clear')
+    clearResults()
     var stream = search.geonames.search(q)
     search.stream = stream
     pump(stream, Writable({
       objectMode: true,
       write: function (row, enc, next) {
-        emitter.emit('search:result:push', row)
+        addResult(row)
         next()
       },
     }), finish)
-    function finish(err) {
-      if (err) emitter.emit('search:error:push', err)
+    function finish (err) {
+      if (err) addError(err)
       search.stream = null
       emitter.emit('render')
     }

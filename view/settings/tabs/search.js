@@ -2,6 +2,7 @@ var html = require('choo/html')
 
 module.exports = function (state, emit) {
   var search = state.settings.search
+  var isSearching = search.isSearching
   var favorites = state.settings.favorites
   var l = state.settings.ui.lookup
 
@@ -25,9 +26,10 @@ module.exports = function (state, emit) {
 
   return html`<div class="search">
     <form onsubmit=${onSearch}>
-      <div>
-        <input name="query" type="text" value=${search.query || ''}>
-        <button>?</button>
+      <div style="display: flex;">
+        <input name="query" type="text" value=${search.query || ''} disabled=${isSearching}>
+        <button title=${l('search_tab_title')} disabled=${isSearching}><div class="emoji-icon-small" style="opacity: ${!isSearching ? '100' : '50'}%;">🔎</div></button>
+        <button title=${l('search_tab_abort')} disabled=${!isSearching} onclick=${onAbort}><div class="emoji-icon-small" style="opacity: ${isSearching ? '100' : '50'}%;">🔴</div></button>
       </div>
     </form>
     <div class="results">
@@ -55,8 +57,13 @@ module.exports = function (state, emit) {
   function onSearch (ev) {
     ev.preventDefault()
     var q = ev.target.elements.query.value
-    if (q === '') emit('search:clear')
-    else emit('search:query', q)
+    if (q === '') emit('settings:search:clear')
+    else emit('settings:search:query', q)
+  }
+
+  function onAbort (ev) {
+    ev.preventDefault()
+    emit('settings:search:abort')
   }
 
   function jump (r) {
