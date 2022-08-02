@@ -1,5 +1,7 @@
 module.exports = function (state, emitter) {
-  state.window = {}
+  state.window = {
+    hasTouch: 'ontouchstart' in document.documentElement
+  }
 
   window.addEventListener('keydown', function (ev) {
     if (ev.code === 'Digit0') {

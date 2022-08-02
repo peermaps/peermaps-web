@@ -94,9 +94,7 @@ app.route('*', function (state, emit) {
         top: 7em;
         left: 4em;
       }
-      .buttons button:hover {
-        opacity: 100%;
-      }
+      ${state.window.hasTouch ? '' : '.buttons button:hover { opacity: 100%; }'}
       .hide {
         display: none;
       }
