@@ -182,7 +182,7 @@ app.route('*', function (state, emit) {
       ${view.settings(state, emit)}
     </div>
     ${state.mix.render()}
-    ${state.map.render({ width: state.width, height: state.height })}
+    ${state.map.render({ width: state.window.width, height: state.window.height })}
   </body>`
 
 

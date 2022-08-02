@@ -1,4 +1,6 @@
 module.exports = function (state, emitter) {
+  state.window = {}
+
   window.addEventListener('keydown', function (ev) {
     if (ev.code === 'Digit0') {
       emitter.emit('map:zoom:set', 6)
@@ -8,11 +10,12 @@ module.exports = function (state, emitter) {
       emitter.emit('map:zoom:add', +1)
     }
   })
-  state.width = window.innerWidth
-  state.height = window.innerHeight
+
+  state.window.width = window.innerWidth
+  state.window.height = window.innerHeight
   window.addEventListener('resize', function (ev) {
-    state.width = window.innerWidth
-    state.height = window.innerHeight
+    state.window.width = window.innerWidth
+    state.window.height = window.innerHeight
     emitter.emit('render')
   })
 }
