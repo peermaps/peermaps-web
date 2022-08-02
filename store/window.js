@@ -20,4 +20,27 @@ module.exports = function (state, emitter) {
     state.window.height = window.innerHeight
     emitter.emit('render')
   })
+
+  if (state.window.hasTouch) {
+    window.addEventListener('mousedown', function (ev) {
+      var button = getOpacityButtonElement(ev.target)
+      if (button) {
+        button.style.opacity = '100%'
+        setTimeout(function () { button.style.opacity = '30%' }, 200)
+      }
+    })
+  }
+}
+
+/**
+ * Check if a target or its parent is an opacity button in the ui overlay
+ */
+function getOpacityButtonElement (target) {
+  var button
+  if (target.nodeName === 'BUTTON') {
+    button = target
+  } else if (target.parentElement.nodeName === 'BUTTON') {
+    button = target.parentElement
+  }
+  return button && button.classList.contains('opacity') && button
 }
