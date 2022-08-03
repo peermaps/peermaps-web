@@ -29,9 +29,6 @@ app.route('*', function (state, emit) {
       svg {
         fill: grey;
       }
-      svg:hover {
-        fill: white;
-      }
       .ui-overlay {
         z-index: 2000;
       }
@@ -97,9 +94,7 @@ app.route('*', function (state, emit) {
         top: 7em;
         left: 4em;
       }
-      .buttons button:hover {
-        opacity: 100%;
-      }
+      ${state.window.hasTouch ? '' : '.buttons button:hover { opacity: 100%; }'}
       .hide {
         display: none;
       }
@@ -169,20 +164,20 @@ app.route('*', function (state, emit) {
     </style>
     <div class="ui-overlay">
       <div class="buttons left-top-buttons">
-        <button title=${l('pan_north')} class="arrow north" onclick=${panNorth}></button>
-        <button title=${l('pan_west')} class="arrow west" onclick=${panWest}></button>
-        <button title=${l('pan_east')} class="arrow east" onclick=${panEast}></button>
-        <button title=${l('pan_south')} class="arrow south" onclick=${panSouth}></button>
-        <button style="top: 4.5em; left: 6em;" onclick=${zoomIn}><div title=${l('zoom_in')} class="emoji-icon-large">🔎</div></button>
-        <button style="top: 4.5em; left: 3em;" onclick=${zoomOut}><div title=${l('zoom_out')} class="emoji-icon-small">🔎</div></button>
+        <button title=${l('pan_north')} class="opacity arrow north" onclick=${panNorth}></button>
+        <button title=${l('pan_west')} class="opacity arrow west" onclick=${panWest}></button>
+        <button title=${l('pan_east')} class="opacity arrow east" onclick=${panEast}></button>
+        <button title=${l('pan_south')} class="opacity arrow south" onclick=${panSouth}></button>
+        <button style="top: 4.5em; left: 6em;" class="opacity" onclick=${zoomIn}><div title=${l('zoom_in')} class="emoji-icon-large">🔎</div></button>
+        <button style="top: 4.5em; left: 3em;" class="opacity" onclick=${zoomOut}><div title=${l('zoom_out')} class="emoji-icon-small">🔎</div></button>
       </div>
       <div class="buttons right-top-buttons">
-        <button class="toggle-settings" onclick=${toggleSettings}><div title="${settings.show ? l('close_settings') : l('open_settings')}" class="emoji-icon-large">⚙</div></button>
+        <button class="toggle-settings" class="opacity" onclick=${toggleSettings}><div title="${settings.show ? l('close_settings') : l('open_settings')}" class="emoji-icon-large">⚙</div></button>
       </div>
       ${view.settings(state, emit)}
     </div>
     ${state.mix.render()}
-    ${state.map.render({ width: state.width, height: state.height })}
+    ${state.map.render({ width: state.window.width, height: state.window.height })}
   </body>`
 
 
