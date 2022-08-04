@@ -41,21 +41,12 @@ module.exports = function (state, emitter) {
     if (!timeout) {
       timeout = setTimeout(function () {
         timeout = null
-        qparams.set('bbox', bbox.map(p => Math.round(p*100000)/100000))
+        qparams.set('bbox', bbox.map(p => Math.round(p * 100000) / 100000))
         window.location.hash = encodeParams(qparams)
       }, 500)
     }
   }
   emitter.on('map:viewbox:updated', updateViewboxParams)
-
-  window.addEventListener('hashchange', event => {
-    var newURL = new URL(event.newURL)
-    var qparams = new URLSearchParams(newURL.hash.replace(/^#/,''))
-    if (qparams.has('bbox')) {
-      var bbox = qparams.get('bbox').split(/\s*,\s*/).map(parseFloat)
-      emitter.emit('parameters:bbox:updated', bbox)
-    }
-  })
 
   state.parameters = parameters
 }

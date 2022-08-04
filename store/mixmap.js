@@ -49,10 +49,6 @@ module.exports = function (state, emitter) {
     state.map.setViewbox(centerViewbox(lonlat))
     state.map.draw()
   })
-  emitter.on('parameters:bbox:updated', function (viewbox) {
-    state.map.setViewbox(viewbox)
-    state.map.draw()
-  })
 
   function onReady () {
     state.storage = createStorage(state, getStorageEndpoint())
