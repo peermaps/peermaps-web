@@ -1,4 +1,4 @@
-var app = require('choo')()
+var app = require('choo')({ history: false })
 var html = require('choo/html')
 var nextTick = process.nextTick
 
