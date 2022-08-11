@@ -64,6 +64,7 @@ module.exports = function (state, emitter) {
         storage: state.storage,
         wasmSource: fetch('eyros2d.wasm'),
         font: maybeFetchFont(),
+        debug: state.parameters.debug,
         style
       })
     }
