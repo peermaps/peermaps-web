@@ -1,0 +1,3 @@
+name = "Peermaps"
+source_code_url = "https://github.com/peermaps/peermaps-web"
+request_internet_access = true
