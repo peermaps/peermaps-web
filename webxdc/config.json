@@ -6,9 +6,14 @@
   "fonts": {
     "endpoints": [
       {
-        "url": "ipfs://bafybeiaa5chmilnm2zy46xptvnl3jikyz234bd2yabj4ztkvqwnretefgq/DejaVuSans.qbzf",
+        "url": "https://ipfs.io/ipfs/QmNQCPGV3XZrtNdQyMbZhSJcGisg4xCFyxeHs1tacrdETm/DejaVuSans.qbzf",
         "description": "DejaVuSans on ipfs",
         "active": true
+      },
+      {
+        "url": "ipfs://bafybeiaa5chmilnm2zy46xptvnl3jikyz234bd2yabj4ztkvqwnretefgq/DejaVuSans.qbzf",
+        "description": "DejaVuSans on ipfs",
+        "active": false
       }
     ]
   },
@@ -16,10 +21,16 @@
     "storage": {
       "endpoints": [
         {
+          "url": "https://peermaps.linkping.org/data",
+          "description": "Peermaps data hosted by linkping.org",
+          "zoom": [1, 21],
+          "active": true
+        },
+        {
           "url": "ipfs://bafybeidf5yn56cxk6zkyjmay4wigu2o7ynqh7q62z3kppag5v7jpqavy5q",
           "description": "Dataset on ipfs",
           "zoom": [1, 21],
-          "active": true
+          "active": false
         }
       ]
     },
